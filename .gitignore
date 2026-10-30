@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+
+# your plain-text journal: only content/journal.sealed.json is published
+journal/
