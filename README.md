@@ -68,6 +68,10 @@ Then write normally: `##` headings, paragraphs, `-` lists, `**bold**`, `*italic*
 `` `code` ``, code blocks with three backticks, `[links](https://…)` and images
 (put them in `public/notes/` and write `![what it shows](/notes/picture.png)`).
 
+Every build also writes the RSS feeds (`/feed.xml` in English, `/feed.es.xml` in
+Spanish) and the link preview images in `public/og/`, so there's nothing to update by
+hand. To look at them before publishing, run `npm run feeds` or `npm run og`.
+
 A line starting with `::` places a live figure. These exist (see `components/NoteFigures.tsx`):
 
 - `::moon date=2026-11-17 relief=0 surface=flat info=1 size=large caption="…"`

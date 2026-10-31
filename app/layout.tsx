@@ -6,6 +6,7 @@ import { LangProvider } from "@/lib/i18n";
 import { Shell } from "@/components/Shell";
 import { Analytics } from "@/components/Analytics";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { ogImage } from "@/lib/og";
 import "./globals.css";
 
 // Archivo carries the text (its width axis makes the heavy, wide headings),
@@ -20,6 +21,24 @@ export const metadata: Metadata = {
   title: { default: "Kanu", template: "%s, Kanu" },
   description: home.intro.en,
   authors: [{ name: "Erick Fabián Donado Fonseca" }],
+  // what shows when the link is shared (the image is drawn by scripts/og.mjs)
+  openGraph: {
+    type: "website",
+    siteName: "Kanu",
+    title: "Kanu",
+    description: home.intro.en,
+    images: ogImage("og/site.png", "Kanu, Erick Donado's personal site"),
+  },
+  twitter: { card: "summary_large_image" },
+  // lets browsers and feed readers find the notes feeds (written by scripts/feeds.mjs)
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        { url: "/feed.xml", title: "Kanu, notes" },
+        { url: "/feed.es.xml", title: "Kanu, notas" },
+      ],
+    },
+  },
 };
 
 export const viewport: Viewport = { themeColor: "#131312", colorScheme: "dark" };

@@ -8,6 +8,8 @@ import { NoteFigure } from "@/components/NoteFigures";
 
 type Lang = "en" | "es";
 
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export function formatNoteDate(date: string, lang: Lang) {
   const [y, m, d] = date.split("-").map(Number);
   if (!y) return date;
@@ -61,11 +63,16 @@ export function NotesList({ notes, compact = false }: { notes: NoteSummary[]; co
 
 export function NotesPage({ notes }: { notes: NoteSummary[] }) {
   const t = useT();
+  const { lang } = useLang();
   return (
     <>
       <header className="page-head">
         <h1>{t(notesText.title)}</h1>
         <p>{t(notesText.lede)}</p>
+        <p className="rss">
+          <a href={`${BASE}/${lang === "es" ? "feed.es.xml" : "feed.xml"}`}>{t(notesText.rss)}</a>
+          <span>{t(notesText.rssHint)}</span>
+        </p>
       </header>
       <section className="panel">
         <NotesList notes={notes} />

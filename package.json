@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/feeds.mjs && node scripts/og.mjs && next build",
     "start": "npx serve out",
     "lint": "next lint",
     "journal:seal": "node scripts/journal.mjs seal",
     "journal:unseal": "node scripts/journal.mjs unseal",
-    "journal:answers": "node scripts/journal.mjs answers"
+    "journal:answers": "node scripts/journal.mjs answers",
+    "og": "node scripts/og.mjs",
+    "feeds": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/feeds.mjs"
   },
   "dependencies": {
     "dither-moon": "^1.2.0",

@@ -1,6 +1,11 @@
 node_modules/
 .next/
 out/
+# link preview images, drawn on every build by scripts/og.mjs
+public/og/
+# the RSS feeds, written on every build by scripts/feeds.mjs
+public/feed.xml
+public/feed.es.xml
 next-env.d.ts
 *.tsbuildinfo
 .DS_Store

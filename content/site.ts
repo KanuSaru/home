@@ -396,4 +396,9 @@ export const notesText = {
   onlyTag: { en: "in Spanish", es: "en inglés" },
   onlyNotice: { en: "This note is only in Spanish.", es: "Esta nota solo está en inglés." },
   latest: { en: "Latest", es: "Lo más reciente" },
+  rss: { en: "RSS feed", es: "Feed RSS" },
+  rssHint: {
+    en: "Paste it into a feed reader to get new notes as they come out.",
+    es: "Pégalo en un lector de feeds para recibir las notas nuevas cuando salgan.",
+  },
 };

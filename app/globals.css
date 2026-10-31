@@ -1485,3 +1485,16 @@ main {
   /* each cell is shaded by its own threshold */
   background: color-mix(in srgb, var(--bone) calc(var(--v) * 100%), var(--raise));
 }
+
+.page-head .rss {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.6rem;
+  font-size: 0.9375rem;
+}
+
+.page-head .rss a {
+  font-family: var(--data);
+  font-size: 1.1rem;
+}
