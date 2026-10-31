@@ -39,7 +39,7 @@ export type NavItem = { id: "home" | "me" | "work" | "notes" | "journal"; label:
 export const nav: NavItem[] = [
   { id: "home", label: { en: "Home", es: "Inicio" } },
   { id: "me", label: { en: "Me", es: "Yo" } },
-  { id: "work", label: { en: "Work", es: "Trabajo" }, soon: true },
+  { id: "work", label: { en: "Work", es: "Trabajo" } },
   { id: "notes", label: { en: "Notes", es: "Notas" }, soon: true },
   { id: "journal", label: { en: "Journal", es: "Diario" }, locked: true },
 ];

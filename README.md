@@ -17,7 +17,10 @@ builds for you, it builds there.
 ## Edit the content
 
 All text lives in `content/site.ts`, in English and Spanish (`{ en, es }`).
-Pages: `/` (home hub), `/me/` and `/journal/`. Work and Notes are next.
+Pages: `/` (home hub), `/me/`, `/work/` and `/journal/`. Notes is next.
+The Work page's text is in `content/work.ts`. The CV buttons download the PDFs in
+`public/cv/`; to update a CV, replace the file with one of the same name (or change
+the name in `work.cv`).
 
 ## Connect the live widgets
 
@@ -78,7 +81,7 @@ phrase is much harder to guess. Don't seal anything you couldn't live with being
 - `components/Widgets.tsx`: time, weather, now playing, Discord, visitors
 - `components/HomePage.tsx`, `MePage.tsx`, `JournalPage.tsx`: the pages
 - `lib/seal.mjs`, `scripts/journal.mjs`: sealing and opening the journal
-- `components/MaskField.tsx`: segmentation mask, saved for the Work page
+- `components/WorkPage.tsx`: the Work page; `components/MaskField.tsx` draws its segmentation mask
 - `app/globals.css`: all styles and color tokens
 
 ## Publish
