@@ -11,6 +11,9 @@ npm run dev      # http://localhost:3000
 npm run build    # writes the static site to out/
 ```
 
+The deploy workflow uses the same Node version as your computer (26), so if it
+builds for you, it builds there.
+
 ## Edit the content
 
 All text lives in `content/site.ts`, in English and Spanish (`{ en, es }`).
@@ -31,6 +34,16 @@ Fill these in at the top of `content/site.ts`. Until then each widget says
 
 The Last.fm key is a public read-only key, the kind these widgets normally ship
 with; don't put any private key in this file.
+
+## Your photo
+
+Put the image in `public/` (for example `public/avatar.jpg`) and set
+`avatar: "avatar.jpg"` in `config` at the top of `content/site.ts`. It shows in
+grayscale inside the taped frame. Until then the frame is empty.
+
+## Ideas for later
+
+- A stats panel, like a game profile's level and badges (Wakfu hours, books read, chess rating…).
 
 ## The journal
 
@@ -56,7 +69,9 @@ phrase is much harder to guess. Don't seal anything you couldn't live with being
 ## Where things are
 
 - `components/Shell.tsx`: masthead, language switch, pages, sidebar, footer
-- `components/Moon.tsx`: the moon, from the `dither-moon` package (github.com/KanuSaru/dither-moon)
+- `components/LilyScene.tsx`: the 3D pixel-art lily on the home page
+- the moon widget is `<DitherMoon />` from the `dither-moon` package (drag it to turn it)
+- `components/TapedPhoto.tsx`: the taped photo next to the wordmark
 - `components/Widgets.tsx`: time, weather, now playing, Discord, visitors
 - `components/HomePage.tsx`, `MePage.tsx`, `JournalPage.tsx`: the pages
 - `lib/seal.mjs`, `scripts/journal.mjs`: sealing and opening the journal

@@ -17,6 +17,8 @@ export const config = {
   discordId: "405104130110128150", // read through Lanyard (discord.gg/lanyard)
   goatcounter: "kanu", // kanu.goatcounter.com
   place: { name: "Barranquilla", lat: 10.9685, lon: -74.7813, timeZone: "America/Bogota" },
+  // Your taped photo: put the image in public/ (e.g. public/avatar.jpg) and write its name here.
+  avatar: "",
 };
 
 export const ui = {
@@ -77,8 +79,8 @@ export const widgets = {
   moon: {
     title: { en: "Today's moon", es: "La luna de hoy" },
     caption: {
-      en: "The real phase, right now. It updates on its own.",
-      es: "La fase real, ahora mismo. Se actualiza sola.",
+      en: "The real phase, right now. Drag it to see the far side.",
+      es: "La fase real, ahora mismo. Arrástrala para ver la cara oculta.",
     },
     lit: { en: "{n}% lit", es: "{n}% iluminada" },
     fullIn: { en: "Full moon in {n} days", es: "Luna llena en {n} días" },
@@ -131,6 +133,16 @@ export const home = {
     es: "Estudio Ingeniería de Sistemas en Barranquilla e investigo en machine learning. Últimamente estoy obsesionado con Oxygen Not Included, haciendo tracks en un sampler y jugando ajedrez, no muy bien pero con mucho gusto.",
   },
   meLink: { en: "More about me", es: "Más sobre mí" },
+  scene: {
+    label: {
+      en: "A white lily in pixel art, slowly opening and closing.",
+      es: "Un lirio blanco en pixel art, que se abre y se cierra despacio.",
+    },
+    hint: {
+      en: "Drag to turn the lily.",
+      es: "Arrastra para girar el lirio.",
+    },
+  },
   madeTitle: { en: "Things I've made", es: "Cosas que he hecho" },
   notes: {
     title: { en: "Notes", es: "Notas" },

@@ -3,7 +3,8 @@
 import { home, projects, widgets } from "@/content/site";
 import { useT } from "@/lib/i18n";
 import { PageLink } from "@/lib/route";
-import { Moon } from "@/components/Moon";
+import { LilyScene } from "@/components/LilyScene";
+import { DitherMoon } from "dither-moon/react";
 import { MoonReadout } from "@/components/Widgets";
 
 export function HomePage() {
@@ -12,24 +13,30 @@ export function HomePage() {
     <>
       <h1 className="sr-only">Erick Donado (Kanu)</h1>
 
-      <section className="hero panel" aria-label={t(widgets.moon.title)}>
-        <div className="hero-text">
-          <p className="lede">{t(home.intro)}</p>
-          <p>{t(home.sub)}</p>
-          <p>
-            <PageLink to="me" className="more">
-              {t(home.meLink)}
-            </PageLink>
-          </p>
-        </div>
-        <figure className="hero-moon">
-          <Moon label={t(widgets.moon.title)} />
-          <figcaption>
+      <section className="hero panel" aria-labelledby="hero-lede">
+        <figure className="hero-scene">
+          <LilyScene label={t(home.scene.label)} />
+          <figcaption className="small muted">{t(home.scene.hint)}</figcaption>
+        </figure>
+        <div className="hero-row">
+          <div className="hero-text">
+            <p id="hero-lede" className="lede">
+              {t(home.intro)}
+            </p>
+            <p>{t(home.sub)}</p>
+            <p>
+              <PageLink to="me" className="more">
+                {t(home.meLink)}
+              </PageLink>
+            </p>
+          </div>
+          <div className="hero-moon">
             <h2 className="widget-title">{t(widgets.moon.title)}</h2>
+            <DitherMoon className="moon" label={t(widgets.moon.title)} />
             <MoonReadout />
             <p className="small muted">{t(widgets.moon.caption)}</p>
-          </figcaption>
-        </figure>
+          </div>
+        </div>
       </section>
 
       <section className="panel" aria-labelledby="made-title">
