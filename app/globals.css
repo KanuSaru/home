@@ -31,6 +31,12 @@
 html {
   -webkit-text-size-adjust: 100%;
   background: var(--ground);
+  /* no visible scrollbar; the page still scrolls */
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -41,11 +47,25 @@ body {
   font-size: 1rem;
   line-height: 1.55;
   font-variation-settings: "wdth" 100;
+  background: var(--ground);
+  /* keeps the smoke layer below inside the body, so nothing can paint over it */
+  isolation: isolate;
+}
+
+/* The smoke stays put while the page scrolls. It's its own fixed layer rather than
+   background-attachment: fixed, which makes browsers repaint the whole screen on
+   every scrolled frame. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background:
     radial-gradient(60rem 40rem at 12% -8%, var(--smoke-a) 0%, transparent 62%),
     radial-gradient(48rem 48rem at 100% 35%, var(--smoke-b) 0%, transparent 58%),
     var(--ground);
-  background-attachment: fixed;
+  transform: translateZ(0);
 }
 
 /* film grain over everything */
@@ -55,6 +75,7 @@ body::after {
   inset: 0;
   z-index: 100;
   pointer-events: none;
+  transform: translateZ(0);
   opacity: 0.055;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.5 -0.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }

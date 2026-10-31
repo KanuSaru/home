@@ -99,6 +99,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <a href="https://orcid.org/0009-0008-5752-3255" target="_blank" rel="noopener noreferrer">
             ORCID
           </a>
+          <a href="https://steamcommunity.com/id/KanuSaru/" target="_blank" rel="noopener noreferrer">
+            Steam
+          </a>
         </div>
         <p>{t(ui.madeIn)}, 2026</p>
       </footer>

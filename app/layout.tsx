@@ -5,6 +5,7 @@ import { config, home } from "@/content/site";
 import { LangProvider } from "@/lib/i18n";
 import { Shell } from "@/components/Shell";
 import { Analytics } from "@/components/Analytics";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
 
 // Archivo carries the text (its width axis makes the heavy, wide headings),
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LangProvider>
           <Shell>{children}</Shell>
         </LangProvider>
+        <SmoothScroll />
         {config.goatcounter && <Analytics />}
         {config.goatcounter && (
           <Script
