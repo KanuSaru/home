@@ -12,7 +12,7 @@ export const config = {
     user: "KanuSaru",
     // Free read-only key from https://www.last.fm/api/account/create (the API key,
     // never the shared secret). Empty until you create one.
-    apiKey: "",
+    apiKey: "a44bb146945439eacaa8447e379a74f8",
   },
   discordId: "405104130110128150", // read through Lanyard (discord.gg/lanyard)
   goatcounter: "kanu", // kanu.goatcounter.com
@@ -376,6 +376,9 @@ export const journalText = {
   count: { en: "{n} sealed entries, the latest from {d}.", es: "{n} entradas selladas, la más reciente del {d}." },
   countOne: { en: "1 sealed entry, from {d}.", es: "1 entrada sellada, del {d}." },
   none: { en: "Nothing sealed yet.", es: "Aún no hay nada sellado." },
-  opened: { en: "Unsealed. Entries appear in the language they were written in.", es: "Abierto. Las entradas aparecen en el idioma en que fueron escritas." },
+  opened: {
+    en: "Unsealed. Entries written in both languages follow the language switch.",
+    es: "Abierto. Las entradas escritas en ambos idiomas siguen el selector de idioma.",
+  },
   lockAgain: { en: "Seal it again", es: "Volver a sellar" },
 };

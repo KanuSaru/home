@@ -6,6 +6,8 @@
 //   npm run journal:answers   change the accepted answers, keeping every entry
 //
 // Write entries as journal/YYYY-MM-DD-anything.md, first line "# Title".
+// For both languages, write a pair: YYYY-MM-DD-anything.es.md and .en.md.
+// The site shows the one that matches the visitor's language.
 // The journal/ folder is in .gitignore: never commit it.
 //
 // For scripts and tests: JOURNAL_DIR, JOURNAL_FILE, JOURNAL_ANSWER (to open)
@@ -72,13 +74,15 @@ async function unlock(sealed) {
 
 function parseEntry(file, text) {
   const date = file.match(/^(\d{4}-\d{2}-\d{2})/)?.[1];
+  const lang = file.match(/\.(en|es)\.md$/)?.[1] ?? null;
+  const base = file.replace(/(\.(en|es))?\.md$/, "");
   if (!date) fail(`"${file}" needs a date at the start of its name, like 2026-10-28-${file}`);
   const lines = text.replace(/\r\n/g, "\n").split("\n");
   const first = lines.findIndex((l) => l.trim());
   const hasTitle = first >= 0 && lines[first].startsWith("# ");
   const title = hasTitle ? lines[first].slice(2).trim() : "";
   const body = (hasTitle ? lines.slice(first + 1) : lines).join("\n").trim();
-  return { date, secret: { file, title, body } };
+  return { date, base, secret: { file, title, body, lang } };
 }
 
 async function cmdSeal() {
@@ -103,16 +107,18 @@ async function cmdSeal() {
 
   let changed = 0;
   for (const file of files) {
-    const { date, secret } = parseEntry(file, await fs.readFile(path.join(DIR, file), "utf8"));
+    const { date, base, secret } = parseEntry(file, await fs.readFile(path.join(DIR, file), "utf8"));
     const id = await seal.entryId(file);
-    const entry = await seal.sealEntry(key, id, date, secret);
+    // translations of the same entry share a group, so they count as one
+    const entry = { ...(await seal.sealEntry(key, id, date, secret)), group: await seal.entryId(base) };
     const at = sealed.entries.findIndex((e) => e.id === id);
     if (at >= 0) sealed.entries[at] = entry;
     else sealed.entries.push(entry);
     changed++;
   }
   await save(sealed);
-  console.log(`Sealed ${changed} file(s) from ${path.relative(root, DIR) || DIR}. The journal now has ${sealed.entries.length} entr${sealed.entries.length === 1 ? "y" : "ies"}.`);
+  const groups = new Set(sealed.entries.map((e) => e.group ?? e.id)).size;
+  console.log(`Sealed ${changed} file(s) from ${path.relative(root, DIR) || DIR}. The journal now has ${groups} entr${groups === 1 ? "y" : "ies"}.`);
   console.log(`Publish ${path.relative(root, FILE)}; keep journal/ to yourself.`);
 }
 

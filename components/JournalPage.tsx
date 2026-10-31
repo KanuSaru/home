@@ -6,7 +6,7 @@ import { riddle, sealed } from "@/content/journal";
 import { useLang, useT } from "@/lib/i18n";
 import { importJournalKey, openEntry, openWithAnswer } from "@/lib/seal.mjs";
 
-type Entry = { id: string; date: string; title: string; body: string };
+type Entry = { id: string; group: string; date: string; title: string; body: string; lang: "en" | "es" | null };
 
 // Kept for the visit only: navigating away and back stays open, a reload seals it again.
 let opened: Entry[] | null = null;
@@ -40,6 +40,16 @@ export function JournalPage() {
 
   const hasRiddle = Boolean(riddle.en || riddle.es) && sealed.locks.length > 0;
   const latest = sealed.entries[0]?.date;
+  // translations of one entry count once
+  const entryCount = new Set(sealed.entries.map((e) => e.group ?? e.id)).size;
+
+  // one version per entry: the visitor's language if it exists, otherwise whatever there is
+  const shown = entries
+    ? [...new Map(entries.map((e) => [e.group, e] as const)).keys()].map((g) => {
+        const versions = entries.filter((e) => e.group === g);
+        return versions.find((e) => e.lang === lang) ?? versions.find((e) => !e.lang) ?? versions[0];
+      })
+    : null;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -56,7 +66,14 @@ export function JournalPage() {
       const list: Entry[] = [];
       for (const entry of sealed.entries) {
         const secret = await openEntry(key, entry);
-        list.push({ id: entry.id, date: entry.date, title: secret.title, body: secret.body });
+        list.push({
+          id: entry.id,
+          group: entry.group ?? entry.id,
+          date: entry.date,
+          title: secret.title,
+          body: secret.body,
+          lang: secret.lang ?? null,
+        });
       }
       opened = list;
       setEntries(list);
@@ -125,11 +142,11 @@ export function JournalPage() {
           )}
 
           <p className="readout sealed-count">
-            {sealed.entries.length === 0
+            {entryCount === 0
               ? t(j.none)
-              : sealed.entries.length === 1
+              : entryCount === 1
                 ? t(j.countOne, { d: formatDate(latest!, lang) })
-                : t(j.count, { n: sealed.entries.length, d: formatDate(latest!, lang) })}
+                : t(j.count, { n: entryCount, d: formatDate(latest!, lang) })}
           </p>
         </section>
       )}
@@ -144,8 +161,8 @@ export function JournalPage() {
               {t(j.lockAgain)}
             </button>
           </div>
-          {entries.map((entry) => (
-            <article key={entry.id} className="panel entry">
+          {shown!.map((entry) => (
+            <article key={entry.group} className="panel entry" lang={entry.lang ?? undefined}>
               <p className="readout entry-date">{formatDate(entry.date, lang)}</p>
               {entry.title && <h2 className="panel-title">{entry.title}</h2>}
               {entry.body.split(/\n\s*\n/).map((para, i) => (

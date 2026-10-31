@@ -5,11 +5,11 @@ import sealedFile from "./journal.sealed.json";
 // project: you type it into `npm run journal:seal` on your own computer.
 // While both are empty, the Journal page says the riddle is coming soon.
 export const riddle: L = {
-  en: "",
-  es: "",
+  en: "I'll always carry you in them...\nE.N.",
+  es: "Te llevaré siempre en ellos...\nE.N.",
 };
 
-export type SealedEntry = { id: string; date: string; iv: string; data: string };
+export type SealedEntry = { id: string; date: string; iv: string; data: string; group?: string };
 export type Sealed = {
   version: number;
   iterations: number;

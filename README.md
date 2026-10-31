@@ -52,6 +52,9 @@ Entries are sealed on your computer and only the sealed file is published.
 1. Write your riddle in `content/journal.ts`, in English and Spanish.
 2. Write an entry as `journal/2026-10-28-anything.md` (date first, then any name).
    The first line `# Title` is the title; paragraphs are separated by a blank line.
+   To publish an entry in both languages, write a pair with the same name plus the
+   language: `2026-10-31-first-step.es.md` and `2026-10-31-first-step.en.md`. The
+   page shows the version that matches the language switch, and counts the pair as one entry.
 3. Run `npm run journal:seal`. The first time, it asks which answers open the
    journal (for example `moon | luna`). After that it asks for an answer to unlock.
 4. Commit and publish `content/journal.sealed.json`. The `journal/` folder is in
