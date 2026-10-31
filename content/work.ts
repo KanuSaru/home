@@ -248,6 +248,14 @@ export const work = {
   awards: {
     title: { en: "Competitions and certificates", es: "Competencias y certificados" },
     lines: [
+      {
+        when: "2026",
+        title: { en: "Fundamentals of Generative AI (75 h)", es: "Curso de Fundamentos de Inteligencia Artificial Generativa (75 h)" },
+        detail: {
+          en: "Universidad Internacional de La Rioja (UNIR), Spain. Grade 9.9/10.",
+          es: "Universidad Internacional de La Rioja (UNIR), España. Calificación 9,9/10.",
+        },
+      },
       { when: "2025", title: { en: "NASA Space Apps Challenge", es: "NASA Space Apps Challenge" } },
       { when: "2025", title: { en: "GDG Barranquilla “Build with AI” hackathon (48 h)", es: "Hackatón “Build with AI” de GDG Barranquilla (48 h)" } },
       { when: "2025", title: { en: "IEEE certification in web design and development", es: "Certificación IEEE en diseño y desarrollo web" } },

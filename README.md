@@ -17,7 +17,7 @@ builds for you, it builds there.
 ## Edit the content
 
 All text lives in `content/site.ts`, in English and Spanish (`{ en, es }`).
-Pages: `/` (home hub), `/me/`, `/work/` and `/journal/`. Notes is next.
+Pages: `/` (home hub), `/me/`, `/work/`, `/notes/` and `/journal/`.
 The Work page's text is in `content/work.ts`. The CV buttons download the PDFs in
 `public/cv/`; to update a CV, replace the file with one of the same name (or change
 the name in `work.cv`).
@@ -47,6 +47,32 @@ grayscale inside the taped frame. Until then the frame is empty.
 ## Ideas for later
 
 - A stats panel, like a game profile's level and badges (Wakfu hours, books read, chess rating…).
+
+## Notes
+
+Each note is a Markdown file in `content/notes/`, named after its address plus the
+language: `my-note.en.md` and/or `my-note.es.md`. Write one or both; with both,
+the language switch picks the version. It's published at `/notes/my-note/`, and the
+three newest show on the home page. Start the file like this:
+
+```
+---
+title: My note
+date: 2026-11-15
+tags: machine learning, c
+summary: One or two sentences for the list of notes.
+---
+```
+
+Then write normally: `##` headings, paragraphs, `-` lists, `**bold**`, `*italic*`,
+`` `code` ``, code blocks with three backticks, `[links](https://…)` and images
+(put them in `public/notes/` and write `![what it shows](/notes/picture.png)`).
+
+A line starting with `::` places a live figure. These exist (see `components/NoteFigures.tsx`):
+
+- `::moon date=2026-11-17 relief=0 surface=flat info=1 size=large caption="…"`
+- `::moons dates="2026-11-13,2026-11-24" labels="Nov 13|Nov 24" caption="…"`
+- `::ramp labels="a|b|c" caption="…"` and `::bayer caption="…"`
 
 ## The journal
 
@@ -81,6 +107,7 @@ phrase is much harder to guess. Don't seal anything you couldn't live with being
 - `components/Widgets.tsx`: time, weather, now playing, Discord, visitors
 - `components/HomePage.tsx`, `MePage.tsx`, `JournalPage.tsx`: the pages
 - `lib/seal.mjs`, `scripts/journal.mjs`: sealing and opening the journal
+- `components/NotesPage.tsx`, `NoteFigures.tsx`, `lib/notes.ts`, `lib/markdown.ts`: the notes
 - `components/WorkPage.tsx`: the Work page; `components/MaskField.tsx` draws its segmentation mask
 - `app/globals.css`: all styles and color tokens
 

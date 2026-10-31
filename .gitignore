@@ -5,5 +5,5 @@ next-env.d.ts
 *.tsbuildinfo
 .DS_Store
 
-# your plain-text journal: only content/journal.sealed.json is published
+# your plain-text journal (only the top-level folder): only content/journal.sealed.json is published
 /journal/

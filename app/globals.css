@@ -1195,3 +1195,293 @@ main {
     animation: none;
   }
 }
+
+/* ---------- Notes ---------- */
+
+.note-list {
+  display: grid;
+}
+
+.note-list > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.6rem;
+  padding: 0.9rem 0;
+  border-top: 1px dashed var(--rule);
+}
+
+.note-list > li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.note-list > li:last-child {
+  padding-bottom: 0;
+}
+
+.note-list time {
+  flex-basis: 100%;
+  font-family: var(--data);
+  font-size: 1.05rem;
+  color: var(--ash);
+  line-height: 1.1;
+}
+
+.note-list-title {
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  font-variation-settings: "wdth" 112;
+}
+
+.note-list.is-compact .note-list-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.note-list.is-compact > li {
+  padding: 0.55rem 0;
+}
+
+.note-list-summary {
+  flex-basis: 100%;
+  color: var(--ash);
+}
+
+.note-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  flex-basis: 100%;
+  margin-top: 0.25rem;
+}
+
+/* a single note: text set at a comfortable reading width */
+.note {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 44rem;
+}
+
+.note-back {
+  font-size: 0.9375rem;
+}
+
+.note-head {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.note-head h1 {
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  font-variation-settings: "wdth" 118;
+  text-wrap: balance;
+}
+
+.note-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.6rem;
+}
+
+.note-meta time {
+  font-family: var(--data);
+  font-size: 1.1rem;
+  color: var(--ash);
+}
+
+.note-notice {
+  border-left: 2px solid var(--blue);
+  padding-left: 0.75rem;
+  color: var(--ash);
+}
+
+.note-body {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.note-text {
+  display: grid;
+  gap: 1rem;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.note-text h2 {
+  margin-top: 1rem;
+  font-weight: 800;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  font-variation-settings: "wdth" 118;
+}
+
+.note-text h3 {
+  margin-top: 0.5rem;
+  font-weight: 700;
+  font-size: 1.1875rem;
+}
+
+.note-text ul,
+.note-text ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.note-text ul {
+  list-style: square;
+}
+
+.note-text li::marker {
+  color: var(--ash);
+}
+
+.note-text blockquote {
+  margin: 0;
+  border-left: 2px solid var(--rule);
+  padding-left: 1rem;
+  color: var(--ash);
+}
+
+.note-text code {
+  font-family: var(--data);
+  font-size: 1.1em;
+  background: var(--raise);
+  padding: 0 0.25em;
+}
+
+.note-text pre {
+  margin: 0;
+  /* long lines wrap instead of hiding off the edge */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  padding: 0.9rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.note-text pre code {
+  background: none;
+  padding: 0;
+  font-size: 1.05rem;
+}
+
+.note-text hr {
+  border: 0;
+  border-top: 1px dashed var(--rule);
+  margin: 0.5rem 0;
+}
+
+.note-text img {
+  max-width: 100%;
+}
+
+/* live figures */
+.note-figure {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: center;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  padding: 1rem;
+}
+
+.note-figure figcaption {
+  justify-self: stretch;
+  color: var(--ash);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.note-moon {
+  width: min(100%, 11rem);
+  color: var(--bone);
+}
+
+.note-figure.is-large .note-moon {
+  width: min(100%, 17rem);
+}
+
+.note-moon .dither-moon-info {
+  display: grid;
+  gap: 0.1rem;
+  margin-top: 0.5rem;
+  font-family: var(--data);
+  font-size: 1.05rem;
+  color: var(--ash);
+  text-align: center;
+}
+
+.note-moons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.note-moons > div {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+}
+
+.note-moons .note-moon {
+  width: 100%;
+  max-width: 8rem;
+}
+
+.note-moon-label {
+  font-family: var(--data);
+  font-size: 1.05rem;
+  color: var(--ash);
+  text-align: center;
+  line-height: 1.1;
+}
+
+.note-ramp {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  color: var(--bone);
+}
+
+.note-ramp canvas {
+  display: block;
+  image-rendering: pixelated;
+  max-width: 100%;
+}
+
+.note-ramp-labels {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-family: var(--data);
+  font-size: 1.05rem;
+  color: var(--ash);
+  line-height: 1.2;
+}
+
+.note-bayer {
+  display: grid;
+  grid-template-columns: repeat(4, 2.75rem);
+  gap: 2px;
+}
+
+.note-bayer span {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  font-family: var(--data);
+  font-size: 1.25rem;
+  /* each cell is shaded by its own threshold */
+  background: color-mix(in srgb, var(--bone) calc(var(--v) * 100%), var(--raise));
+}

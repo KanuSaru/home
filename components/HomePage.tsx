@@ -7,8 +7,10 @@ import { PageLink } from "@/lib/route";
 import { LilyScene } from "@/components/LilyScene";
 import { DitherMoon } from "dither-moon/react";
 import { MoonReadout } from "@/components/Widgets";
+import { NotesList } from "@/components/NotesPage";
+import type { NoteSummary } from "@/lib/notes";
 
-export function HomePage() {
+export function HomePage({ notes = [] }: { notes?: NoteSummary[] }) {
   const t = useT();
   return (
     <>
@@ -79,7 +81,14 @@ export function HomePage() {
             {t(home.notes.title)}
           </h2>
           <p>{t(home.notes.text)}</p>
-          <p className="empty">{t(home.notes.empty)}</p>
+          <NotesList notes={notes} compact />
+          {notes.length > 0 && (
+            <p>
+              <PageLink to="notes" className="more">
+                {t(home.notes.open)}
+              </PageLink>
+            </p>
+          )}
         </section>
         <section className="panel locked" aria-labelledby="journal-title">
           <h2 id="journal-title" className="panel-title">

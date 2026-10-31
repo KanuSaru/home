@@ -40,7 +40,7 @@ export const nav: NavItem[] = [
   { id: "home", label: { en: "Home", es: "Inicio" } },
   { id: "me", label: { en: "Me", es: "Yo" } },
   { id: "work", label: { en: "Work", es: "Trabajo" } },
-  { id: "notes", label: { en: "Notes", es: "Notas" }, soon: true },
+  { id: "notes", label: { en: "Notes", es: "Notas" } },
   { id: "journal", label: { en: "Journal", es: "Diario" }, locked: true },
 ];
 
@@ -151,6 +151,7 @@ export const home = {
       es: "Escritos académicos: machine learning, sistemas y lo que esté estudiando.",
     },
     empty: { en: "Nothing posted yet.", es: "Aún no hay publicaciones." },
+    open: { en: "All notes", es: "Todas las notas" },
   },
   journal: {
     title: { en: "Journal", es: "Diario" },
@@ -381,4 +382,18 @@ export const journalText = {
     es: "Abierto. Las entradas escritas en ambos idiomas siguen el selector de idioma.",
   },
   lockAgain: { en: "Seal it again", es: "Volver a sellar" },
+};
+
+export const notesText = {
+  title: { en: "Notes", es: "Notas" },
+  lede: {
+    en: "Academic writing: machine learning, systems, and whatever I'm studying.",
+    es: "Escritos académicos: machine learning, sistemas y lo que esté estudiando.",
+  },
+  empty: { en: "Nothing posted yet.", es: "Aún no hay publicaciones." },
+  all: { en: "All notes", es: "Todas las notas" },
+  // shown on a note that only exists in the other language
+  onlyTag: { en: "in Spanish", es: "en inglés" },
+  onlyNotice: { en: "This note is only in Spanish.", es: "Esta nota solo está en inglés." },
+  latest: { en: "Latest", es: "Lo más reciente" },
 };

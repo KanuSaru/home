@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export type PageId = "home" | "me" | "work" | "journal";
+export type PageId = "home" | "me" | "work" | "notes" | "journal";
 
 export function pageHref(id: PageId) {
   return id === "home" ? "/" : `/${id}/`;
+}
+
+export function noteHref(slug: string) {
+  return `/notes/${slug}/`;
 }
 
 export function useCurrentPage(): PageId {
@@ -14,6 +18,7 @@ export function useCurrentPage(): PageId {
   if (path.endsWith("/me")) return "me";
   if (path.endsWith("/journal")) return "journal";
   if (path.endsWith("/work")) return "work";
+  if (/\/notes(\/|$)/.test(path)) return "notes";
   return "home";
 }
 
@@ -25,6 +30,14 @@ export function PageLink({
 }: { to: PageId; className?: string; children: React.ReactNode } & React.AriaAttributes) {
   return (
     <Link href={pageHref(to)} className={className} {...rest}>
+      {children}
+    </Link>
+  );
+}
+
+export function NoteLink({ slug, className, children }: { slug: string; className?: string; children: React.ReactNode }) {
+  return (
+    <Link href={noteHref(slug)} className={className}>
       {children}
     </Link>
   );
