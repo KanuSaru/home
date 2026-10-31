@@ -1,6 +1,7 @@
 "use client";
 
-import { home, projects, widgets } from "@/content/site";
+import { config, home, projects, widgets } from "@/content/site";
+import { TapedPhoto } from "@/components/TapedPhoto";
 import { useT } from "@/lib/i18n";
 import { PageLink } from "@/lib/route";
 import { LilyScene } from "@/components/LilyScene";
@@ -23,12 +24,17 @@ export function HomePage() {
             <p id="hero-lede" className="lede">
               {t(home.intro)}
             </p>
-            <p>{t(home.sub)}</p>
-            <p>
-              <PageLink to="me" className="more">
-                {t(home.meLink)}
-              </PageLink>
-            </p>
+            <div className="hero-body">
+              <div className="hero-copy">
+                <p>{t(home.sub)}</p>
+                <p>
+                  <PageLink to="me" className="more">
+                    {t(home.meLink)}
+                  </PageLink>
+                </p>
+              </div>
+              <TapedPhoto src={config.avatar || undefined} alt="Emanon" />
+            </div>
           </div>
           <div className="hero-moon">
             <h2 className="widget-title">{t(widgets.moon.title)}</h2>

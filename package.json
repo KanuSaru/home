@@ -12,7 +12,7 @@
     "journal:answers": "node scripts/journal.mjs answers"
   },
   "dependencies": {
-    "dither-moon": "^1.1.0",
+    "dither-moon": "^1.2.0",
     "next": "^15.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

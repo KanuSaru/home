@@ -18,7 +18,7 @@ export const config = {
   goatcounter: "kanu", // kanu.goatcounter.com
   place: { name: "Barranquilla", lat: 10.9685, lon: -74.7813, timeZone: "America/Bogota" },
   // Your taped photo: put the image in public/ (e.g. public/avatar.jpg) and write its name here.
-  avatar: "",
+  avatar: "avatar.jpg",
 };
 
 export const ui = {
@@ -129,8 +129,8 @@ export const home = {
     es: "Soy Erick Donado, o al menos tengo la fortuna de creerlo. Producto de todo lo que me rodea, apasionado por todo tipo de arte y por las maravillas de la tierra y del espacio.",
   },
   sub: {
-    en: "I study Systems Engineering in Barranquilla and do research on machine learning. Lately I'm obsessed with Oxygen Not Included, making tracks on a sampler, and playing chess, not well but with a lot of joy.",
-    es: "Estudio Ingeniería de Sistemas en Barranquilla e investigo en machine learning. Últimamente estoy obsesionado con Oxygen Not Included, haciendo tracks en un sampler y jugando ajedrez, no muy bien pero con mucho gusto.",
+    en: "I study Systems Engineering in Barran\u00adquilla and do research on machine learning. Lately I'm obsessed with Oxygen Not Included, making tracks on a sampler, and playing chess, not well but with a lot of joy.",
+    es: "Estudio Ingeniería de Sistemas en Barran\u00adquilla e investigo en machine learning. Últimamente estoy obsesionado con Oxygen Not Included, haciendo tracks en un sampler y jugando ajedrez, no muy bien pero con mucho gusto.",
   },
   meLink: { en: "More about me", es: "Más sobre mí" },
   scene: {

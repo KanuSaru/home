@@ -1,7 +1,6 @@
 "use client";
 
-import { config, nav, ui } from "@/content/site";
-import { TapedPhoto } from "@/components/TapedPhoto";
+import { nav, ui } from "@/content/site";
 import { useLang, useT } from "@/lib/i18n";
 import { PageLink, useCurrentPage, type PageId } from "@/lib/route";
 import { DiscordStatus, LocalTime, NowPlaying, Visitors, Weather } from "@/components/Widgets";
@@ -39,12 +38,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
       </a>
 
       <header className="masthead">
-        <div className="mast-id">
-          <TapedPhoto src={config.avatar || undefined} alt="Kanu" />
-          <PageLink to="home" className="wordmark" aria-label="Kanu">
-            Kanu
-          </PageLink>
-        </div>
+        <PageLink to="home" className="wordmark" aria-label="Kanu">
+          Kanu
+        </PageLink>
         <div className="mast-side">
           <p className="realname">Erick Donado</p>
           <LangSwitch />

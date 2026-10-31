@@ -214,7 +214,7 @@ export function LilyScene({ label }: { label: string }) {
           let n = norm(cross(du, dv));
           if (dot(n, sub(eye, p)) < 0) n = [-n[0], -n[1], -n[2]]; // light the side we see
           const lam = Math.max(0, dot(n, lightW));
-          return albedo(r, c) * (0.2 + 0.95 * Math.pow(lam, 1.25));
+          return albedo(r, c) * (0.1 + 0.82 * Math.pow(lam, 1.5));
         }),
       );
       for (let r = 0; r < R - 1; r++) {
@@ -269,7 +269,7 @@ export function LilyScene({ label }: { label: string }) {
       for (let i = 0; i < 6; i++) {
         const g = tepal(i, open).map((row) => row.map(swayP));
         partId = i + 1;
-        surface(g, (_r, c) => 0.82 + 0.2 * Math.min(1, (c / (N - 1)) * 3));
+        surface(g, (_r, c) => 0.62 + 0.2 * Math.min(1, (c / (N - 1)) * 3));
       }
 
       // stamens (darker anthers) and the pistil
@@ -297,7 +297,7 @@ export function LilyScene({ label }: { label: string }) {
         stem.push(swayP([0.06 * Math.sin(u * 2.4), -1.4 * u, 0.03 * u]));
       }
       partId = 20;
-      curve(stem, 0.9, 2);
+      curve(stem, 0.6, 2);
       partId = 21;
       const leaf: V3[][] = [];
       for (let r = 0; r < 5; r++) {
@@ -310,7 +310,7 @@ export function LilyScene({ label }: { label: string }) {
         }
         leaf.push(row);
       }
-      surface(leaf, () => 0.72);
+      surface(leaf, () => 0.5);
 
       // to pixels: dark seams where one part passes in front of another, then dither
       const data = image.data;
