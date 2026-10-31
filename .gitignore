@@ -6,4 +6,4 @@ next-env.d.ts
 .DS_Store
 
 # your plain-text journal: only content/journal.sealed.json is published
-journal/
+/journal/
