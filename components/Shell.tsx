@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { nav, ui } from "@/content/site";
 import { useLang, useT } from "@/lib/i18n";
 import { PageLink, useCurrentPage, type PageId } from "@/lib/route";
@@ -7,24 +8,92 @@ import { DiscordStatus, LocalTime, NowPlaying, Visitors, Weather } from "@/compo
 
 const EMAIL = "erickfabiandonado@gmail.com";
 
-function LangSwitch() {
+function LangSwitch({ short = false, hidden = false }: { short?: boolean; hidden?: boolean }) {
   const { lang, setLang } = useLang();
   const t = useT();
+  // while hidden, the copy stays out of the way of keyboards and screen readers
+  const off = hidden ? { tabIndex: -1 } : {};
   return (
-    <div className="lang" role="group" aria-label={t(ui.language)}>
-      <button type="button" aria-pressed={lang === "en"} onClick={() => setLang("en")} lang="en">
-        English
+    <div className="lang" role="group" aria-label={t(ui.language)} aria-hidden={hidden || undefined}>
+      <button type="button" aria-pressed={lang === "en"} onClick={() => setLang("en")} lang="en" aria-label={short ? "English" : undefined} {...off}>
+        {short ? "EN" : "English"}
       </button>
-      <button type="button" aria-pressed={lang === "es"} onClick={() => setLang("es")} lang="es">
-        Español
+      <button type="button" aria-pressed={lang === "es"} onClick={() => setLang("es")} lang="es" aria-label={short ? "Español" : undefined} {...off}>
+        {short ? "ES" : "Español"}
       </button>
     </div>
+  );
+}
+
+/**
+ * Two controls that stay on screen once the masthead scrolls away: a short EN | ES
+ * switch at the top right (the full one in the masthead takes over again at the top),
+ * and a button at the bottom right that goes back to the top.
+ */
+function FloatingControls({ mastLang }: { mastLang: React.RefObject<HTMLDivElement | null> }) {
+  const t = useT();
+  const [langShown, setLangShown] = useState(false);
+  const [topShown, setTopShown] = useState(false);
+
+  useEffect(() => {
+    const el = mastLang.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setLangShown(!e.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, [mastLang]);
+
+  useEffect(() => {
+    let frame = 0;
+    const check = () => {
+      frame = 0;
+      setTopShown(window.scrollY > window.innerHeight * 0.75);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(check);
+    };
+    check();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const toTop = () => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    // keyboard users land back at the start of the page too
+    document.querySelector<HTMLElement>(".wordmark")?.focus({ preventScroll: true });
+  };
+
+  return (
+    <>
+      <div className={`float-lang ${langShown ? "is-shown" : ""}`}>
+        <LangSwitch short hidden={!langShown} />
+      </div>
+      <button
+        type="button"
+        className={`to-top ${topShown ? "is-shown" : ""}`}
+        onClick={toTop}
+        aria-label={t(ui.toTop)}
+        title={t(ui.toTop)}
+        aria-hidden={!topShown || undefined}
+        tabIndex={topShown ? undefined : -1}
+      >
+        {/* a pixel arrow, drawn on a 7×8 grid */}
+        <svg viewBox="0 0 7 8" aria-hidden="true" shapeRendering="crispEdges">
+          <path d="M3 0h1v1h1v1h1v1h1v1H5v4H2V4H0V3h1V2h1V1h1z" fill="currentColor" />
+        </svg>
+      </button>
+    </>
   );
 }
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const t = useT();
   const current = useCurrentPage();
+  const mastLang = useRef<HTMLDivElement>(null);
 
   const skip = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -43,7 +112,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </PageLink>
         <div className="mast-side">
           <p className="realname">Erick Donado</p>
-          <LangSwitch />
+          <div ref={mastLang}>
+            <LangSwitch />
+          </div>
         </div>
       </header>
 
@@ -105,6 +176,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </div>
         <p>{t(ui.madeIn)}, 2026</p>
       </footer>
+      <FloatingControls mastLang={mastLang} />
     </div>
   );
 }
