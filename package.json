@@ -14,6 +14,7 @@
     "feeds": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/feeds.mjs"
   },
   "dependencies": {
+    "dither-model": "^1.0.0",
     "dither-moon": "^1.2.0",
     "dither-player": "^1.0.0",
     "next": "^15.5.0",

@@ -106,6 +106,15 @@ Only upload music you made or have the rights to share.
   others can copy to link to you.
 - **The line under "Kanu"**: `epigraph` in `content/site.ts`.
 
+## The Steam Deck panel
+
+The **Daily driver** panel on the Me page shows a turning 3D Steam Deck, drawn by the
+`dither-model` package from `public/models/steam-deck.json`. That file is Valve's official
+CAD, simplified, and it keeps Valve's license (CC BY-NC-SA 4.0, see `public/models/README.md`):
+keep the credit line under the panel. The text is `me.deck` in `content/site.ts`.
+
+To show another STL somewhere, convert it first: `npx dither-model thing.stl -o public/models/thing.json`.
+
 ## The journal
 
 Entries are sealed on your computer and only the sealed file is published.

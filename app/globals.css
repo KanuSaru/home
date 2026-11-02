@@ -695,6 +695,51 @@ main {
   border-color: var(--ash);
 }
 
+/* the Steam Deck panel: the turning model sits right of the title, or under it on phones */
+.deck-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.deck-model {
+  --dm-ink: var(--bone);
+  max-width: 100%;
+}
+
+.deck-model canvas {
+  max-width: 100%;
+  height: auto !important;
+  aspect-ratio: 2 / 1;
+}
+
+.deck-model canvas:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+@media (min-width: 46rem) {
+  .specs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+.specs li {
+  align-content: start;
+}
+
+.credit {
+  color: var(--ash);
+  font-size: 0.8125rem;
+}
+
+.credit a {
+  color: inherit;
+}
+
 .callout {
   background: var(--raise);
   padding: 0.75rem 0.9rem;

@@ -1,7 +1,12 @@
 "use client";
 
+import { DitherModel } from "dither-model/react";
 import { me, ui, type Row } from "@/content/site";
 import { useT } from "@/lib/i18n";
+
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+// the screen of the Steam Deck model, drawn dark (millimetres, the CAD file's units)
+const DECK_SCREEN: [number, number, number, number, number, number][] = [[-88, -49.4, -1, 88, 50.6, 1]];
 
 function Panel({
   title,
@@ -70,6 +75,41 @@ export function MePage() {
         <Panel title={t(me.sampler.title)}>
           <p>{t(me.sampler.text)}</p>
         </Panel>
+
+        <section className="panel wide deck">
+          <div className="deck-head">
+            <h2 className="panel-title">{t(me.deck.title)}</h2>
+            <DitherModel
+              className="deck-model"
+              src={`${BASE}/models/steam-deck.json`}
+              width={240}
+              height={120}
+              pixelSize={2}
+              dark={DECK_SCREEN}
+              label={t(me.deck.model)}
+            />
+          </div>
+          <p>{t(me.deck.text)}</p>
+          <ul className="rows specs">
+            {me.deck.rows.map((r) => (
+              <li key={r.name.en}>
+                <p className="row-name">{t(r.name)}</p>
+                <p className="small">{t(r.note)}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="credit">
+            {t(me.deck.credit)}{" "}
+            <a href="https://gitlab.steamos.cloud/SteamHardware/SteamDeck" target="_blank" rel="noopener noreferrer">
+              Steam Deck CAD
+            </a>{" "}
+            {t(me.deck.creditBy)},{" "}
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">
+              CC BY-NC-SA 4.0
+            </a>
+            , {t(me.deck.simplified)}.
+          </p>
+        </section>
 
         <Panel title={t(me.oni.title)} className="feature">
           <p>{t(me.oni.text)}</p>

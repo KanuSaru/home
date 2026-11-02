@@ -52,7 +52,7 @@ export const ui = {
   example: { en: "example", es: "ejemplo" },
   notConnected: { en: "Not connected yet.", es: "Aún sin conectar." },
   unavailable: { en: "Unavailable right now.", es: "No disponible en este momento." },
-  madeIn: { en: "Made in Barranquilla", es: "Hecho en Barranquilla" },
+  madeIn: { en: "Made in Barranquilla, on a Steam Deck", es: "Hecho en Barranquilla, en una Steam Deck" },
   favorite: { en: "all-time favorite", es: "favorito de siempre" },
 };
 
@@ -317,6 +317,35 @@ export const me = {
       en: "I recently got an EP-133 K.O. II and I've already made a few tracks I'm proud of. I'm getting better little by little. The goal is to play live, maybe a set with some improvisation on the sampler, not exactly as a DJ.",
       es: "Hace poco compré el EP-133 K.O. II y ya hice algunos tracks de los que me siento orgulloso. Poco a poco voy mejorando. La meta es tocar en vivo, quizás un set con algo de improvisación en el sampler, no necesariamente como DJ.",
     },
+  },
+  // the Steam Deck panel; the turning model is Valve's official CAD, simplified (public/models/)
+  deck: {
+    title: { en: "Daily driver", es: "Mi compañera" },
+    text: {
+      en: "This whole site was made on a Steam Deck. It's the computer I use every day: I code, study, do research and, obviously, play on it.",
+      es: "Esta página la hice en una Steam Deck. Es el computador que uso todos los días: en ella programo, estudio, investigo y, obviamente, juego.",
+    },
+    rows: [
+      {
+        name: { en: "Steam Deck", es: "Steam Deck" },
+        note: { en: "The machine, for everything.", es: "La máquina, para todo." },
+      },
+      {
+        name: { en: "SteamOS", es: "SteamOS" },
+        note: { en: "The system it comes with. Built on Arch.", es: "El sistema que trae de fábrica. Basado en Arch." },
+      },
+      {
+        name: { en: "Arch, in a distrobox", es: "Arch, en una distrobox" },
+        note: {
+          en: "Where I code: a full Arch container living on top of SteamOS.",
+          es: "Es donde programo: una versión completa de Arch en un contenedor, encima del sistema operativo.",
+        },
+      },
+    ],
+    model: { en: "Steam Deck, turning slowly. Drag it to turn it.", es: "Steam Deck, girando despacio. Arrástrala para girarla." },
+    credit: { en: "3D model:", es: "Modelo 3D:" },
+    creditBy: { en: "by Valve", es: "de Valve" },
+    simplified: { en: "simplified", es: "simplificado" },
   },
   games: {
     title: { en: "Games", es: "Juegos" },
