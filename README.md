@@ -117,14 +117,13 @@ To show another STL somewhere, convert it first: `npx dither-model thing.stl -o 
 
 ## The cat
 
-Neko, the classic desktop cat, naps at the bottom left of the screen
-(`components/CursorCat.tsx`). If the cursor rests near it, it wakes up, sometimes
-scratches itself, walks over slowly and falls asleep there; if the cursor keeps moving,
-it gives up and naps again. It only shows on screens with a mouse, and stays asleep
+Neko, the classic desktop cat, chases the cursor (`components/CursorCat.tsx`). When it
+catches up and the cursor stays put, it sits, scratches now and then, and falls asleep;
+moving the cursor wakes it up. It only shows on screens with a mouse, and stays asleep
 with reduced motion.
 
 The drawing is `public/oneko.gif`, from [oneko.js](https://github.com/adryd325/oneko.js)
-by adryd (MIT, `public/oneko.LICENSE.txt`). The lazy behavior is this site's own.
+by adryd (MIT, `public/oneko.LICENSE.txt`).
 
 ## The journal
 

@@ -1,28 +1,23 @@
 "use client";
 
-// A lazy cat that lives at the bottom of the screen.
-//
-// It naps most of the time. If the cursor rests near it for a moment, it wakes up,
-// maybe scratches itself, and walks over slowly. Once there it sits, gets tired and
-// falls asleep again, right where it is. If the cursor keeps moving around, it can't be
-// bothered: it sits down and goes back to sleep.
+// Neko chases the cursor around the screen, the classic way. When it catches up and
+// the cursor stays put, it sits, now and then scratches itself (or the edge of the
+// screen), and after a while yawns and falls asleep. Moving the cursor wakes it up.
 //
 // The cat is the classic Neko (the 1989 desktop pet), from oneko.js by adryd
 // (github.com/adryd325/oneko.js, MIT): public/oneko.gif, 32×32 frames. The behavior is
 // this site's own; only the drawing and its frame positions come from there.
 //
 // Only on screens with a mouse; on touch screens there's no cursor to follow.
-// With reduced motion it stays asleep.
+// With reduced motion it stays asleep where it starts.
 
 import { useEffect, useRef } from "react";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const SCALE = 1; // screen pixels per drawing pixel; the classic size
 const SIZE = 32 * SCALE;
-const SPEED = 70; // px per second: it's in no hurry
-const WAKE_RADIUS = 360; // how close the cursor has to rest to be worth getting up for
-const REST_TIME = 1.2; // seconds the cursor has to stay still
-const GIVE_UP = 140; // if the cursor wanders this far from where it was going, it gives up
+const SPEED = 100; // px per second, like the original
+const CLOSE = 48; // close enough: it stops here
 const MARGIN = 12;
 
 type Frame = [col: number, row: number];
@@ -76,8 +71,7 @@ export function CursorCat() {
     // where it walks to: the cursor, with the cat's feet just under it
     const home = () => ({ x: MARGIN + SIZE / 2, y: innerHeight - MARGIN - SIZE / 2 });
     const cat = { ...home() };
-    const mouse = { x: -1e4, y: -1e4, still: 0, seen: false };
-    let goal: { x: number; y: number } | null = null;
+    const mouse = { x: -1e4, y: -1e4, seen: false };
     let mode: Mode = "sleep";
     let timer = 0; // seconds in this mode
     let wait = 0; // how long this mode lasts
@@ -90,7 +84,6 @@ export function CursorCat() {
       timer = 0;
       wait = seconds;
     };
-    const near = () => Math.hypot(mouse.x - cat.x, mouse.y - cat.y);
     const clamp = (p: { x: number; y: number }) => ({
       x: Math.min(innerWidth - MARGIN - SIZE / 2, Math.max(MARGIN + SIZE / 2, p.x)),
       y: Math.min(innerHeight - MARGIN - SIZE / 2, Math.max(MARGIN + SIZE / 2, p.y)),
@@ -98,11 +91,9 @@ export function CursorCat() {
 
     const onMove = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return;
-      const moved = Math.hypot(e.clientX - mouse.x, e.clientY - mouse.y);
       mouse.x = e.clientX;
       mouse.y = e.clientY;
       mouse.seen = true;
-      if (moved > 4) mouse.still = 0;
     };
     const onResize = () => Object.assign(cat, clamp(cat));
     const onLeave = () => {
@@ -126,71 +117,41 @@ export function CursorCat() {
       const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
       last = now;
       timer += dt;
-      if (mouse.seen) mouse.still += dt;
       const calm = reduced.matches;
 
-      switch (mode) {
-        case "sleep":
-          // only a cursor resting close by is worth waking up for
-          if (!calm && mouse.seen && mouse.still > REST_TIME && near() < WAKE_RADIUS && near() > SIZE) set("alert", 0.7);
-          break;
-        case "alert":
-          if (timer > wait) {
-            goal = clamp({ x: mouse.x, y: mouse.y + SIZE / 2 - 6 });
-            if (Math.random() < 0.4) set("scratch", 1.4);
-            else set("walk");
-          }
-          break;
-        case "scratch":
-          // on the way somewhere: off it goes; otherwise it's tired now
-          if (timer > wait) {
-            if (goal) set("walk");
-            else set("tired", 1.2);
-          }
-          break;
-        case "walk": {
-          if (!goal) {
-            set("idle", 2);
-            break;
-          }
-          // the cursor ran off: not worth it. Small moves, it follows.
-          const want = clamp({ x: mouse.x, y: mouse.y + SIZE / 2 - 6 });
-          if (Math.hypot(want.x - goal.x, want.y - goal.y) > GIVE_UP) {
-            goal = null;
-            set("idle", 1.5);
-            break;
-          }
-          goal = want;
-          const dx = goal.x - cat.x, dy = goal.y - cat.y, d = Math.hypot(dx, dy);
-          if (d < 3) {
-            // there; if the cursor is somewhere it can't reach, it paws at the edge instead
-            const wanted = { x: mouse.x, y: mouse.y + SIZE / 2 - 6 };
-            const blocked = Math.hypot(wanted.x - goal.x, wanted.y - goal.y) > 20;
-            goal = null;
-            if (blocked) set("wall", 2);
-            else set("idle", 2 + Math.random() * 2);
-            break;
-          }
+      const dx = mouse.x - cat.x, dy = mouse.y - cat.y, d = Math.hypot(dx, dy);
+      const far = mouse.seen && d >= CLOSE && !calm;
+
+      if (far && mode !== "alert" && mode !== "walk") {
+        // something to chase: if it was resting, it notices first
+        if (mode === "idle" && timer < 0.4) set("walk");
+        else set("alert", 0.6);
+      } else if (mode === "alert") {
+        if (timer > wait) set(far ? "walk" : "idle");
+      } else if (mode === "walk") {
+        if (!far) set("idle");
+        else {
           const a = Math.atan2(-dy, dx); // up is north
           dir = ["E", "NE", "N", "NW", "W", "SW", "S", "SE"][(Math.round(a / (Math.PI / 4)) + 8) % 8];
-          const s = Math.min(d, SPEED * dt);
-          cat.x += (dx / d) * s;
-          cat.y += (dy / d) * s;
-          break;
+          const s = Math.min(d - CLOSE / 2, SPEED * dt);
+          Object.assign(cat, clamp({ x: cat.x + (dx / d) * s, y: cat.y + (dy / d) * s }));
         }
-        case "wall":
-          if (timer > wait) set("idle", 1.5);
-          break;
-        case "idle":
-          // sometimes a scratch first; either way it ends up tired, then asleep
-          if (timer > wait) {
-            if (Math.random() < 0.35) set("scratch", 1.4);
-            else set("tired", 1.2);
-          }
-          break;
-        case "tired":
-          if (timer > wait) set("sleep");
-          break;
+      } else if (mode === "idle") {
+        // caught up: after a little while, it finds something to do
+        if (timer > 2 && Math.random() < dt * 0.35) {
+          const edge =
+            cat.x < MARGIN + SIZE ? "W" : cat.x > innerWidth - MARGIN - SIZE ? "E" : cat.y < MARGIN + SIZE ? "N" : cat.y > innerHeight - MARGIN - SIZE ? "S" : "";
+          const r = Math.random();
+          if (r < 0.45) set("tired", 1.6);
+          else if (edge && r < 0.75) {
+            dir = edge;
+            set("wall", 2);
+          } else set("scratch", 1.6);
+        }
+      } else if (mode === "scratch" || mode === "wall") {
+        if (timer > wait) set("idle");
+      } else if (mode === "tired") {
+        if (timer > wait) set("sleep");
       }
 
       const f = frameFor();
