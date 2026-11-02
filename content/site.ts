@@ -19,8 +19,8 @@ export const config = {
   imood: "kanu", // imood.com/users/kanu; set your mood there
   // The guestbook's Cloudflare Worker (see guestbook/README.md). Empty until it's set up.
   guestbook: {
-    api: "", // e.g. "https://kanu-guestbook.yourname.workers.dev"
-    turnstileSiteKey: "", // Turnstile's site key (public), e.g. "0x4AAAA…"
+    api: "https://kanu-guestbook.kanu-guestbook.workers.dev",
+    turnstileSiteKey: "0x4AAAAAAFwO-6HKz0TEHupx", // Turnstile's site key (public)
   },
   place: { name: "Barranquilla", lat: 10.9685, lon: -74.7813, timeZone: "America/Bogota" },
   // Your taped photo: put the image in public/ (e.g. public/avatar.jpg) and write its name here.
