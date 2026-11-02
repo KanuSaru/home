@@ -70,7 +70,6 @@ const frame = (...children) =>
         display: "flex",
         padding: 40,
         backgroundColor: C.ground,
-        backgroundImage: "radial-gradient(circle at 12% 0%, #1d1c19 0%, #0d0d0c 62%)",
       },
     },
     h(

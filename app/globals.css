@@ -10,8 +10,6 @@
   --ash: #918c81;
   --blue: #7390ff;
   --dot: #262522;
-  --smoke-a: #1a1916;
-  --smoke-b: #151412;
   --hatch: rgba(231, 226, 214, 0.035);
   --paper: #e4dfd2;
   --tape: rgba(214, 208, 192, 0.62);
@@ -47,25 +45,8 @@ body {
   font-size: 1rem;
   line-height: 1.55;
   font-variation-settings: "wdth" 100;
+  /* one flat color: no gradients, no lights */
   background: var(--ground);
-  /* keeps the smoke layer below inside the body, so nothing can paint over it */
-  isolation: isolate;
-}
-
-/* The smoke stays put while the page scrolls. It's its own fixed layer rather than
-   background-attachment: fixed, which makes browsers repaint the whole screen on
-   every scrolled frame. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(60rem 40rem at 12% -8%, var(--smoke-a) 0%, transparent 62%),
-    radial-gradient(48rem 48rem at 100% 35%, var(--smoke-b) 0%, transparent 58%),
-    var(--ground);
-  transform: translateZ(0);
 }
 
 /* film grain over everything */
