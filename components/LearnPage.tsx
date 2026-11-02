@@ -431,11 +431,6 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
               </a>
             </p>
           )}
-          <p className="credit">
-            <a href={learn.support.creditUrl} target="_blank" rel="noopener noreferrer">
-              {t(learn.support.credit)}
-            </a>
-          </p>
         </section>
       </div>
     </div>
