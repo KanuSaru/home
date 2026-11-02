@@ -5,6 +5,7 @@ import { nav, ui } from "@/content/site";
 import { useLang, useT } from "@/lib/i18n";
 import { PageLink, useCurrentPage, type PageId } from "@/lib/route";
 import { DiscordStatus, LocalTime, NowPlaying, Visitors, Weather } from "@/components/Widgets";
+import { MusicPlayer } from "@/components/MusicPlayer";
 
 const EMAIL = "erickfabiandonado@gmail.com";
 
@@ -151,6 +152,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <LocalTime />
           <Weather />
           <NowPlaying />
+          <MusicPlayer />
           <DiscordStatus />
           <Visitors />
         </aside>

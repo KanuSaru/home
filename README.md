@@ -78,6 +78,22 @@ A line starting with `::` places a live figure. These exist (see `components/Not
 - `::moons dates="2026-11-13,2026-11-24" labels="Nov 13|Nov 24" caption="…"`
 - `::ramp labels="a|b|c" caption="…"` and `::bayer caption="…"`
 
+## Music player
+
+The **Music** widget in the sidebar has two tabs, and it keeps playing while visitors
+move between pages.
+
+- **Mine**: your own tracks. Put the files (mp3 or m4a) in `public/music/` and list
+  them in `music.tracks` at the top of `content/site.ts`, in the order they should play:
+  `{ title: "Night bus", file: "night-bus.mp3" }`. Keep each file under 100 MB (GitHub's
+  limit); a 3-minute mp3 at 192 kbps is about 4 MB.
+- **Faves**: songs you like. Paste the share link of a public playlist (Apple Music,
+  Spotify or YouTube) into `music.playlist`. Its player only loads when a visitor opens
+  the tab. Apple Music and Spotify play full songs to their own members and short
+  previews to everyone else; that's their rule, not the site's.
+
+Only upload music you made or have the rights to share.
+
 ## The journal
 
 Entries are sealed on your computer and only the sealed file is published.
@@ -109,6 +125,7 @@ phrase is much harder to guess. Don't seal anything you couldn't live with being
 - the moon widget is `<DitherMoon />` from the `dither-moon` package (drag it to turn it)
 - `components/TapedPhoto.tsx`: the taped photo next to the wordmark
 - `components/Widgets.tsx`: time, weather, now playing, Discord, visitors
+- `components/MusicPlayer.tsx`: the music widget; the player is the `dither-player` package
 - `components/HomePage.tsx`, `MePage.tsx`, `JournalPage.tsx`: the pages
 - `lib/seal.mjs`, `scripts/journal.mjs`: sealing and opening the journal
 - `components/NotesPage.tsx`, `NoteFigures.tsx`, `lib/notes.ts`, `lib/markdown.ts`: the notes

@@ -1572,3 +1572,19 @@ main {
     transform: none;
   }
 }
+
+/* ---------- Music player (dither-player, in the site's colors) ---------- */
+
+.music {
+  --dp-ink: var(--bone);
+  --dp-muted: var(--ash);
+  --dp-line: var(--rule);
+  --dp-accent: var(--blue);
+  --dp-on-ink: var(--ground);
+  --dp-mono: var(--data);
+}
+
+.music .dp-tabs button,
+.music .dp-time {
+  font-size: 1.0625rem;
+}

@@ -21,6 +21,15 @@ export const config = {
   avatar: "avatar.jpg",
 };
 
+// The music player in the sidebar.
+export const music = {
+  // Your tracks: put the audio files (mp3 or m4a) in public/music/ and list them in order.
+  // e.g. { title: "Night bus", file: "night-bus.mp3" }
+  tracks: [] as { title: string; file: string }[],
+  // Songs you like: the share link of a public playlist on Apple Music, Spotify or YouTube.
+  playlist: "",
+};
+
 export const ui = {
   skip: { en: "Skip to content", es: "Ir al contenido" },
   language: { en: "Language", es: "Idioma" },
@@ -64,6 +73,11 @@ export const widgets = {
     now: { en: "Playing right now", es: "Sonando ahora mismo" },
     last: { en: "Last played {t}", es: "Sonó {t}" },
     via: { en: "via Last.fm", es: "vía Last.fm" },
+  },
+  player: {
+    title: { en: "Music", es: "Música" },
+    // the player's own words (tabs, buttons…) come from dither-player in both languages
+    favesText: { en: "Songs I keep coming back to.", es: "Canciones a las que siempre vuelvo." },
   },
   discord: {
     title: { en: "On Discord", es: "En Discord" },
