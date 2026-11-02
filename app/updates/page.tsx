@@ -1,8 +1,13 @@
-import type { Metadata } from "next";
 import { UpdatesPage } from "@/components/Updates";
+import { JsonLd, pageMeta, siteGraph } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Updates" };
+export const metadata = pageMeta("updates", "en");
 
 export default function Page() {
-  return <UpdatesPage />;
+  return (
+    <>
+      <JsonLd data={siteGraph("en")} />
+      <UpdatesPage />
+    </>
+  );
 }

@@ -17,7 +17,10 @@ builds for you, it builds there.
 ## Edit the content
 
 All text lives in `content/site.ts`, in English and Spanish (`{ en, es }`).
-Pages: `/` (home hub), `/me/`, `/work/`, `/notes/` and `/journal/`.
+Pages: `/` (home hub), `/me/`, `/work/`, `/notes/`, `/learn/`, `/guestbook/`,
+`/updates/` and `/journal/`. Each one also exists in Spanish under `/es/`
+(`/es/work/`…); the language switch moves between the two. A new page needs a file in
+both `app/<page>/` and `app/es/<page>/`.
 The Work page's text is in `content/work.ts`. The CV buttons download the PDFs in
 `public/cv/`; to update a CV, replace the file with one of the same name (or change
 the name in `work.cv`).
@@ -43,6 +46,21 @@ with; don't put any private key in this file.
 Put the image in `public/` (for example `public/avatar.jpg`) and set
 `avatar: "avatar.jpg"` in `config` at the top of `content/site.ts`. It shows in
 grayscale inside the taped frame. Until then the frame is empty.
+
+## Search engines and AI assistants
+
+What they read about the site lives in `content/seo.ts`: each page's title and
+description (not shown on the page), the facts about you that go into the structured
+data, and your profiles elsewhere. `lib/seo.tsx` turns it into metadata. Each build
+also writes `sitemap.xml`, `robots.txt` and `llms.txt`.
+
+Once the site is live (ideally on its own domain):
+
+1. Add it to [Google Search Console](https://search.google.com/search-console) and
+   [Bing Webmaster Tools](https://www.bing.com/webmasters). If they ask for an HTML
+   tag, paste its `content` value into `verification` in `content/seo.ts`.
+2. Submit `sitemap.xml` in both.
+3. Check the structured data with Google's Rich Results Test.
 
 ## Ideas for later
 
@@ -115,16 +133,6 @@ keep the credit line under the panel. The text is `me.deck` in `content/site.ts`
 
 To show another STL somewhere, convert it first: `npx dither-model thing.stl -o public/models/thing.json`.
 
-## The cat
-
-Neko, the classic desktop cat, chases the cursor (`components/CursorCat.tsx`). When it
-catches up and the cursor stays put, it sits, scratches now and then, and falls asleep;
-moving the cursor wakes it up. It only shows on screens with a mouse, and stays asleep
-with reduced motion.
-
-The drawing is `public/oneko.gif`, from [oneko.js](https://github.com/adryd325/oneko.js)
-by adryd (MIT, `public/oneko.LICENSE.txt`).
-
 ## The journal
 
 Entries are sealed on your computer and only the sealed file is published.
@@ -156,7 +164,6 @@ phrase is much harder to guess. Don't seal anything you couldn't live with being
 - the moon widget is `<DitherMoon />` from the `dither-moon` package (drag it to turn it)
 - `components/TapedPhoto.tsx`: the taped photo next to the wordmark
 - `components/Widgets.tsx`: time, weather, now playing, Discord, visitors
-- `components/CursorCat.tsx`: the lazy cat (Neko, `public/oneko.gif`)
 - `components/MusicPlayer.tsx`: the music widget; the player is the `dither-player` package
 - `components/HomePage.tsx`, `MePage.tsx`, `JournalPage.tsx`: the pages
 - `lib/seal.mjs`, `scripts/journal.mjs`: sealing and opening the journal

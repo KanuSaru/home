@@ -10,6 +10,20 @@ export const updates: Update[] = [
   {
     date: "2026-11-02",
     text: {
+      en: "Every page now has its own Spanish address (/es/…), so the Spanish version can be found and shared. The switch at the top takes you to it.",
+      es: "Cada página tiene ahora su propia dirección en español (/es/…), así la versión en español se puede encontrar y compartir. El botón de arriba te lleva a ella.",
+    },
+  },
+  {
+    date: "2026-11-02",
+    text: {
+      en: "New page: Learn ML, a free route into machine learning with checklists that remember your progress. Built on Ri's course at lachinemearning.com.",
+      es: "Página nueva: Aprende ML, una ruta gratis hacia el machine learning con listas que recuerdan tu progreso. Hecha sobre el curso de Ri en lachinemearning.com.",
+    },
+  },
+  {
+    date: "2026-11-02",
+    text: {
       en: 'Meet my daily driver: the Steam Deck. It now turns in 3D on the “Me” page. Drag it around. It’s drawn by dither-model, a new package that turns any STL into 1-bit pixel art.',
       es: 'Les presento a mi compañera: la Steam Deck. Ahora gira en 3D en la página “Yo”; pueden arrastrarla. La dibuja dither-model, un paquete nuevo que convierte cualquier STL en pixel art de 1 bit.',
     },

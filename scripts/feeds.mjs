@@ -68,7 +68,8 @@ function feed(lang, notes) {
   const self = `${SITE}/${lang === "en" ? "feed.xml" : "feed.es.xml"}`;
   const items = notes.map((n) => {
     const v = n.versions[lang] ?? n.versions.en ?? n.versions.es;
-    const link = `${SITE}/notes/${n.slug}/`;
+    // the Spanish feed links to the Spanish page when the note is written in Spanish
+    const link = `${SITE}${lang === "es" && n.versions.es ? "/es" : ""}/notes/${n.slug}/`;
     const tags = (v.meta.tags || "").split(",").map((s) => s.trim()).filter(Boolean);
     return [
       "    <item>",
@@ -86,7 +87,7 @@ function feed(lang, notes) {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>${xml(t.title)}</title>
-    <link>${SITE}/notes/</link>
+    <link>${SITE}${lang === "es" ? "/es" : ""}/notes/</link>
     <description>${xml(t.description)}</description>
     <language>${lang}</language>
     <atom:link href="${self}" rel="self" type="application/rss+xml"/>

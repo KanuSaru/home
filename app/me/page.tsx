@@ -1,8 +1,14 @@
-import type { Metadata } from "next";
 import { MePage } from "@/components/MePage";
+import { JsonLd, pageMeta, profileGraph, siteGraph } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Me" };
+export const metadata = pageMeta("me", "en");
 
 export default function Page() {
-  return <MePage />;
+  return (
+    <>
+      <JsonLd data={siteGraph("en")} />
+      <JsonLd data={profileGraph("en")} />
+      <MePage />
+    </>
+  );
 }

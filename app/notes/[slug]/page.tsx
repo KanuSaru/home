@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NotePage } from "@/components/NotesPage";
 import { getNote, getNotes } from "@/lib/notes";
-import { ogImage } from "@/lib/og";
+import { JsonLd, noteGraph, noteMeta, siteGraph } from "@/lib/seo";
 
-// every note becomes its own page when the site is built
+// every note becomes its own page when the site is built, in both languages
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -17,24 +17,17 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const note = getNote((await params).slug);
-  const v = note?.versions.en ?? note?.versions.es;
-  if (!note || !v) return {};
-  return {
-    title: v.title,
-    description: v.summary,
-    openGraph: {
-      type: "article",
-      siteName: "Kanu",
-      title: v.title,
-      description: v.summary,
-      publishedTime: note.date,
-      images: ogImage(`og/notes/${note.slug}.png`, v.title) ?? ogImage("og/site.png", "Kanu"),
-    },
-  };
+  return note ? noteMeta(note, "en") : {};
 }
 
 export default async function Page({ params }: Props) {
   const note = getNote((await params).slug);
   if (!note) notFound();
-  return <NotePage note={note} />;
+  return (
+    <>
+      <JsonLd data={siteGraph("en")} />
+      <JsonLd data={noteGraph(note, "en")} />
+      <NotePage note={note} />
+    </>
+  );
 }

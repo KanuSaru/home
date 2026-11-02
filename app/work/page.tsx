@@ -1,8 +1,14 @@
-import type { Metadata } from "next";
 import { WorkPage } from "@/components/WorkPage";
+import { JsonLd, pageMeta, publicationsGraph, siteGraph } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Work" };
+export const metadata = pageMeta("work", "en");
 
 export default function Page() {
-  return <WorkPage />;
+  return (
+    <>
+      <JsonLd data={siteGraph("en")} />
+      <JsonLd data={publicationsGraph("en")} />
+      <WorkPage />
+    </>
+  );
 }

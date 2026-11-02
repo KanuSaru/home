@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/feeds.mjs && node scripts/og.mjs && next build",
+    "build": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/feeds.mjs && node scripts/og.mjs && next build && node scripts/html-lang.mjs",
     "start": "npx serve out",
     "lint": "next lint",
     "journal:seal": "node scripts/journal.mjs seal",
