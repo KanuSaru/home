@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Archivo, Jacquard_24, VT323 } from "next/font/google";
-import { config, home } from "@/content/site";
+import { config } from "@/content/site";
+import { pages, person, siteName, verification } from "@/content/seo";
+import { SITE } from "@/lib/seo";
 import { LangProvider } from "@/lib/i18n";
 import { Shell } from "@/components/Shell";
 import { Analytics } from "@/components/Analytics";
@@ -15,29 +17,29 @@ const archivo = Archivo({ subsets: ["latin", "latin-ext"], axes: ["wdth"], displ
 const jacquard = Jacquard_24({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-jacquard" });
 const vt323 = VT323({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-vt323" });
 
+// Defaults for every page; each page sets its own title, description, canonical address
+// and language links through lib/seo.tsx.
 export const metadata: Metadata = {
   // SITE_URL comes from the deploy workflow, so it follows a custom domain on its own
   metadataBase: new URL(process.env.SITE_URL || "https://kanusaru.github.io/home"),
-  title: { default: "Kanu", template: "%s, Kanu" },
-  description: home.intro.en,
-  authors: [{ name: "Erick Fabián Donado Fonseca" }],
+  title: { default: siteName, template: `%s, ${person.name}` },
+  description: pages.home.description.en,
+  applicationName: siteName,
+  authors: [{ name: person.name, url: SITE + "/" }],
+  creator: person.name,
   // what shows when the link is shared (the image is drawn by scripts/og.mjs)
   openGraph: {
     type: "website",
-    siteName: "Kanu",
-    title: "Kanu",
-    description: home.intro.en,
-    images: ogImage("og/site.png", "Kanu, Erick Donado's personal site"),
+    siteName,
+    title: siteName,
+    description: pages.home.description.en,
+    images: ogImage("og/site.png", siteName),
   },
   twitter: { card: "summary_large_image" },
-  // lets browsers and feed readers find the notes feeds (written by scripts/feeds.mjs)
-  alternates: {
-    types: {
-      "application/rss+xml": [
-        { url: "/feed.xml", title: "Kanu, notes" },
-        { url: "/feed.es.xml", title: "Kanu, notas" },
-      ],
-    },
+  // the codes from Google Search Console and Bing Webmaster Tools, set in content/seo.ts
+  verification: {
+    ...(verification.google ? { google: verification.google } : {}),
+    ...(verification.bing ? { other: { "msvalidate.01": verification.bing } } : {}),
   },
 };
 

@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { config, epigraph, nav, ui } from "@/content/site";
-import { useLang, useT } from "@/lib/i18n";
+import { swapLang, useLang, useT, type Lang } from "@/lib/i18n";
 import { PageLink, useCurrentPage, type PageId } from "@/lib/route";
 import { DiscordStatus, LocalTime, Mood, NowPlaying, Visitors, Weather } from "@/components/Widgets";
 import { MusicPlayer } from "@/components/MusicPlayer";
@@ -14,16 +16,35 @@ const EMAIL = "erickfabiandonado@gmail.com";
 function LangSwitch({ short = false, hidden = false }: { short?: boolean; hidden?: boolean }) {
   const { lang, setLang } = useLang();
   const t = useT();
+  const path = usePathname() ?? "/";
   // while hidden, the copy stays out of the way of keyboards and screen readers
   const off = hidden ? { tabIndex: -1 } : {};
+  // real links, so search engines find each page in the other language too;
+  // a click switches in place and keeps your spot on the page
+  const go = (l: Lang) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setLang(l);
+  };
+  const options: { l: Lang; long: string; label: string }[] = [
+    { l: "en", long: "English", label: "English" },
+    { l: "es", long: "Español", label: "Español" },
+  ];
   return (
     <div className="lang" role="group" aria-label={t(ui.language)} aria-hidden={hidden || undefined}>
-      <button type="button" aria-pressed={lang === "en"} onClick={() => setLang("en")} lang="en" aria-label={short ? "English" : undefined} {...off}>
-        {short ? "EN" : "English"}
-      </button>
-      <button type="button" aria-pressed={lang === "es"} onClick={() => setLang("es")} lang="es" aria-label={short ? "Español" : undefined} {...off}>
-        {short ? "ES" : "Español"}
-      </button>
+      {options.map((o) => (
+        <Link
+          key={o.l}
+          href={swapLang(path, o.l)}
+          hrefLang={o.l}
+          lang={o.l}
+          aria-current={lang === o.l ? "true" : undefined}
+          aria-label={short ? o.label : undefined}
+          onClick={go(o.l)}
+          {...off}
+        >
+          {short ? o.l.toUpperCase() : o.long}
+        </Link>
+      ))}
     </div>
   );
 }

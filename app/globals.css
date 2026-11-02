@@ -237,8 +237,9 @@ main:focus-visible {
   display: flex;
 }
 
-.lang button {
+.lang a {
   font: inherit;
+  text-decoration: none;
   font-family: var(--data);
   font-size: 1.125rem;
   line-height: 1;
@@ -249,11 +250,15 @@ main:focus-visible {
   cursor: pointer;
 }
 
-.lang button + button {
+.lang a + a {
   border-left: none;
 }
 
-.lang button[aria-pressed="true"] {
+.lang a:not([aria-current]):hover {
+  color: var(--bone);
+}
+
+.lang a[aria-current="true"] {
   color: var(--ground);
   background: var(--bone);
   border-color: var(--bone);
@@ -1557,13 +1562,13 @@ main {
 }
 
 /* unpressed buttons get a solid ground so they read over whatever scrolls under them */
-.float-lang .lang button {
+.float-lang .lang a {
   background: var(--panel);
   font-size: 1.0625rem;
   padding: 0.3rem 0.5rem;
 }
 
-.float-lang .lang button[aria-pressed="true"] {
+.float-lang .lang a[aria-current="true"] {
   background: var(--bone);
 }
 

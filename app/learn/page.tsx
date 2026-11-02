@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import { LearnPage } from "@/components/LearnPage";
+import { JsonLd, pageMeta, siteGraph } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Learn ML",
-  description: "A free, self-taught route into machine learning, put in order, with checklists that remember your progress.",
-};
+export const metadata = pageMeta("learn", "en");
 
 export default function Page() {
-  return <LearnPage />;
+  return (
+    <>
+      <JsonLd data={siteGraph("en")} />
+      <LearnPage />
+    </>
+  );
 }
