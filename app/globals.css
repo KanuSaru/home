@@ -1853,3 +1853,24 @@ main {
 .gb-code button:hover {
   border-color: var(--blue);
 }
+
+/* ---------- The cat ---------- */
+
+/* Neko, from public/oneko.gif at its classic size; it never gets in the way of clicks */
+.cat {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 90;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: 256px 128px;
+  image-rendering: pixelated;
+  will-change: transform;
+}
+
+.cat[hidden] {
+  display: none;
+}

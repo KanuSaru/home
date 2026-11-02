@@ -115,6 +115,17 @@ keep the credit line under the panel. The text is `me.deck` in `content/site.ts`
 
 To show another STL somewhere, convert it first: `npx dither-model thing.stl -o public/models/thing.json`.
 
+## The cat
+
+Neko, the classic desktop cat, naps at the bottom left of the screen
+(`components/CursorCat.tsx`). If the cursor rests near it, it wakes up, sometimes
+scratches itself, walks over slowly and falls asleep there; if the cursor keeps moving,
+it gives up and naps again. It only shows on screens with a mouse, and stays asleep
+with reduced motion.
+
+The drawing is `public/oneko.gif`, from [oneko.js](https://github.com/adryd325/oneko.js)
+by adryd (MIT, `public/oneko.LICENSE.txt`). The lazy behavior is this site's own.
+
 ## The journal
 
 Entries are sealed on your computer and only the sealed file is published.
@@ -146,6 +157,7 @@ phrase is much harder to guess. Don't seal anything you couldn't live with being
 - the moon widget is `<DitherMoon />` from the `dither-moon` package (drag it to turn it)
 - `components/TapedPhoto.tsx`: the taped photo next to the wordmark
 - `components/Widgets.tsx`: time, weather, now playing, Discord, visitors
+- `components/CursorCat.tsx`: the lazy cat (Neko, `public/oneko.gif`)
 - `components/MusicPlayer.tsx`: the music widget; the player is the `dither-player` package
 - `components/HomePage.tsx`, `MePage.tsx`, `JournalPage.tsx`: the pages
 - `lib/seal.mjs`, `scripts/journal.mjs`: sealing and opening the journal

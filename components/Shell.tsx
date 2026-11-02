@@ -7,6 +7,7 @@ import { PageLink, useCurrentPage, type PageId } from "@/lib/route";
 import { DiscordStatus, LocalTime, Mood, NowPlaying, Visitors, Weather } from "@/components/Widgets";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { UpdatesWidget } from "@/components/Updates";
+import { CursorCat } from "@/components/CursorCat";
 
 const EMAIL = "erickfabiandonado@gmail.com";
 
@@ -189,6 +190,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
         <p>{t(ui.madeIn)}, 2026</p>
       </footer>
       <FloatingControls mastLang={mastLang} />
+      <CursorCat />
     </div>
   );
 }
