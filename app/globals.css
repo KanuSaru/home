@@ -1608,9 +1608,11 @@ main {
   text-decoration: none;
 }
 
+/* imood's image is tiny: shown at twice its size, with crisp pixels */
 .mood img {
   display: block;
-  max-width: 100%;
+  zoom: 2;
+  image-rendering: pixelated;
 }
 
 /* ---------- Updates log ---------- */
@@ -1709,8 +1711,16 @@ main {
   overflow: hidden;
 }
 
+/* Turnstile's box sits on a text line by default, which leaves a few pixels under it;
+   as a flex box it takes exactly its own height, so the gaps above and below match */
 .gb-check {
+  display: flex;
   min-height: 65px;
+  line-height: 0;
+}
+
+.gb-check:empty {
+  display: none;
 }
 
 .gb-error {

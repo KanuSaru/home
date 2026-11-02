@@ -323,7 +323,11 @@ export function Mood() {
   return (
     <Panel title={t(w.mood.title)} example={DEMO}>
       <a className="mood" href={`https://www.imood.com/users/${encodeURIComponent(user)}`} target="_blank" rel="noopener noreferrer">
-        {DEMO ? <span className="readout">calm</span> : <img src={img} alt={t(w.mood.title)} loading="lazy" />}
+        {DEMO ? (
+          <span className="readout">calm</span>
+        ) : (
+          <img src={img} alt={t(w.mood.title)} loading="lazy" />
+        )}
       </a>
       <p className="fineprint">{t(w.mood.via)}</p>
     </Panel>
