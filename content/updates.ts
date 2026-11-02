@@ -8,6 +8,13 @@ export type Update = { date: string; text: L };
 
 export const updates: Update[] = [
   {
+    date: "2026-11-02",
+    text: {
+      en: 'Meet my daily driver: the Steam Deck. It now turns in 3D on the “Me” page. Drag it around. It’s drawn by dither-model, a new package that turns any STL into 1-bit pixel art.',
+      es: 'Les presento a mi compañera: la Steam Deck. Ahora gira en 3D en la página “Yo”; pueden arrastrarla. La dibuja dither-model, un paquete nuevo que convierte cualquier STL en pixel art de 1 bit.',
+    },
+  },
+  {
     date: "2026-11-01",
     text: {
       en: "Brought over ideas from my first site on Nekoweb: a guestbook, this updates log, my mood, the quote under my name, and a button to link to me.",
