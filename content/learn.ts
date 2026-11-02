@@ -36,7 +36,7 @@ export const learn = {
     cost: { en: "Cost", es: "Costo" },
     free: { en: "Free", es: "Gratis" },
     for: { en: "For", es: "Para" },
-    beginners: { en: "Beginners", es: "Principiantes" },
+    beginners: { en: "Beginners", es: "Todos" },
     phases: { en: "Phases", es: "Fases" },
     resources: { en: "Resources", es: "Recursos" },
   },
