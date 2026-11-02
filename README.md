@@ -94,6 +94,18 @@ move between pages.
 
 Only upload music you made or have the rights to share.
 
+## Updates, guestbook, mood and your button
+
+- **Updates log**: add an entry at the top of `content/updates.ts`. The sidebar shows the
+  latest three, and `/updates/` shows them all.
+- **Guestbook**: `/guestbook/`. Messages are kept by a small Cloudflare Worker in the
+  `guestbook/` folder; set it up once with `guestbook/README.md`, then fill in
+  `config.guestbook` in `content/site.ts`. Until then the page says it opens soon.
+- **Mood**: comes from imood.com/users/kanu (`config.imood`). Change your mood on imood.
+- **Your 88×31 button**: `public/button.gif` (animated; `button.png` is a still copy). The Guestbook page shows it with the code
+  others can copy to link to you.
+- **The line under "Kanu"**: `epigraph` in `content/site.ts`.
+
 ## The journal
 
 Entries are sealed on your computer and only the sealed file is published.

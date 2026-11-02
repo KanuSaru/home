@@ -311,3 +311,21 @@ export function Visitors() {
     </Panel>
   );
 }
+
+// ---------------------------------------------------------------- mood
+
+/** The imood status: imood draws it as a small image in the site's colors. */
+export function Mood() {
+  const t = useT();
+  const user = config.imood;
+  if (!user) return null;
+  const img = `https://moods.imood.com/display/uname-${encodeURIComponent(user)}/fg-E7E2D6/bg-131312/trans-1/imood.gif`;
+  return (
+    <Panel title={t(w.mood.title)} example={DEMO}>
+      <a className="mood" href={`https://www.imood.com/users/${encodeURIComponent(user)}`} target="_blank" rel="noopener noreferrer">
+        {DEMO ? <span className="readout">calm</span> : <img src={img} alt={t(w.mood.title)} loading="lazy" />}
+      </a>
+      <p className="fineprint">{t(w.mood.via)}</p>
+    </Panel>
+  );
+}

@@ -3,10 +3,23 @@
 import { me, ui, type Row } from "@/content/site";
 import { useT } from "@/lib/i18n";
 
-function Panel({ title, className, children }: { title: string; className?: string; children: React.ReactNode }) {
+function Panel({
+  title,
+  tag,
+  className,
+  children,
+}: {
+  title: string;
+  tag?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
     <section className={`panel ${className ?? ""}`}>
-      <h2 className="panel-title">{title}</h2>
+      <h2 className="panel-title">
+        {title}
+        {tag && <span className="tag">{tag}</span>}
+      </h2>
       {children}
     </section>
   );
@@ -43,7 +56,7 @@ export function MePage() {
       </header>
 
       <div className="mosaic">
-        <Panel title={t(me.hello.title)} className="wide">
+        <Panel title={t(me.hello.title)} tag={t(me.hello.pronouns)} className="wide">
           {me.hello.paras.map((p) => (
             <p key={p.en.slice(0, 20)}>{t(p)}</p>
           ))}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export type PageId = "home" | "me" | "work" | "notes" | "journal";
+export type PageId = "home" | "me" | "work" | "notes" | "journal" | "guestbook" | "updates";
 
 export function pageHref(id: PageId) {
   return id === "home" ? "/" : `/${id}/`;
@@ -18,6 +18,8 @@ export function useCurrentPage(): PageId {
   if (path.endsWith("/me")) return "me";
   if (path.endsWith("/journal")) return "journal";
   if (path.endsWith("/work")) return "work";
+  if (path.endsWith("/guestbook")) return "guestbook";
+  if (path.endsWith("/updates")) return "updates";
   if (/\/notes(\/|$)/.test(path)) return "notes";
   return "home";
 }

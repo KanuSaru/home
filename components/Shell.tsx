@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { nav, ui } from "@/content/site";
+import { epigraph, nav, ui } from "@/content/site";
 import { useLang, useT } from "@/lib/i18n";
 import { PageLink, useCurrentPage, type PageId } from "@/lib/route";
-import { DiscordStatus, LocalTime, NowPlaying, Visitors, Weather } from "@/components/Widgets";
+import { DiscordStatus, LocalTime, Mood, NowPlaying, Visitors, Weather } from "@/components/Widgets";
 import { MusicPlayer } from "@/components/MusicPlayer";
+import { UpdatesWidget } from "@/components/Updates";
 
 const EMAIL = "erickfabiandonado@gmail.com";
 
@@ -108,9 +109,12 @@ export function Shell({ children }: { children: React.ReactNode }) {
       </a>
 
       <header className="masthead">
-        <PageLink to="home" className="wordmark" aria-label="Kanu">
-          Kanu
-        </PageLink>
+        <div className="mast-main">
+          <PageLink to="home" className="wordmark" aria-label="Kanu">
+            Kanu
+          </PageLink>
+          <p className="epigraph">{t(epigraph)}</p>
+        </div>
         <div className="mast-side">
           <p className="realname">Erick Donado</p>
           <div ref={mastLang}>
@@ -149,11 +153,13 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </main>
 
         <aside className="side">
+          <UpdatesWidget />
           <LocalTime />
           <Weather />
           <NowPlaying />
           <MusicPlayer />
           <DiscordStatus />
+          <Mood />
           <Visitors />
         </aside>
       </div>

@@ -16,6 +16,12 @@ export const config = {
   },
   discordId: "405104130110128150", // read through Lanyard (discord.gg/lanyard)
   goatcounter: "kanu", // kanu.goatcounter.com
+  imood: "kanu", // imood.com/users/kanu; set your mood there
+  // The guestbook's Cloudflare Worker (see guestbook/README.md). Empty until it's set up.
+  guestbook: {
+    api: "", // e.g. "https://kanu-guestbook.yourname.workers.dev"
+    turnstileSiteKey: "", // Turnstile's site key (public), e.g. "0x4AAAA…"
+  },
   place: { name: "Barranquilla", lat: 10.9685, lon: -74.7813, timeZone: "America/Bogota" },
   // Your taped photo: put the image in public/ (e.g. public/avatar.jpg) and write its name here.
   avatar: "avatar.jpg",
@@ -28,6 +34,12 @@ export const music = {
   tracks: [] as { title: string; file: string }[],
   // Songs you like: the share link of a public playlist on Apple Music, Spotify or YouTube.
   playlist: "",
+};
+
+// The line under the Kanu wordmark
+export const epigraph = {
+  en: "To travel… to wander… that's my instinct.",
+  es: "Viajar… vagar… ese es mi instinto.",
 };
 
 export const ui = {
@@ -44,13 +56,14 @@ export const ui = {
   favorite: { en: "all-time favorite", es: "favorito de siempre" },
 };
 
-export type NavItem = { id: "home" | "me" | "work" | "notes" | "journal"; label: L; soon?: boolean; locked?: boolean };
+export type NavItem = { id: "home" | "me" | "work" | "notes" | "journal" | "guestbook"; label: L; soon?: boolean; locked?: boolean };
 
 export const nav: NavItem[] = [
   { id: "home", label: { en: "Home", es: "Inicio" } },
   { id: "me", label: { en: "Me", es: "Yo" } },
   { id: "work", label: { en: "Work", es: "Trabajo" } },
   { id: "notes", label: { en: "Notes", es: "Notas" } },
+  { id: "guestbook", label: { en: "Guestbook", es: "Libro de visitas" } },
   { id: "journal", label: { en: "Journal", es: "Diario" }, locked: true },
 ];
 
@@ -78,6 +91,15 @@ export const widgets = {
     title: { en: "Music", es: "Música" },
     // the player's own words (tabs, buttons…) come from dither-player in both languages
     favesText: { en: "Songs I keep coming back to.", es: "Canciones a las que siempre vuelvo." },
+  },
+  updates: {
+    title: { en: "Updates", es: "Cambios" },
+    all: { en: "All updates", es: "Todos los cambios" },
+    lede: { en: "What's changed on the site, newest first.", es: "Lo que ha cambiado en el sitio, de lo más reciente a lo más antiguo." },
+  },
+  mood: {
+    title: { en: "Mood", es: "Ánimo" },
+    via: { en: "via imood, updated by hand", es: "vía imood, lo actualizo a mano" },
   },
   discord: {
     title: { en: "On Discord", es: "En Discord" },
@@ -260,6 +282,7 @@ export const me = {
   },
   hello: {
     title: { en: "Hi, I'm Kanu", es: "Hola, soy Kanu" },
+    pronouns: { en: "he/him", es: "él" },
     paras: [
       {
         en: "Kanu is my nickname. KanuSaru came from words I heard in other languages at some point and thought sounded good.",
@@ -416,4 +439,39 @@ export const notesText = {
     en: "Paste it into a feed reader to get new notes as they come out.",
     es: "Pégalo en un lector de feeds para recibir las notas nuevas cuando salgan.",
   },
+};
+
+export const guestbookText = {
+  title: { en: "Guestbook", es: "Libro de visitas" },
+  lede: {
+    en: "Say hi, leave a link to your site, or anything else. I read every message before it shows up here.",
+    es: "Saluda, deja el enlace a tu sitio o lo que quieras. Leo cada mensaje antes de que aparezca aquí.",
+  },
+  signTitle: { en: "Sign it", es: "Fírmalo" },
+  name: { en: "Name", es: "Nombre" },
+  website: { en: "Your site (optional)", es: "Tu sitio (opcional)" },
+  message: { en: "Message", es: "Mensaje" },
+  send: { en: "Sign", es: "Firmar" },
+  sending: { en: "Sending…", es: "Enviando…" },
+  sent: {
+    en: "Thanks! Your message will show up here once I've read it.",
+    es: "¡Gracias! Tu mensaje aparecerá aquí cuando lo lea.",
+  },
+  missing: { en: "Write your name and a message.", es: "Escribe tu nombre y un mensaje." },
+  waitCheck: { en: "Wait a moment for the check below to finish.", es: "Espera un momento a que termine la verificación de abajo." },
+  checkFailed: { en: "The anti-bot check didn't pass. Try again.", es: "La verificación anti-bots no pasó. Inténtalo de nuevo." },
+  tooMany: { en: "That's a lot of messages for one hour. Try again later.", es: "Son muchos mensajes en una hora. Inténtalo más tarde." },
+  failed: { en: "Something went wrong. Try again in a while.", es: "Algo salió mal. Inténtalo en un rato." },
+  messagesTitle: { en: "Messages", es: "Mensajes" },
+  empty: { en: "No messages yet. Be the first!", es: "Aún no hay mensajes. ¡Sé el primero!" },
+  loading: { en: "Loading…", es: "Cargando…" },
+  unavailable: { en: "The messages can't be loaded right now.", es: "Los mensajes no se pueden cargar ahora." },
+  soon: { en: "The guestbook opens soon.", es: "El libro de visitas abre pronto." },
+  linkTitle: { en: "Link to me", es: "Enlázame" },
+  linkText: {
+    en: "Want my button on your site? Copy this.",
+    es: "¿Quieres mi botón en tu sitio? Copia esto.",
+  },
+  copy: { en: "Copy", es: "Copiar" },
+  copied: { en: "Copied", es: "Copiado" },
 };

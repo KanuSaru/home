@@ -1588,3 +1588,232 @@ main {
 .music .dp-time {
   font-size: 1.0625rem;
 }
+
+/* ---------- Epigraph and mood ---------- */
+
+.mast-main {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.epigraph {
+  font-family: var(--data);
+  font-size: 1.125rem;
+  line-height: 1.2;
+  color: var(--ash);
+}
+
+.mood {
+  display: block;
+  text-decoration: none;
+}
+
+.mood img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---------- Updates log ---------- */
+
+.updates {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.updates li {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.updates time {
+  font-family: var(--data);
+  font-size: 1.0625rem;
+  line-height: 1.1;
+  color: var(--ash);
+}
+
+.widget .updates p {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.panel .updates {
+  gap: 0;
+}
+
+.panel .updates li {
+  padding: 0.8rem 0;
+  border-top: 1px dashed var(--rule);
+}
+
+.panel .updates li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* ---------- Guestbook ---------- */
+
+.gb-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.gb-form label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.gb-form label > span {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.gb-count {
+  font-family: var(--data);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ash);
+}
+
+.gb-form input,
+.gb-form textarea {
+  font: inherit;
+  color: var(--bone);
+  background: var(--ground);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0.45rem 0.6rem;
+  width: 100%;
+}
+
+.gb-form textarea {
+  resize: vertical;
+  min-height: 7rem;
+}
+
+.gb-form input:focus-visible,
+.gb-form textarea:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+/* the bot trap stays out of sight */
+.gb-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.gb-check {
+  min-height: 65px;
+}
+
+.gb-error {
+  color: var(--bone);
+  border-left: 2px solid var(--blue);
+  padding-left: 0.75rem;
+}
+
+.gb-send,
+.gb-code button {
+  justify-self: start;
+  font: inherit;
+  font-weight: 700;
+  color: var(--ground);
+  background: var(--bone);
+  border: 1px solid var(--bone);
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+}
+
+.gb-send:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.gb-sent {
+  border-left: 2px solid var(--blue);
+  padding-left: 0.75rem;
+}
+
+.gb-entries {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.gb-entries li {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.9rem 0;
+  border-top: 1px dashed var(--rule);
+}
+
+.gb-entries li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.gb-who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.75rem;
+  font-weight: 700;
+}
+
+.gb-who time {
+  font-family: var(--data);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  color: var(--ash);
+}
+
+.gb-msg {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.my-button {
+  display: block;
+  image-rendering: pixelated;
+  width: 176px;
+  height: 62px;
+}
+
+.gb-code {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.gb-code code {
+  display: block;
+  font-family: var(--data);
+  font-size: 1rem;
+  line-height: 1.25;
+  color: var(--ash);
+  background: var(--ground);
+  border: 1px solid var(--rule);
+  padding: 0.5rem 0.6rem;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.gb-code button {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.3rem 0.8rem;
+  color: var(--bone);
+  background: transparent;
+  border-color: var(--rule);
+}
+
+.gb-code button:hover {
+  border-color: var(--blue);
+}
