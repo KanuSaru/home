@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { epigraph, nav, ui } from "@/content/site";
+import { config, epigraph, nav, ui } from "@/content/site";
 import { useLang, useT } from "@/lib/i18n";
 import { PageLink, useCurrentPage, type PageId } from "@/lib/route";
 import { DiscordStatus, LocalTime, Mood, NowPlaying, Visitors, Weather } from "@/components/Widgets";
@@ -180,6 +180,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </a>
           <a href="https://steamcommunity.com/id/KanuSaru/" target="_blank" rel="noopener noreferrer">
             Steam
+          </a>
+          {/* the profile link opens it in Discord; the username is there for adding me by hand */}
+          <a href={`https://discord.com/users/${config.discordId}`} target="_blank" rel="noopener noreferrer">
+            Discord (kanusaru)
           </a>
         </div>
         <p>{t(ui.madeIn)}, 2026</p>
