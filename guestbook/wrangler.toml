@@ -6,7 +6,7 @@ compatibility_date = "2026-10-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "kanu-guestbook"
-database_id = "PASTE-THE-ID-FROM-wrangler-d1-create"
+database_id = "918048f2-262b-4fcf-9d6a-391e03a9336e"
 
 [vars]
 # the sites allowed to sign it: the live site, and your computer while testing
