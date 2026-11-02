@@ -56,13 +56,14 @@ export const ui = {
   favorite: { en: "all-time favorite", es: "favorito de siempre" },
 };
 
-export type NavItem = { id: "home" | "me" | "work" | "notes" | "journal" | "guestbook"; label: L; soon?: boolean; locked?: boolean };
+export type NavItem = { id: "home" | "me" | "work" | "notes" | "journal" | "guestbook" | "learn"; label: L; soon?: boolean; locked?: boolean };
 
 export const nav: NavItem[] = [
   { id: "home", label: { en: "Home", es: "Inicio" } },
   { id: "me", label: { en: "Me", es: "Yo" } },
   { id: "work", label: { en: "Work", es: "Trabajo" } },
   { id: "notes", label: { en: "Notes", es: "Notas" } },
+  { id: "learn", label: { en: "Learn ML", es: "Aprende ML" } },
   { id: "guestbook", label: { en: "Guestbook", es: "Libro de visitas" } },
   { id: "journal", label: { en: "Journal", es: "Diario" }, locked: true },
 ];
