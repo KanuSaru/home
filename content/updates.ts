@@ -10,6 +10,13 @@ export const updates: Update[] = [
   {
     date: "2026-11-02",
     text: {
+      en: "Two new notes to read before Learn ML: why machine learning needs maths, and how to learn to code when AI can write it for you.",
+      es: "Dos notas nuevas para leer antes de Aprende ML: por qué el machine learning necesita matemáticas y cómo aprender a programar cuando la IA puede hacerlo por ti.",
+    },
+  },
+  {
+    date: "2026-11-02",
+    text: {
       en: "Every page now has its own Spanish address (/es/…), so the Spanish version can be found and shared. The switch at the top takes you to it.",
       es: "Cada página tiene ahora su propia dirección en español (/es/…), así la versión en español se puede encontrar y compartir. El botón de arriba te lleva a ella.",
     },
@@ -17,8 +24,8 @@ export const updates: Update[] = [
   {
     date: "2026-11-02",
     text: {
-      en: "New page: Learn ML, a free route into machine learning with checklists that remember your progress. Built on Ri's course at lachinemearning.com.",
-      es: "Página nueva: Aprende ML, una ruta gratis hacia el machine learning con listas que recuerdan tu progreso. Hecha sobre el curso de Ri en lachinemearning.com.",
+      en: "New page: Learn ML, a free route into machine learning with checklists that remember your progress.",
+      es: "Página nueva: Aprende ML, una ruta gratis hacia el machine learning con listas que recuerdan tu progreso.",
     },
   },
   {

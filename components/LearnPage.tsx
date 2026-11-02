@@ -3,6 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { learn, phases, resId, type Module, type Phase } from "@/content/learn";
 import { useLang, useT } from "@/lib/i18n";
+import { config } from "@/content/site";
+import { NotesList } from "@/components/NotesPage";
+import type { NoteSummary } from "@/lib/notes";
 
 const KEY = "learn-progress-v1";
 const HIDE_KEY = "learn-hide-done";
@@ -177,7 +180,7 @@ function ModuleBlock({
   );
 }
 
-export function LearnPage() {
+export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
   const t = useT();
   const { lang } = useLang();
   const [done, setDone] = useState<Done>({});
@@ -356,18 +359,12 @@ export function LearnPage() {
                   </li>
                 ))}
               </ul>
-              <div className="reads">
-                <p className="widget-title">{t(learn.how.reads)}</p>
-                <ul>
-                  {learn.how.readLinks.map((l) => (
-                    <li key={l.url}>
-                      <a href={l.url} target="_blank" rel="noopener noreferrer">
-                        {t(l.label)}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {reads.length > 0 && (
+                <div className="reads">
+                  <p className="widget-title">{t(learn.how.reads)}</p>
+                  <NotesList notes={reads} compact />
+                </div>
+              )}
             </section>
           </>
         )}
@@ -413,10 +410,7 @@ export function LearnPage() {
 
               {!q && (
                 <div className="build">
-                  <p className="widget-title">
-                    {t(learn.labels.build)}
-                    <span className="tag">{t(learn.labels.buildNote)}</span>
-                  </p>
+                  <p className="widget-title">{t(learn.labels.build)}</p>
                   <p>{t(p.build)}</p>
                 </div>
               )}
@@ -426,18 +420,22 @@ export function LearnPage() {
 
         {!anyShown && <p className="empty wide">{t(learn.progress.none)}</p>}
 
-        <section className="panel wide learn-credit">
-          <p className="small">{t(learn.credit.text)}</p>
-          {lang === "es" && <p className="small muted">{t(learn.credit.english)}</p>}
-          <ul className="edu-notes">
-            {learn.credit.links.map((l) => (
-              <li key={l.url}>
-                <a href={l.url} target="_blank" rel="noopener noreferrer">
-                  {t(l.label)}
-                </a>
-              </li>
-            ))}
-          </ul>
+        <section className="panel wide learn-support">
+          <h2 className="panel-title">{t(learn.support.title)}</h2>
+          <p>{t(learn.support.text)}</p>
+          {lang === "es" && <p className="small muted">{t(learn.support.english)}</p>}
+          {config.kofi && (
+            <p className="cv-links">
+              <a className="cv-button" href={`https://ko-fi.com/${config.kofi}`} target="_blank" rel="noopener noreferrer">
+                {t(learn.support.button)}
+              </a>
+            </p>
+          )}
+          <p className="credit">
+            <a href={learn.support.creditUrl} target="_blank" rel="noopener noreferrer">
+              {t(learn.support.credit)}
+            </a>
+          </p>
         </section>
       </div>
     </div>

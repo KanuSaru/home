@@ -2047,10 +2047,13 @@ main {
   border-top: 1px dashed var(--rule);
 }
 
-.reads ul {
-  display: grid;
-  gap: 0.2rem;
+.reads .note-list {
   margin-top: 0.3rem;
+}
+
+.learn-support .credit {
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--rule);
 }
 
 /* a phase: the big number in the margin, the modules down the page */

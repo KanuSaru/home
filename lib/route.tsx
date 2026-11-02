@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLang, type Lang } from "@/lib/i18n";
 
-export { langOf, swapLang } from "@/lib/i18n";
-
 export type PageId = "home" | "me" | "work" | "notes" | "journal" | "guestbook" | "updates" | "learn";
 
 // English lives at the root, Spanish under /es/: /work/ and /es/work/.

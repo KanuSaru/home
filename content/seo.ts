@@ -103,6 +103,7 @@ export const person = {
     "https://orcid.org/0009-0008-5752-3255",
     "https://steamcommunity.com/id/KanuSaru/",
     "https://kanusaru.nekoweb.org/",
+    "https://ko-fi.com/kanusaru",
   ],
   summary: {
     en: "Erick Donado (Kanu) is a Systems Engineering student at Universidad Simón Bolívar in Barranquilla, Colombia. He researches machine learning in the university's Data Sciences research seedbed: U-Net models that segment breast cancer in ultrasound images (a 2026 journal article and a 2024 book chapter), racial and gender bias in large language models, and a machine learning framework written in C. He teaches programming and maths, and builds open-source tools such as dither-moon, dither-player and dither-model.",

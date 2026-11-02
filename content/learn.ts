@@ -1,6 +1,5 @@
 // The ML field guide on /learn/: a free, self-taught route into machine learning.
-// The route and the choice of resources come from Ri's course at lachinemearning.com;
-// the explanations, checklists and project ideas are rewritten here.
+// The background reads are notes on the site (content/notes/).
 // Each piece of text is { en, es }. Resource names stay as their authors wrote them.
 
 import type { L } from "./site";
@@ -86,21 +85,15 @@ export const learn = {
         },
       },
     ],
-    reads: { en: "Background reads by Ri", es: "Lecturas de fondo de Ri" },
-    readLinks: [
-      { label: { en: "Why the maths matters (PDF)", es: "Por qué importan las mates (PDF, en inglés)" }, url: "https://lachinemearning.com/why_maths_in_ml_.pdf" },
-      {
-        label: { en: "Learning to code among vibecoders (PDF)", es: "Aprender a programar entre vibecoders (PDF, en inglés)" },
-        url: "https://lachinemearning.com/Guide%20to%20learning%20how%20to%20code%20in%20the%20sea%20of%20vibecoders.pdf",
-      },
-    ],
+    reads: { en: "Read first", es: "Para leer primero" },
+    // notes in content/notes/, linked by their address
+    readNotes: ["why-machine-learning-needs-maths", "learning-to-code-when-ai-can-write-it"],
   },
   labels: {
     phase: { en: "Phase", es: "Fase" },
     step: { en: "Step {n}", es: "Paso {n}" },
     start: { en: "start here", es: "empieza aquí" },
     build: { en: "Build this", es: "Construye esto" },
-    buildNote: { en: "my suggestion, not part of Ri's course", es: "sugerencia mía, no es parte del curso de Ri" },
     types: {
       course: { en: "course", es: "curso" },
       video: { en: "video", es: "video" },
@@ -153,17 +146,20 @@ export const learn = {
       es: "Pedirle a un LLM que te explique un error o revise código que escribiste es tutoría. Pedirle que escriba la función se salta justo la parte que enseña. Cuando puedas seguir cada línea que te da, úsalo sin miedo; la Fase 05 explica cómo.",
     },
   },
-  credit: {
+  support: {
+    title: { en: "Free, always", es: "Gratis, siempre" },
     text: {
-      en: "The route and the choice of resources come from Ri's free course at lachinemearning.com. This page reorganizes it with rewritten explanations, checklists and project ideas. Every resource is free and run by its own authors.",
-      es: "La ruta y la selección de recursos vienen del curso gratuito de Ri en lachinemearning.com. Esta página lo reorganiza con explicaciones reescritas, listas de chequeo e ideas de proyecto. Cada recurso es gratis y lo mantienen sus propios autores.",
+      en: "Every resource here is free and made by its own authors. If this map helped you, you can buy me a coffee.",
+      es: "Cada recurso aquí es gratis y lo hacen sus propios autores. Si este mapa te sirvió, puedes invitarme un café.",
     },
-    links: [
-      { label: { en: "Original course", es: "Curso original" }, url: "https://lachinemearning.com/course.html" },
-      { label: { en: "Ri on YouTube", es: "Ri en YouTube" }, url: "https://www.youtube.com/@iris-lachinemearning" },
-      { label: { en: "Tip Ri on Ko-fi", es: "Apoya a Ri en Ko-fi" }, url: "https://ko-fi.com/lachinemearningiris" },
-    ],
-    english: { en: "Almost every resource is in English.", es: "Casi todos los recursos están en inglés." },
+    button: { en: "Support me on Ko-fi", es: "Apóyame en Ko-fi" },
+    english: { en: "", es: "Casi todos los recursos están en inglés." },
+    // one line of credit: the route started from someone else's free course
+    credit: {
+      en: "The route grew out of Ri's free course at lachinemearning.com.",
+      es: "La ruta nació del curso gratuito de Ri en lachinemearning.com.",
+    },
+    creditUrl: "https://lachinemearning.com/course.html",
   },
 };
 

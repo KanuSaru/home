@@ -206,6 +206,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <a href={`https://discord.com/users/${config.discordId}`} target="_blank" rel="noopener noreferrer">
             Discord (kanusaru)
           </a>
+          {config.kofi && (
+            <a href={`https://ko-fi.com/${config.kofi}`} target="_blank" rel="noopener noreferrer">
+              Ko-fi
+            </a>
+          )}
         </div>
         <p>{t(ui.madeIn)}, 2026</p>
       </footer>

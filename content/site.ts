@@ -17,6 +17,8 @@ export const config = {
   discordId: "405104130110128150", // read through Lanyard (discord.gg/lanyard)
   goatcounter: "kanu", // kanu.goatcounter.com
   imood: "kanu", // imood.com/users/kanu; set your mood there
+  // Your Ko-fi username (ko-fi.com/<username>). Empty hides the Ko-fi links.
+  kofi: "kanusaru",
   // The guestbook's Cloudflare Worker (see guestbook/README.md). Empty until it's set up.
   guestbook: {
     api: "https://kanu-guestbook.kanu-guestbook.workers.dev",
