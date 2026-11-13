@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { learn, phases, resId, type Module, type Phase } from "@/content/learn";
 import { useLang, useT } from "@/lib/i18n";
 import { config } from "@/content/site";
-import { NotesList } from "@/components/NotesPage";
+import { NotesList, formatNoteDate } from "@/components/NotesPage";
+import { PageLink } from "@/lib/route";
 import type { NoteSummary } from "@/lib/notes";
 
 const KEY = "learn-progress-v1";
@@ -13,14 +14,20 @@ const CELLS = 24; // the progress bar is drawn as a row of cells, like a game's 
 
 type Done = Record<string, true>;
 
-const ALL = phases.flatMap((p) => p.modules.flatMap((m) => m.res.map((r, i) => ({ id: resId(p, m, i), r, m, p }))));
+const LEVEL_CLASS = { 1: "is-essential", 2: "is-reinforce", 3: "is-deeper" } as const;
 
-function count(done: Done, p: Phase, m?: Module) {
+const ALL = phases.flatMap((p) => p.modules.flatMap((m) => m.res.map((r, i) => ({ id: resId(p, m, i), r, m, p }))));
+const ESSENTIAL = ALL.filter((x) => x.r.level === 1);
+const EXTRA = ALL.filter((x) => x.r.level !== 1);
+
+// counts the essentials (level 1) unless told to count everything
+function count(done: Done, p: Phase, m?: Module, all = false) {
   const mods = m ? [m] : p.modules;
   let d = 0;
   let n = 0;
   for (const mod of mods)
-    mod.res.forEach((_, i) => {
+    mod.res.forEach((r, i) => {
+      if (!all && r.level !== 1) return;
       n++;
       if (done[resId(p, mod, i)]) d++;
     });
@@ -118,9 +125,13 @@ function ModuleBlock({
     <article className="module" id={`${p.id}-${m.id}`}>
       <div className="module-head">
         <h3 className="row-name">{t(m.title)}</h3>
-        <span className="readout">
-          {d}/{n}
-        </span>
+        {n > 0 ? (
+          <span className="readout">
+            {d}/{n}
+          </span>
+        ) : (
+          <span className="tag">{t(learn.levels.optional)}</span>
+        )}
       </div>
       {m.chips.length > 0 && (
         <p className="chips">
@@ -144,12 +155,15 @@ function ModuleBlock({
         </dl>
       )}
       <ul className="res">
-        {m.res.map((r, i) => {
+        {m.res
+          .map((r, i) => ({ r, i }))
+          .sort((a, b) => a.r.level - b.r.level)
+          .map(({ r, i }) => {
           const id = resId(p, m, i);
           const on = !!done[id];
           const box = `res-${id.replace(/\./g, "-")}`;
           return (
-            <li key={id} className={on ? "is-done" : undefined}>
+            <li key={id} className={`${LEVEL_CLASS[r.level]} ${on ? "is-done" : ""}`}>
               <label className="check">
                 <input id={box} type="checkbox" checked={on} onChange={() => toggle(id)} />
                 <span className="box" aria-hidden="true">
@@ -168,6 +182,7 @@ function ModuleBlock({
                     {r.name}
                   </a>
                   <span className="tag">{t(learn.labels.types[r.type])}</span>
+                  <span className="tag tag-level">{t(learn.levels.list[r.level - 1].tag)}</span>
                   {r.start && <span className="sr-only">{t(learn.labels.start)}</span>}
                 </p>
                 <p className="small muted">{t(r.desc)}</p>
@@ -187,6 +202,17 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
   const [hide, setHide] = useState(false);
   const [query, setQuery] = useState("");
   const [armed, setArmed] = useState(false);
+  // one phase open at a time by default: the one you're on. The rest stay folded.
+  const [open, setOpen] = useState<Record<string, boolean>>({});
+
+  // opens a phase and goes to it (or to a module inside it): "maths", "maths-stats"
+  const go = useCallback((target: string) => {
+    const phase = target.split("-")[0];
+    if (!phases.some((p) => p.id === phase)) return;
+    setOpen((o) => ({ ...o, [phase]: true }));
+    // after the phase has unfolded
+    requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ block: "start" })));
+  }, []);
 
   // progress lives in this browser only
   useEffect(() => {
@@ -194,8 +220,21 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
       const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
       if (saved && typeof saved === "object") setDone(saved);
       setHide(localStorage.getItem(HIDE_KEY) === "1");
-    } catch {}
-  }, []);
+      // unfold the phase with the first thing still to do
+      const first = ESSENTIAL.find((x) => !(saved && saved[x.id])) ?? ALL[0];
+      setOpen({ [first.p.id]: true });
+    } catch {
+      setOpen({ [phases[0].id]: true });
+    }
+    // a link straight to a phase or module opens it
+    const fromHash = () => {
+      const target = decodeURIComponent(location.hash.slice(1));
+      if (target) go(target);
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
+  }, [go]);
 
   const save = (next: Done) => {
     setDone(next);
@@ -246,9 +285,11 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
     return out;
   }, [q, lang, t]);
 
-  const total = ALL.length;
-  const finished = ALL.filter((x) => done[x.id]).length;
-  const next = ALL.find((x) => !done[x.id]);
+  // the bar follows the essentials; the rest is counted apart
+  const total = ESSENTIAL.length;
+  const finished = ESSENTIAL.filter((x) => done[x.id]).length;
+  const extras = EXTRA.filter((x) => done[x.id]).length;
+  const next = ESSENTIAL.find((x) => !done[x.id]);
   const label = t(learn.progress.count, { d: finished, n: total });
   const anyShown = !matches || matches.size > 0;
 
@@ -277,10 +318,82 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
             </div>
             <div>
               <dt className="widget-title">{t(learn.facts.resources)}</dt>
-              <dd className="readout big">{total}</dd>
+              <dd className="readout big">{ALL.length}</dd>
             </div>
           </dl>
         </section>
+
+        <section className="panel wide learn-auto" aria-labelledby="learn-auto-title">
+          <h2 id="learn-auto-title" className="panel-title">
+            {t(learn.auto.title)}
+          </h2>
+          {learn.auto.paras.map((para) => (
+            <p key={para.en.slice(0, 24)}>{t(para)}</p>
+          ))}
+        </section>
+
+        {!q && (
+          <>
+            <nav className="panel learn-route" aria-label={t(learn.route)}>
+              <h2 className="panel-title">{t(learn.route)}</h2>
+              <ol>
+                {phases.map((p) => {
+                  const { d, n } = count(done, p);
+                  return (
+                    <li key={p.id}>
+                      <span className="readout big">{p.n}</span>
+                      <div className="tl-body">
+                        <a className="tl-title" href={`#${p.id}`} onClick={() => go(p.id)}>
+                          {t(p.title)}
+                        </a>
+                        <span className="small muted">
+                          {t(p.time)} · {t(learn.progress.modules, { n: p.modules.length })} · {t(p.when)}
+                        </span>
+                      </div>
+                      <span className="readout">
+                        {d}/{n}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ol>
+              <p className="small pace">
+                {t(learn.pace.total)} <span className="muted">{t(learn.pace.note)}</span>
+              </p>
+            </nav>
+
+            <section className="panel learn-how">
+              <h2 className="panel-title">{t(learn.how.title)}</h2>
+              <ul className="rows">
+                {learn.how.items.map((x) => (
+                  <li key={x.title.en}>
+                    <p className="row-name">{t(x.title)}</p>
+                    <p className="small">{t(x.text)}</p>
+                  </li>
+                ))}
+              </ul>
+              <div className="levels">
+                <p className="widget-title">{t(learn.levels.title)}</p>
+                <dl>
+                  {learn.levels.list.map((x, i) => (
+                    <div key={x.tag.en} className={LEVEL_CLASS[(i + 1) as 1 | 2 | 3]}>
+                      <dt>
+                        <span className="tag tag-level">{t(x.tag)}</span>
+                      </dt>
+                      <dd className="small">{t(x.text)}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+              {reads.length > 0 && (
+                <div className="reads">
+                  <p className="widget-title">{t(learn.how.reads)}</p>
+                  <NotesList notes={reads} compact />
+                </div>
+              )}
+            </section>
+          </>
+        )}
 
         <section className="panel wide learn-progress">
           <h2 className="panel-title">
@@ -288,11 +401,14 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
             <span className="tag">{label}</span>
           </h2>
           <Cells d={finished} n={total} label={label} />
+          <p className="small muted">{t(learn.progress.extras, { d: extras, n: EXTRA.length })}</p>
           <p className="next">
             {next ? (
               <>
                 <span className="widget-title">{t(learn.progress.next)}</span>
-                <a href={`#${next.p.id}-${next.m.id}`}>{next.r.name}</a>
+                <a href={`#${next.p.id}-${next.m.id}`} onClick={() => go(`${next.p.id}-${next.m.id}`)}>
+                  {next.r.name}
+                </a>
                 <span className="muted small">
                   {t(next.p.short)} · {t(next.m.title)}
                 </span>
@@ -301,6 +417,13 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
               <span>{t(learn.progress.allDone)}</span>
             )}
           </p>
+          {next && finished > 0 && (
+            <p>
+              <a className="cv-button" href={`#${next.p.id}-${next.m.id}`} onClick={() => go(`${next.p.id}-${next.m.id}`)}>
+                {t(learn.fold.resume)}
+              </a>
+            </p>
+          )}
           <div className="learn-tools">
             <input
               type="search"
@@ -322,59 +445,13 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
           </div>
         </section>
 
-        {!q && (
-          <>
-            <nav className="panel learn-route" aria-label={t(learn.route)}>
-              <h2 className="panel-title">{t(learn.route)}</h2>
-              <ol>
-                {phases.map((p) => {
-                  const { d, n } = count(done, p);
-                  return (
-                    <li key={p.id}>
-                      <span className="readout big">{p.n}</span>
-                      <div className="tl-body">
-                        <a className="tl-title" href={`#${p.id}`}>
-                          {t(p.title)}
-                        </a>
-                        <span className="small muted">
-                          {t(learn.progress.modules, { n: p.modules.length })} · {t(p.when)}
-                        </span>
-                      </div>
-                      <span className="readout">
-                        {d}/{n}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ol>
-            </nav>
-
-            <section className="panel learn-how">
-              <h2 className="panel-title">{t(learn.how.title)}</h2>
-              <ul className="rows">
-                {learn.how.items.map((x) => (
-                  <li key={x.title.en}>
-                    <p className="row-name">{t(x.title)}</p>
-                    <p className="small">{t(x.text)}</p>
-                  </li>
-                ))}
-              </ul>
-              {reads.length > 0 && (
-                <div className="reads">
-                  <p className="widget-title">{t(learn.how.reads)}</p>
-                  <NotesList notes={reads} compact />
-                </div>
-              )}
-            </section>
-          </>
-        )}
-
         {phases.map((p) => {
           const mods = p.modules.filter((m) => !matches || matches.has(`${p.id}.${m.id}`));
           if (!mods.length) return null;
           const { d, n } = count(done, p);
+          const isOpen = !!q || !!open[p.id];
           return (
-            <section key={p.id} id={p.id} className="panel wide phase">
+            <section key={p.id} id={p.id} className={`panel wide phase ${isOpen ? "is-open" : "is-folded"}`}>
               <header className="phase-head">
                 <span className="phase-n" aria-hidden="true">
                   {p.n}
@@ -386,21 +463,40 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
                     </span>
                     {t(p.title)}
                   </h2>
-                  {!q && <p>{t(p.lead)}</p>}
+                  {!q && isOpen && <p>{t(p.lead)}</p>}
                   <p className="chips">
-                    {p.meta.map((x) => (
-                      <span key={x.en} className="tag">
-                        {t(x)}
-                      </span>
-                    ))}
+                    <span className="tag tag-time">
+                      {t(p.time)} {t(learn.pace.perDay)}
+                    </span>
+                    {isOpen &&
+                      p.meta.map((x) => (
+                        <span key={x.en} className="tag">
+                          {t(x)}
+                        </span>
+                      ))}
                     <span className="tag">{t(p.when)}</span>
                     <span className="readout">
                       {d}/{n}
                     </span>
                   </p>
                 </div>
+                {!q && (
+                  <button
+                    type="button"
+                    className="phase-toggle"
+                    aria-expanded={isOpen}
+                    aria-controls={`${p.id}-body`}
+                    onClick={() => setOpen((o) => ({ ...o, [p.id]: !o[p.id] }))}
+                  >
+                    <span aria-hidden="true">{isOpen ? "–" : "+"}</span>
+                    {t(isOpen ? learn.fold.close : learn.fold.open)}
+                    <span className="sr-only">: {t(p.title)}</span>
+                  </button>
+                )}
               </header>
 
+              {/* folded phases stay in the page (hidden), so links and search engines still find them */}
+              <div id={`${p.id}-body`} className="phase-body" hidden={!isOpen}>
               {!q && p.extra === "maths" && <MathsExtra />}
               {!q && p.extra === "ai" && <AiExtra />}
 
@@ -414,11 +510,40 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
                   <p>{t(p.build)}</p>
                 </div>
               )}
+
+              {!q && (
+                <div className="selfcheck">
+                  <p className="row-name">{t(learn.check.title)}</p>
+                  <p className="small muted">{t(learn.check.text)}</p>
+                  <ul>
+                    {p.check.map((c, i) => {
+                      const id = `check.${p.id}.${i}`;
+                      return (
+                        <li key={id}>
+                          <label className="check">
+                            <input type="checkbox" checked={!!done[id]} onChange={() => toggle(id)} />
+                            <span className="box" aria-hidden="true">
+                              <Check />
+                            </span>
+                            <span>{t(c)}</span>
+                          </label>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+              </div>
             </section>
           );
         })}
 
         {!anyShown && <p className="empty wide">{t(learn.progress.none)}</p>}
+
+        <p className="small muted wide learn-reviewed">
+          {t(learn.reviewed.label, { d: formatNoteDate(learn.reviewed.date, lang) })} {t(learn.reviewed.report)}{" "}
+          <PageLink to="guestbook">{t(learn.reviewed.guestbook)}</PageLink>.
+        </p>
 
         <section className="panel wide learn-support">
           <h2 className="panel-title">{t(learn.support.title)}</h2>

@@ -5,19 +5,23 @@
 import type { L } from "./site";
 
 export type ResType = "course" | "video" | "docs" | "practice" | "book" | "read" | "tool";
-export type Resource = { name: string; url: string; type: ResType; desc: L; start?: boolean };
+// level: 1 essential (the main path), 2 reinforcement (another take or more practice), 3 go deeper (beyond what the route needs)
+export type Level = 1 | 2 | 3;
+export type Resource = { name: string; url: string; type: ResType; desc: L; start?: boolean; level: Level };
 export type Term = { term: L; def: L };
 export type Module = { id: string; title: L; chips: { label: L; key?: boolean }[]; idea: L; body?: L; terms?: Term[]; res: Resource[] };
-export type Phase = { id: string; n: string; title: L; short: L; when: L; lead: L; meta: L[]; extra?: "maths" | "ai"; build: L; modules: Module[] };
+export type Phase = { id: string; n: string; title: L; short: L; when: L; time: L; check: L[]; lead: L; meta: L[]; extra?: "maths" | "ai"; build: L; modules: Module[] };
 
 const KA = "https://www.khanacademy.org/math/";
 
-const r = (name: string, url: string, type: ResType, en: string, es: string, start = false): Resource => ({
+// r(name, url, type, English, Spanish, start here?, level). Without a level it's essential.
+const r = (name: string, url: string, type: ResType, en: string, es: string, start = false, level: Level = 1): Resource => ({
   name,
   url,
   type,
   desc: { en, es },
   ...(start ? { start: true } : {}),
+  level,
 });
 const t = (en: string, enDef: string, es: string, esDef: string): Term => ({ term: { en, es }, def: { en: enDef, es: esDef } });
 const c = (en: string, es: string, key = false) => ({ label: { en, es }, ...(key ? { key: true } : {}) });
@@ -32,6 +36,20 @@ export const learn = {
     en: "This is a map, not a course. The teaching comes from the best free material online, in a deliberate order, with each idea explained in one plain sentence before you dive in.",
     es: "Esto es un mapa, no un curso. Lo que enseña es el mejor material gratuito de internet, en un orden pensado, con cada idea explicada en una frase sencilla antes de entrar.",
   },
+  // the idea the whole route rests on, shown before anything else
+  auto: {
+    title: { en: "Being autodidactic is the whole skill", es: "Ser autodidacta es toda la habilidad" },
+    paras: [
+      {
+        en: "An autodidact is someone who teaches themselves. It's a habit, not a talent: read or watch a little, then immediately try it with your own hands before moving on.",
+        es: "Un autodidacta es alguien que se enseña a sí mismo. Es un hábito, no un talento: lee o mira un poco, y de inmediato pruébalo con tus propias manos antes de seguir.",
+      },
+      {
+        en: "Watching someone solve a problem feels like learning, but understanding doesn't stick until you get stuck and work your way out. Every resource below is something to use actively — pause the video and code along, redo the maths on paper, break the example and fix it. If a section feels too hard, drop back one level rather than pushing through confused.",
+        es: "Ver a alguien resolver un problema se siente como aprender, pero la comprensión no se queda hasta que te atascas y sales por tu cuenta. Cada recurso de abajo es para usarlo activamente — pausa el video y programa a la par, rehaz las matemáticas en papel, rompe el ejemplo y arréglalo. Si una sección se siente muy difícil, baja un nivel en vez de seguir adelante confundido.",
+      },
+    ],
+  },
   facts: {
     cost: { en: "Cost", es: "Costo" },
     free: { en: "Free", es: "Gratis" },
@@ -42,9 +60,10 @@ export const learn = {
   },
   progress: {
     title: { en: "Your progress", es: "Tu progreso" },
-    count: { en: "{d} of {n} done", es: "{d} de {n} listos" },
+    count: { en: "{d} of {n} essentials done", es: "{d} de {n} esenciales listos" },
+    extras: { en: "Extras: {d} of {n}", es: "Extras: {d} de {n}" },
     next: { en: "Up next", es: "Lo que sigue" },
-    allDone: { en: "Every resource ticked off. Go build something.", es: "Todo marcado. Ahora a construir algo." },
+    allDone: { en: "Every essential ticked off. Go build something.", es: "Todos los esenciales marcados. Ahora a construir algo." },
     search: { en: "Search topics, terms, resources", es: "Buscar temas, términos, recursos" },
     hide: { en: "Hide finished", es: "Ocultar lo terminado" },
     reset: { en: "Reset progress", es: "Borrar progreso" },
@@ -52,29 +71,60 @@ export const learn = {
     none: { en: "Nothing matches that search.", es: "Nada coincide con esa búsqueda." },
     modules: { en: "{n} modules", es: "{n} módulos" },
   },
+  // every resource has one of three levels; the progress bar counts the essentials
+  levels: {
+    title: { en: "What to do first", es: "Qué hacer primero" },
+    optional: { en: "optional module", es: "módulo opcional" },
+    list: [
+      {
+        tag: { en: "essential", es: "esencial" },
+        text: { en: "The main path. Do only these and you still finish the route.", es: "El camino principal. Si solo haces estos, igual terminas la ruta." },
+      },
+      {
+        tag: { en: "reinforcement", es: "refuerzo" },
+        text: { en: "Another explanation or more practice, for when the essential one didn't click.", es: "Otra explicación o más práctica, para cuando el esencial no bastó." },
+      },
+      {
+        tag: { en: "go deeper", es: "profundizar" },
+        text: { en: "Beyond what the route needs. Leave it for later without losing anything.", es: "Más allá de lo que la ruta necesita. Déjalo para después sin perder nada." },
+      },
+    ],
+  },
   route: { en: "The route", es: "La ruta" },
+  // times are estimates for about an hour a day; phases 01 and 02 run at the same time
+  pace: {
+    total: { en: "About 11 to 16 months in all, at an hour a day.", es: "Unos 11 a 16 meses en total, a una hora diaria." },
+    note: { en: "Estimates, not deadlines. Go at your own pace.", es: "Son estimados, no plazos. Ve a tu ritmo." },
+    perDay: { en: "at 1 h a day", es: "a 1 h diaria" },
+  },
+  // each phase ends with a short self-check before moving on
+  check: {
+    title: { en: "Check yourself before moving on", es: "Compruébalo antes de seguir" },
+    text: {
+      en: "Tick what you can really do, without looking it up. Anything you can't yet is where to go back.",
+      es: "Marca lo que de verdad puedes hacer, sin buscarlo. Lo que todavía no, es a donde hay que volver.",
+    },
+  },
+  fold: {
+    open: { en: "Open", es: "Abrir" },
+    close: { en: "Close", es: "Cerrar" },
+    resume: { en: "Continue where I left off", es: "Continuar donde quedé" },
+  },
+  // when the links and the order were last checked by hand (YYYY-MM-DD)
+  reviewed: {
+    date: "2026-11-13",
+    label: { en: "Last reviewed {d}.", es: "Revisado por última vez el {d}." },
+    report: { en: "Found a dead link or something out of date?", es: "¿Encontraste un enlace caído o algo desactualizado?" },
+    guestbook: { en: "Tell me in the guestbook", es: "Avísame en el libro de visitas" },
+  },
   how: {
     title: { en: "How to use it", es: "Cómo usarlo" },
     items: [
-      {
-        title: { en: "Do, then move on", es: "Hazlo y sigue" },
-        text: {
-          en: "Watch or read a little, then try it yourself straight away. It sticks when you get stuck and work your way out.",
-          es: "Mira o lee un poco y pruébalo tú mismo de inmediato. Se queda cuando te atascas y sales por tu cuenta.",
-        },
-      },
       {
         title: { en: "The order is the point", es: "El orden es lo importante" },
         text: {
           en: "Maths and code together, then data science, then deep learning, then LLMs. Jumping ahead leaves you copying code you can't debug.",
           es: "Mate y código a la vez, luego ciencia de datos, luego deep learning, luego LLMs. Saltarse pasos te deja copiando código que no sabes depurar.",
-        },
-      },
-      {
-        title: { en: "Too hard? Step back", es: "¿Muy difícil? Retrocede" },
-        text: {
-          en: "If a module stops making sense, drop a level and come back. Pushing through confused wastes more time than revisiting a basic.",
-          es: "Si un módulo deja de tener sentido, baja un nivel y vuelve. Seguir confundido gasta más tiempo que repasar lo básico.",
         },
       },
       {
@@ -170,6 +220,13 @@ export const phases: Phase[] = [
     title: { en: "Mathematics", es: "Matemáticas" },
     short: { en: "Maths", es: "Mates" },
     when: { en: "Runs with Phase 02", es: "Va junto con la Fase 02" },
+    time: { en: "4 to 6 months", es: "4 a 6 meses" },
+    check: [
+      { en: "I can read a formula with a Σ out loud, as steps.", es: "Puedo leer en voz alta una fórmula con Σ, como pasos." },
+      { en: "I can say when the mean misleads and the median doesn't.", es: "Puedo decir cuándo el promedio engaña y la mediana no." },
+      { en: "I can multiply two small matrices by hand and say what shapes they need.", es: "Puedo multiplicar a mano dos matrices pequeñas y decir qué dimensiones necesitan." },
+      { en: "I can explain what a derivative tells me, without looking it up.", es: "Puedo explicar qué me dice una derivada, sin buscarlo." },
+    ],
     lead: {
       en: "Three tracks you run at the same time, not one after another. Khan Academy is the backbone because it starts gently and fills gaps as you go.",
       es: "Tres frentes que llevas al mismo tiempo, no uno tras otro. Khan Academy es la columna vertebral porque empieza suave y va llenando vacíos.",
@@ -198,7 +255,7 @@ export const phases: Phase[] = [
         },
         res: [
           r("Khan Academy: Statistics & Probability", KA + "statistics-probability", "course", "Bottom-up, the natural place to begin.", "Desde cero, el lugar natural para empezar.", true),
-          r("StatQuest with Josh Starmer", "https://www.youtube.com/c/joshstarmer", "video", "Stats and ML with clear visuals and humour. Good entry point if equations put you off.", "Estadística y ML con visuales claros y humor. Buena entrada si las ecuaciones te espantan."),
+          r("StatQuest with Josh Starmer", "https://www.youtube.com/c/joshstarmer", "video", "Stats and ML with clear visuals and humour. Good entry point if equations put you off.", "Estadística y ML con visuales claros y humor. Buena entrada si las ecuaciones te espantan.", false, 2),
         ],
       },
       {
@@ -215,7 +272,7 @@ export const phases: Phase[] = [
         },
         res: [
           r("Khan Academy: Linear Algebra", KA + "linear-algebra", "course", "The full grounding, slow and with exercises.", "La base completa, despacio y con ejercicios."),
-          r("3Blue1Brown: Essence of Linear Algebra", "https://www.3blue1brown.com/topics/linear-algebra", "video", "Watch for the intuition; practise the mechanics on Khan.", "Míralo por la intuición; practica la mecánica en Khan."),
+          r("3Blue1Brown: Essence of Linear Algebra", "https://www.3blue1brown.com/topics/linear-algebra", "video", "Watch for the intuition; practise the mechanics on Khan.", "Míralo por la intuición; practica la mecánica en Khan.", false, 2),
         ],
       },
       {
@@ -233,7 +290,7 @@ export const phases: Phase[] = [
         res: [
           r("Khan Academy: Pre-calculus", KA + "precalculus", "course", "The bridge step. Do it before Calculus 1.", "El paso puente. Hazlo antes de Cálculo 1."),
           r("Khan Academy: Calculus 1", KA + "calculus-1", "course", "Derivatives and rates of change, the part that matters most.", "Derivadas y razones de cambio, la parte que más importa."),
-          r("3Blue1Brown: Essence of Calculus", "https://www.3blue1brown.com/topics/calculus", "video", "Makes derivatives feel obvious.", "Hace que las derivadas se sientan obvias."),
+          r("3Blue1Brown: Essence of Calculus", "https://www.3blue1brown.com/topics/calculus", "video", "Makes derivatives feel obvious.", "Hace que las derivadas se sientan obvias.", false, 2),
         ],
       },
     ],
@@ -244,6 +301,13 @@ export const phases: Phase[] = [
     title: { en: "Learn to code", es: "Aprende a programar" },
     short: { en: "Code", es: "Código" },
     when: { en: "Runs with Phase 01", es: "Va junto con la Fase 01" },
+    time: { en: "2 to 3 months", es: "2 a 3 meses" },
+    check: [
+      { en: "I can write a small program from an empty file, without a tutorial open.", es: "Puedo escribir un programa pequeño desde un archivo vacío, sin un tutorial abierto." },
+      { en: "I can read an error message and find the line it's about.", es: "Puedo leer un mensaje de error y encontrar la línea de la que habla." },
+      { en: "I can explain every line of my last project out loud.", es: "Puedo explicar en voz alta cada línea de mi último proyecto." },
+      { en: "I can save my work with Git and go back to a version that worked.", es: "Puedo guardar mi trabajo con Git y volver a una versión que funcionaba." },
+    ],
     lead: {
       en: "Maths without code is theory you can't test, and code without maths is copying what you don't understand. The goal isn't software engineering: write a script, read someone else's, and fix your own without panic. Python is all you need.",
       es: "Mates sin código es teoría que no puedes probar, y código sin mates es copiar lo que no entiendes. La meta no es ser ingeniero de software: escribir un script, leer el de otro y arreglar el tuyo sin pánico. Python es todo lo que necesitas.",
@@ -278,9 +342,9 @@ export const phases: Phase[] = [
         ],
         res: [
           r("W3Schools: Python", "https://www.w3schools.com/python/", "course", "Run code in the browser as you read. The gentlest start.", "Corre código en el navegador mientras lees. El inicio más suave."),
-          r("Harvard CS50P: Intro to Python", "https://cs50.harvard.edu/python/", "course", "A real university course with proper problem sets. The most solid option.", "Un curso universitario de verdad, con buenos talleres. La opción más sólida."),
-          r("Automate the Boring Stuff", "https://automatetheboringstuff.com/", "book", "Teaches Python by automating useful chores.", "Enseña Python automatizando tareas útiles."),
-          r("The official Python tutorial", "https://docs.python.org/3/tutorial/", "docs", "Dry but correct. Best as a reference once you've started.", "Seco pero correcto. Mejor como referencia cuando ya empezaste."),
+          r("Harvard CS50P: Intro to Python", "https://cs50.harvard.edu/python/", "course", "A real university course with proper problem sets. The most solid option.", "Un curso universitario de verdad, con buenos talleres. La opción más sólida.", false, 2),
+          r("Automate the Boring Stuff", "https://automatetheboringstuff.com/", "book", "Teaches Python by automating useful chores.", "Enseña Python automatizando tareas útiles.", false, 2),
+          r("The official Python tutorial", "https://docs.python.org/3/tutorial/", "docs", "Dry but correct. Best as a reference once you've started.", "Seco pero correcto. Mejor como referencia cuando ya empezaste.", false, 3),
         ],
       },
       {
@@ -304,7 +368,7 @@ export const phases: Phase[] = [
         res: [
           r("Python Tutor", "https://pythontutor.com/", "tool", "Watch your code run line by line with memory drawn out.", "Mira tu código correr línea por línea, con la memoria dibujada."),
           r("Exercism: Python track", "https://exercism.org/tracks/python", "practice", "Hundreds of small exercises with mentor feedback.", "Cientos de ejercicios cortos con retroalimentación de mentores."),
-          r("Codewars", "https://www.codewars.com/", "practice", "Short ranked puzzles. Ten minutes a day beats a weekend binge.", "Retos cortos con ranking. Diez minutos al día le ganan a un maratón de fin de semana."),
+          r("Codewars", "https://www.codewars.com/", "practice", "Short ranked puzzles. Ten minutes a day beats a weekend binge.", "Retos cortos con ranking. Diez minutos al día le ganan a un maratón de fin de semana.", false, 2),
         ],
       },
       {
@@ -320,7 +384,7 @@ export const phases: Phase[] = [
           es: "Ningún curso lo enseña y todo trabajo lo da por sentado. La terminal es cómo corres las cosas; GitHub guarda tus fotos y de paso es tu portafolio.",
         },
         res: [
-          r("MIT: The Missing Semester", "https://missing.csail.mit.edu/", "course", "Shell, editors, Git and tooling. Exactly the gap other courses leave.", "Shell, editores, Git y herramientas. Justo el vacío que dejan otros cursos."),
+          r("MIT: The Missing Semester", "https://missing.csail.mit.edu/", "course", "Shell, editors, Git and tooling. Exactly the gap other courses leave.", "Shell, editores, Git y herramientas. Justo el vacío que dejan otros cursos.", false, 2),
           r("Learn Git Branching", "https://learngitbranching.js.org/", "practice", "Visual, interactive Git. Branches click in an afternoon.", "Git visual e interactivo. Las ramas se entienden en una tarde."),
           r("GitHub Skills", "https://skills.github.com/", "practice", "Short guided exercises inside real repositories.", "Ejercicios guiados cortos dentro de repositorios reales."),
         ],
@@ -333,6 +397,14 @@ export const phases: Phase[] = [
     title: { en: "Data science & ML", es: "Ciencia de datos y ML" },
     short: { en: "Data science", es: "Ciencia de datos" },
     when: { en: "After 01 and 02", es: "Después de 01 y 02" },
+    time: { en: "3 to 4 months", es: "3 a 4 meses" },
+    check: [
+      { en: "I can load a messy table, clean it and describe it with a few plots.", es: "Puedo cargar una tabla desordenada, limpiarla y describirla con unas cuantas gráficas." },
+      { en: "I can write a SQL query that joins two tables and groups the result.", es: "Puedo escribir una consulta SQL que une dos tablas y agrupa el resultado." },
+      { en: "I can explain why a model is tested on data it never saw.", es: "Puedo explicar por qué un modelo se prueba con datos que nunca vio." },
+      { en: "I can train a model and say what its score does and doesn't tell me.", es: "Puedo entrenar un modelo y decir qué me dice su puntaje y qué no." },
+      { en: "I can put a model behind a small API that answers a request.", es: "Puedo poner un modelo detrás de una API pequeña que responde una petición." },
+    ],
     lead: {
       en: "Most real work lives here: getting data, cleaning it, examining it, applying tools that already exist, and putting the result where people can use it. Inventing clever algorithms is a small part of the job.",
       es: "Aquí vive casi todo el trabajo real: conseguir datos, limpiarlos, examinarlos, aplicar herramientas que ya existen y dejar el resultado donde la gente lo pueda usar. Inventar algoritmos ingeniosos es una parte pequeña del oficio.",
@@ -358,7 +430,7 @@ export const phases: Phase[] = [
         res: [
           r("Kaggle Learn: Pandas", "https://www.kaggle.com/learn/pandas", "course", "The library you'll live in. Short and practical.", "La librería en la que vas a vivir. Corto y práctico."),
           r("NumPy: absolute beginner's guide", "https://numpy.org/doc/stable/user/absolute_beginners.html", "docs", "Arrays, shapes and vectorised maths from zero.", "Arreglos, dimensiones y mates vectorizadas desde cero."),
-          r("W3Schools: SQL", "https://www.w3schools.com/sql/", "course", "Query basics in a try-it-yourself style.", "Lo básico de consultas, probando tú mismo."),
+          r("W3Schools: SQL", "https://www.w3schools.com/sql/", "course", "Query basics in a try-it-yourself style.", "Lo básico de consultas, probando tú mismo.", false, 2),
           r("Kaggle Learn: Intro to SQL", "https://www.kaggle.com/learn/intro-to-sql", "course", "Real queries against real tables in a notebook.", "Consultas reales sobre tablas reales en un notebook."),
         ],
       },
@@ -373,7 +445,7 @@ export const phases: Phase[] = [
         },
         res: [
           r("Kaggle Learn: Data Cleaning", "https://www.kaggle.com/learn/data-cleaning", "course", "The messy-data problems you'll actually hit.", "Los problemas de datos sucios con los que de verdad te vas a topar."),
-          r("Kaggle Learn: Feature Engineering", "https://www.kaggle.com/learn/feature-engineering", "course", "Turning raw columns into inputs a model can use.", "Convertir columnas crudas en entradas que un modelo pueda usar."),
+          r("Kaggle Learn: Feature Engineering", "https://www.kaggle.com/learn/feature-engineering", "course", "Turning raw columns into inputs a model can use.", "Convertir columnas crudas en entradas que un modelo pueda usar.", false, 2),
         ],
       },
       {
@@ -396,8 +468,8 @@ export const phases: Phase[] = [
         ],
         res: [
           r("Kaggle Learn: Data Visualization", "https://www.kaggle.com/learn/data-visualization", "course", "Which plot to reach for and how to make it.", "Qué gráfica usar y cómo hacerla.", true),
-          r("Python Data Science Handbook", "https://jakevdp.github.io/PythonDataScienceHandbook/", "book", "Full book online. Chapters 3 and 4 are the EDA core.", "El libro completo en línea. Los capítulos 3 y 4 son el núcleo de la exploración."),
-          r("Seaborn: official tutorial", "https://seaborn.pydata.org/tutorial.html", "docs", "Statistical plots in one line each.", "Gráficas estadísticas en una línea cada una."),
+          r("Python Data Science Handbook", "https://jakevdp.github.io/PythonDataScienceHandbook/", "book", "Full book online. Chapters 3 and 4 are the EDA core.", "El libro completo en línea. Los capítulos 3 y 4 son el núcleo de la exploración.", false, 3),
+          r("Seaborn: official tutorial", "https://seaborn.pydata.org/tutorial.html", "docs", "Statistical plots in one line each.", "Gráficas estadísticas en una línea cada una.", false, 2),
         ],
       },
       {
@@ -421,9 +493,9 @@ export const phases: Phase[] = [
         res: [
           r("Google: ML Crash Course", "https://developers.google.com/machine-learning/crash-course", "course", "About 15 hours, well produced, low maths barrier.", "Unas 15 horas, bien hecho, pocas mates de entrada.", true),
           r("Kaggle Learn: Intro to ML", "https://www.kaggle.com/learn/intro-to-machine-learning", "practice", "Train your first model in a browser notebook.", "Entrena tu primer modelo en un notebook del navegador."),
-          r("Microsoft: ML for Beginners", "https://github.com/microsoft/ML-For-Beginners", "course", "A gentle full curriculum with lessons and quizzes.", "Un currículo completo y amable, con lecciones y quices."),
-          r("scikit-learn: User Guide", "https://scikit-learn.org/stable/user_guide.html", "docs", "The library you'll build real models with.", "La librería con la que vas a construir modelos reales."),
-          r("Kaggle: Datasets", "https://www.kaggle.com/datasets", "practice", "Thousands of real datasets. Pick one you enjoy.", "Miles de datasets reales. Escoge uno que te guste."),
+          r("Microsoft: ML for Beginners", "https://github.com/microsoft/ML-For-Beginners", "course", "A gentle full curriculum with lessons and quizzes.", "Un currículo completo y amable, con lecciones y quices.", false, 2),
+          r("scikit-learn: User Guide", "https://scikit-learn.org/stable/user_guide.html", "docs", "The library you'll build real models with.", "La librería con la que vas a construir modelos reales.", false, 2),
+          r("Kaggle: Datasets", "https://www.kaggle.com/datasets", "practice", "Thousands of real datasets. Pick one you enjoy.", "Miles de datasets reales. Escoge uno que te guste.", false, 2),
         ],
       },
       {
@@ -440,7 +512,7 @@ export const phases: Phase[] = [
         },
         res: [
           r("Kaggle Learn: Intro to AI Ethics", "https://www.kaggle.com/learn/intro-to-ai-ethics", "course", "Bias, fairness and auditing a model, hands-on.", "Sesgo, equidad y auditoría de un modelo, con práctica."),
-          r("fast.ai: Practical Data Ethics", "https://ethics.fast.ai/", "course", "A full course on real-world consequences.", "Un curso completo sobre consecuencias en el mundo real."),
+          r("fast.ai: Practical Data Ethics", "https://ethics.fast.ai/", "course", "A full course on real-world consequences.", "Un curso completo sobre consecuencias en el mundo real.", false, 3),
         ],
       },
       {
@@ -464,9 +536,9 @@ export const phases: Phase[] = [
         res: [
           r("Google MLCC: Production ML Systems", "https://developers.google.com/machine-learning/crash-course/production-ml-systems", "read", "What changes once a model leaves the notebook.", "Qué cambia cuando un modelo sale del notebook.", true),
           r("FastAPI: official docs", "https://fastapi.tiangolo.com/", "docs", "A Python function becomes an API endpoint in about ten lines.", "Una función de Python se vuelve un endpoint en unas diez líneas."),
-          r("Docker: Get Started", "https://docs.docker.com/get-started/", "docs", "Containers, so “works on my machine” stops being a problem.", "Contenedores, para que “en mi máquina funciona” deje de ser un problema."),
-          r("MLOps Zoomcamp", "https://github.com/DataTalksClub/mlops-zoomcamp", "course", "Experiment tracking, pipelines, deployment, monitoring.", "Seguimiento de experimentos, pipelines, despliegue, monitoreo."),
-          r("Made With ML", "https://madewithml.com/", "course", "Design, build, deploy and iterate on a production ML system.", "Diseña, construye, despliega e itera un sistema de ML en producción."),
+          r("Docker: Get Started", "https://docs.docker.com/get-started/", "docs", "Containers, so “works on my machine” stops being a problem.", "Contenedores, para que “en mi máquina funciona” deje de ser un problema.", false, 2),
+          r("MLOps Zoomcamp", "https://github.com/DataTalksClub/mlops-zoomcamp", "course", "Experiment tracking, pipelines, deployment, monitoring.", "Seguimiento de experimentos, pipelines, despliegue, monitoreo.", false, 3),
+          r("Made With ML", "https://madewithml.com/", "course", "Design, build, deploy and iterate on a production ML system.", "Diseña, construye, despliega e itera un sistema de ML en producción.", false, 3),
         ],
       },
       {
@@ -488,10 +560,10 @@ export const phases: Phase[] = [
         ],
         res: [
           r("Chroma: docs", "https://docs.trychroma.com/", "docs", "The easiest vector database to run on your laptop.", "La base de datos vectorial más fácil de correr en tu portátil.", true),
-          r("Pinecone: Learn", "https://www.pinecone.io/learn/", "read", "Vendor-written but excellent explainers on embeddings and search.", "Escritos por una empresa, pero explicaciones excelentes de embeddings y búsqueda."),
-          r("Sentence Transformers", "https://sbert.net/", "tool", "Make embeddings locally with a few lines of Python.", "Crea embeddings en local con unas pocas líneas de Python."),
-          r("FAISS: wiki", "https://github.com/facebookresearch/faiss/wiki", "docs", "Meta's similarity-search library and a tour of ANN indexes.", "La librería de búsqueda por similitud de Meta y un recorrido por los índices ANN."),
-          r("pgvector", "https://github.com/pgvector/pgvector", "tool", "Vector search inside Postgres. Often all you need.", "Búsqueda vectorial dentro de Postgres. Muchas veces es todo lo que necesitas."),
+          r("Pinecone: Learn", "https://www.pinecone.io/learn/", "read", "Vendor-written but excellent explainers on embeddings and search.", "Escritos por una empresa, pero explicaciones excelentes de embeddings y búsqueda.", false, 2),
+          r("Sentence Transformers", "https://sbert.net/", "tool", "Make embeddings locally with a few lines of Python.", "Crea embeddings en local con unas pocas líneas de Python.", false, 2),
+          r("FAISS: wiki", "https://github.com/facebookresearch/faiss/wiki", "docs", "Meta's similarity-search library and a tour of ANN indexes.", "La librería de búsqueda por similitud de Meta y un recorrido por los índices ANN.", false, 3),
+          r("pgvector", "https://github.com/pgvector/pgvector", "tool", "Vector search inside Postgres. Often all you need.", "Búsqueda vectorial dentro de Postgres. Muchas veces es todo lo que necesitas.", false, 3),
         ],
       },
     ],
@@ -502,6 +574,13 @@ export const phases: Phase[] = [
     title: { en: "Deep learning", es: "Deep learning" },
     short: { en: "Deep learning", es: "Deep learning" },
     when: { en: "After 03", es: "Después de 03" },
+    time: { en: "3 to 4 months", es: "3 a 4 meses" },
+    check: [
+      { en: "I can explain what one layer computes: weights, bias, activation.", es: "Puedo explicar qué calcula una capa: pesos, sesgo, activación." },
+      { en: "I can describe gradient descent and backpropagation in my own words.", es: "Puedo describir el descenso de gradiente y la retropropagación con mis palabras." },
+      { en: "I can train a small network and read what its loss curve is telling me.", es: "Puedo entrenar una red pequeña y leer lo que me dice su curva de pérdida." },
+      { en: "I can say why one kind of network suits images and another suits text.", es: "Puedo decir por qué un tipo de red sirve para imágenes y otro para texto." },
+    ],
     lead: {
       en: "Deep learning stacks many simple functions so the output of one layer feeds the next. That lets a model learn patterns far too complex for one formula. Vision models and language models are the same idea arranged in different shapes.",
       es: "El deep learning apila muchas funciones simples para que la salida de una capa alimente la siguiente. Así un modelo aprende patrones demasiado complejos para una sola fórmula. Los modelos de visión y los de lenguaje son la misma idea acomodada de formas distintas.",
@@ -535,8 +614,8 @@ export const phases: Phase[] = [
         ],
         res: [
           r("3Blue1Brown: Neural Networks", "https://www.3blue1brown.com/topics/neural-networks", "video", "The best visual explanation of neurons and backprop.", "La mejor explicación visual de neuronas y retropropagación.", true),
-          r("Andrej Karpathy: Zero to Hero", "https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ", "video", "Build a network from scratch. Code along, don't just watch.", "Construye una red desde cero. Programa a la par, no solo mires."),
-          r("Andrew Ng: Deep Learning Specialization", "https://www.deeplearning.ai/courses/deep-learning-specialization/", "course", "The structured course once the intuition lands. Free to audit.", "El curso estructurado cuando ya tengas la intuición. Gratis como oyente."),
+          r("Andrej Karpathy: Zero to Hero", "https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ", "video", "Build a network from scratch. Code along, don't just watch.", "Construye una red desde cero. Programa a la par, no solo mires.", false, 2),
+          r("Andrew Ng: Deep Learning Specialization", "https://www.deeplearning.ai/courses/deep-learning-specialization/", "course", "The structured course once the intuition lands. Free to audit.", "El curso estructurado cuando ya tengas la intuición. Gratis como oyente.", false, 3),
         ],
       },
       {
@@ -550,7 +629,7 @@ export const phases: Phase[] = [
         body: { en: "Built for images, where meaning lives in patches of nearby pixels.", es: "Hecha para imágenes, donde el significado vive en parches de píxeles cercanos." },
         res: [
           r("fast.ai: Practical Deep Learning", "https://course.fast.ai/", "course", "You train a working image classifier in lesson one.", "Entrenas un clasificador de imágenes que funciona desde la primera lección.", true),
-          r("Stanford CS231n: Notes", "https://cs231n.github.io/", "read", "The classic deep dive on CNNs.", "La inmersión clásica en las CNN."),
+          r("Stanford CS231n: Notes", "https://cs231n.github.io/", "read", "The classic deep dive on CNNs.", "La inmersión clásica en las CNN.", false, 3),
         ],
       },
       {
@@ -564,7 +643,7 @@ export const phases: Phase[] = [
         body: { en: "For data where order matters: text, speech, time series.", es: "Para datos donde el orden importa: texto, voz, series de tiempo." },
         res: [
           r("StatQuest: RNNs & LSTMs", "https://www.youtube.com/watch?v=AsNTP8Kwu80", "video", "Beginner-paced explanation of memory in networks.", "Explicación a ritmo de principiante de la memoria en las redes."),
-          r("colah's blog: Understanding LSTMs", "https://colah.github.io/posts/2015-08-Understanding-LSTMs/", "read", "The famous illustrated write-up.", "El famoso artículo ilustrado."),
+          r("colah's blog: Understanding LSTMs", "https://colah.github.io/posts/2015-08-Understanding-LSTMs/", "read", "The famous illustrated write-up.", "El famoso artículo ilustrado.", false, 2),
         ],
       },
       {
@@ -581,7 +660,7 @@ export const phases: Phase[] = [
         },
         res: [
           r("3Blue1Brown: But what is a GPT?", "https://www.youtube.com/watch?v=wjZofJX0v4M", "video", "Visual intro to transformers and attention.", "Introducción visual a los transformers y la atención.", true),
-          r("The Illustrated Transformer", "https://jalammar.github.io/illustrated-transformer/", "read", "Picture-by-picture walkthrough of the architecture.", "Recorrido imagen por imagen de la arquitectura."),
+          r("The Illustrated Transformer", "https://jalammar.github.io/illustrated-transformer/", "read", "Picture-by-picture walkthrough of the architecture.", "Recorrido imagen por imagen de la arquitectura.", false, 2),
           r("Hugging Face: NLP Course", "https://huggingface.co/learn/nlp-course", "course", "Use real transformer models in code.", "Usa transformers reales desde el código."),
         ],
       },
@@ -604,10 +683,10 @@ export const phases: Phase[] = [
           t("Explore vs exploit", "Take the known reward, or try something that might pay more.", "Explorar vs. explotar", "Tomar la recompensa conocida o probar algo que podría dar más."),
         ],
         res: [
-          r("Hugging Face: Deep RL Course", "https://huggingface.co/learn/deep-rl-course", "course", "Hands-on from unit one in free Colab notebooks.", "Práctico desde la primera unidad, en notebooks gratis de Colab.", true),
-          r("OpenAI: Spinning Up in Deep RL", "https://spinningup.openai.com/", "read", "Theory with readable implementations. After the HF course.", "Teoría con implementaciones legibles. Después del curso de HF."),
-          r("Gymnasium", "https://gymnasium.farama.org/", "tool", "Standard practice environments, from cartpole to Atari.", "Entornos de práctica estándar, desde cartpole hasta Atari."),
-          r("Sutton & Barto: RL, an Introduction", "http://incompleteideas.net/book/the-book-2nd.html", "book", "The field's textbook. Dense, but the reference.", "El libro de texto del área. Denso, pero es la referencia."),
+          r("Hugging Face: Deep RL Course", "https://huggingface.co/learn/deep-rl-course", "course", "Hands-on from unit one in free Colab notebooks.", "Práctico desde la primera unidad, en notebooks gratis de Colab.", true, 2),
+          r("OpenAI: Spinning Up in Deep RL", "https://spinningup.openai.com/", "read", "Theory with readable implementations. After the HF course.", "Teoría con implementaciones legibles. Después del curso de HF.", false, 3),
+          r("Gymnasium", "https://gymnasium.farama.org/", "tool", "Standard practice environments, from cartpole to Atari.", "Entornos de práctica estándar, desde cartpole hasta Atari.", false, 3),
+          r("Sutton & Barto: RL, an Introduction", "http://incompleteideas.net/book/the-book-2nd.html", "book", "The field's textbook. Dense, but the reference.", "El libro de texto del área. Denso, pero es la referencia.", false, 3),
         ],
       },
     ],
@@ -618,6 +697,14 @@ export const phases: Phase[] = [
     title: { en: "Working with LLMs", es: "Trabajar con LLMs" },
     short: { en: "LLMs", es: "LLMs" },
     when: { en: "Last, on purpose", es: "Al final, a propósito" },
+    time: { en: "1 to 2 months", es: "1 a 2 meses" },
+    check: [
+      { en: "I can explain what a token is, and why a model can say something false with full confidence.", es: "Puedo explicar qué es un token y por qué un modelo puede decir algo falso con total seguridad." },
+      { en: "I can write a prompt, test it on several inputs and improve it.", es: "Puedo escribir un prompt, probarlo con varias entradas y mejorarlo." },
+      { en: "I can call a model from my own code and use its answer.", es: "Puedo llamar a un modelo desde mi propio código y usar su respuesta." },
+      { en: "I can explain what giving a model my own documents adds, and when I'd do it.", es: "Puedo explicar qué aporta darle a un modelo mis propios documentos, y cuándo lo haría." },
+      { en: "I check an AI's answer against a source before I trust it.", es: "Reviso la respuesta de una IA contra una fuente antes de confiar en ella." },
+    ],
     lead: {
       en: "LLMs are daily tools for learning and building. They come last because they're most useful once you know enough to catch them being wrong. Many apps with a chatbot are a model plus a prompt.",
       es: "Los LLMs son herramientas diarias para aprender y construir. Van al final porque sirven más cuando ya sabes lo suficiente para pillarlos equivocándose. Muchas apps con chatbot son un modelo más un prompt.",
@@ -642,7 +729,7 @@ export const phases: Phase[] = [
         },
         res: [
           r("Anthropic: Learn", "https://www.anthropic.com/learn", "read", "Guides on getting useful, accurate answers.", "Guías para sacar respuestas útiles y precisas."),
-          r("DeepLearning.AI: Short Courses", "https://www.deeplearning.ai/short-courses/", "course", "Hour-long courses on building with LLMs.", "Cursos de una hora sobre construir con LLMs."),
+          r("DeepLearning.AI: Short Courses", "https://www.deeplearning.ai/short-courses/", "course", "Hour-long courses on building with LLMs.", "Cursos de una hora sobre construir con LLMs.", false, 2),
         ],
       },
       {
@@ -656,7 +743,7 @@ export const phases: Phase[] = [
         },
         res: [
           r("Anthropic: Prompt Engineering", "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview", "docs", "Clear instructions, examples, step-by-step reasoning.", "Instrucciones claras, ejemplos, razonamiento paso a paso.", true),
-          r("Prompting Guide", "https://www.promptingguide.ai/", "read", "Thorough reference of techniques with examples.", "Referencia completa de técnicas, con ejemplos."),
+          r("Prompting Guide", "https://www.promptingguide.ai/", "read", "Thorough reference of techniques with examples.", "Referencia completa de técnicas, con ejemplos.", false, 2),
         ],
       },
       {
@@ -681,9 +768,9 @@ export const phases: Phase[] = [
         ],
         res: [
           r("Anthropic: Get Started", "https://docs.claude.com/en/docs/get-started", "docs", "Your first API call in Python.", "Tu primera llamada a la API en Python.", true),
-          r("Anthropic: Messages API reference", "https://platform.claude.com/docs/en/api/messages", "docs", "Every parameter. Keep it open while you build.", "Todos los parámetros. Tenla abierta mientras construyes."),
-          r("W3Schools: Python Requests", "https://www.w3schools.com/python/module_requests.asp", "course", "How code sends and receives data over HTTP.", "Cómo el código envía y recibe datos por HTTP."),
-          r("Ollama", "https://ollama.com/", "tool", "Run an open model locally. No key, no bill.", "Corre un modelo abierto en local. Sin llave, sin factura."),
+          r("Anthropic: Messages API reference", "https://platform.claude.com/docs/en/api/messages", "docs", "Every parameter. Keep it open while you build.", "Todos los parámetros. Tenla abierta mientras construyes.", false, 3),
+          r("W3Schools: Python Requests", "https://www.w3schools.com/python/module_requests.asp", "course", "How code sends and receives data over HTTP.", "Cómo el código envía y recibe datos por HTTP.", false, 2),
+          r("Ollama", "https://ollama.com/", "tool", "Run an open model locally. No key, no bill.", "Corre un modelo abierto en local. Sin llave, sin factura.", false, 2),
         ],
       },
       {
@@ -706,9 +793,9 @@ export const phases: Phase[] = [
         ],
         res: [
           r("Anthropic: Context windows", "https://platform.claude.com/docs/en/build-with-claude/context-windows", "docs", "What counts toward the window.", "Qué cuenta dentro de la ventana.", true),
-          r("Anthropic: Prompt caching", "https://platform.claude.com/docs/en/build-with-claude/prompt-caching", "docs", "How prefix caching works and what invalidates it.", "Cómo funciona la caché de prefijos y qué la invalida."),
-          r("Anthropic: Batch processing", "https://platform.claude.com/docs/en/build-with-claude/batch-processing", "docs", "Async jobs at lower cost.", "Trabajos asíncronos a menor costo."),
-          r("Anthropic: Effective context engineering", "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents", "read", "Why curating context beats stuffing it.", "Por qué escoger el contexto le gana a llenarlo."),
+          r("Anthropic: Prompt caching", "https://platform.claude.com/docs/en/build-with-claude/prompt-caching", "docs", "How prefix caching works and what invalidates it.", "Cómo funciona la caché de prefijos y qué la invalida.", false, 3),
+          r("Anthropic: Batch processing", "https://platform.claude.com/docs/en/build-with-claude/batch-processing", "docs", "Async jobs at lower cost.", "Trabajos asíncronos a menor costo.", false, 3),
+          r("Anthropic: Effective context engineering", "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents", "read", "Why curating context beats stuffing it.", "Por qué escoger el contexto le gana a llenarlo.", false, 2),
         ],
       },
       {
@@ -731,9 +818,9 @@ export const phases: Phase[] = [
         ],
         res: [
           r("Anthropic: Building effective agents", "https://www.anthropic.com/engineering/building-effective-agents", "read", "Workflows vs agents and the patterns worth knowing.", "Flujos de trabajo vs. agentes y los patrones que vale la pena conocer.", true),
-          r("Hugging Face: AI Agents Course", "https://huggingface.co/learn/agents-course", "course", "Build the think-act-observe loop yourself.", "Construye tú mismo el ciclo pensar-actuar-observar."),
+          r("Hugging Face: AI Agents Course", "https://huggingface.co/learn/agents-course", "course", "Build the think-act-observe loop yourself.", "Construye tú mismo el ciclo pensar-actuar-observar.", false, 2),
           r("Anthropic: Tool use", "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview", "docs", "Defining tools and handling the model's calls.", "Definir herramientas y manejar las llamadas del modelo."),
-          r("Model Context Protocol", "https://modelcontextprotocol.io/", "docs", "An open standard for plugging tools and data into models.", "Un estándar abierto para conectar herramientas y datos a los modelos."),
+          r("Model Context Protocol", "https://modelcontextprotocol.io/", "docs", "An open standard for plugging tools and data into models.", "Un estándar abierto para conectar herramientas y datos a los modelos.", false, 3),
         ],
       },
     ],
