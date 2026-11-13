@@ -219,6 +219,24 @@ export const work = {
       },
       {
         when: "2026",
+        title: { en: "dither-model", es: "dither-model" },
+        detail: {
+          en: "Open-source library: any STL as 1-bit pixel art that turns on the page, drawn by a small software renderer with no WebGL, plus a CLI that shrinks big CAD files. On npm. It's the Steam Deck on this site.",
+          es: "Librería de código abierto: cualquier STL como pixel art de 1 bit que gira en la página, dibujado por un pequeño renderizador por software sin WebGL, más un CLI que reduce archivos CAD grandes. En npm. Es la Steam Deck de este sitio.",
+        },
+        href: "https://github.com/KanuSaru/dither-model",
+      },
+      {
+        when: "2026",
+        title: { en: "dither-player", es: "dither-player" },
+        detail: {
+          en: "Open-source library: a small music player for personal sites, with a 1-bit visualizer and a tab for a playlist. A custom element and a React component. On npm. It's the player on this site.",
+          es: "Librería de código abierto: un reproductor de música pequeño para sitios personales, con visualizador de 1 bit y una pestaña para una playlist. Un elemento web y un componente de React. En npm. Es el reproductor de este sitio.",
+        },
+        href: "https://github.com/KanuSaru/dither-player",
+      },
+      {
+        when: "2026",
         title: { en: "Living Dex Planner", es: "Living Dex Planner" },
         detail: {
           en: "Plans the fastest way to complete a Pokémon living dex across game generations, with PokéAPI.",
@@ -228,10 +246,10 @@ export const work = {
       },
       {
         when: "2026",
-        title: { en: "Valle Sombrío", es: "Valle Sombrío" },
+        title: { en: "Frostvale SQL", es: "Frostvale SQL" },
         detail: {
-          en: "A Halloween SQL challenge with a live leaderboard. FastAPI, Railway, GitHub Pages.",
-          es: "Un reto de SQL de Halloween con tabla de posiciones en vivo. FastAPI, Railway, GitHub Pages.",
+          en: "A yearly Christmas SQL competition set in Santa's workshop: fifteen challenges every December, with a live leaderboard, teams and classes. In English and Spanish. FastAPI, Railway, GitHub Pages.",
+          es: "Una competencia anual de SQL de Navidad en el taller de Santa: quince retos cada diciembre, con tabla de posiciones en vivo, equipos y clases. En inglés y español. FastAPI, Railway, GitHub Pages.",
         },
       },
       {

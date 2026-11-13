@@ -2,40 +2,94 @@
 title: Learning to code when AI can write it for you
 date: 2026-11-02
 tags: programming, learning, ai
-summary: An AI can hand you working code in seconds. That's exactly why learning to program now takes a few rules: what to ask it, what never to ask it, and how to tell if you're actually learning.
+summary: AI isn't replacing programmers, but it does change how you should learn. Pick a language for a reason, loop between syntax and projects, build without AI first, and use it as a tutor instead of a ghostwriter.
 ---
 
-An AI can write the function you're stuck on in a few seconds. It will usually work. And if you're learning, that's the problem: the struggle it just skipped was the part that teaches.
+AI is not replacing software engineers overnight. It's a tool, and a very good one: it takes the repetitive parts of the job, the boilerplate and the clean-up, off people who already know what they're doing.
 
-I teach programming, and I see the same thing every time. A student with an AI open can finish an exercise and still not be able to write the next one alone. The code got done; the learning didn't.
+That last part is the catch. Ask an AI for something in a language you've never touched, and when the code it hands you is broken, you won't know where. So you paste the error back, it guesses again, and the two of you go in circles. Nobody in that conversation can read the code.
 
-## What programming actually is
+When you can program, three things change:
 
-Typing code was never the hard part. The skill is:
+- you know what to ask for, so the AI actually speeds you up
+- you can tell when what it gave you is nonsense
+- you're not stuck when it's down, or when your credits run out
 
-- **breaking a problem down** into steps small enough to write
-- **reading code** and predicting what it does before running it
-- **debugging**: finding the line where what you believe and what's true split apart
+Often the bug is so small that reading the code yourself is faster than three rounds with a chatbot. You created two objects in the wrong order, and you can see it in ten seconds. The AI can't, because it's focused on the task and doesn't know everything you know about how you want it done.
 
-An AI does all three for you if you let it. So the rules below are about keeping those three for yourself.
+Someone who can code and uses AI well beats both the person who refuses to use it and the person who uses it blindly.
 
-## The rules
+## Pick a language for a reason
 
-**Try first, then ask.** Write your own attempt, even a broken one, before asking anything. A broken attempt shows you exactly what you don't understand yet, and that makes your question good.
+Before choosing a language, decide why you want to program. The field is huge, and different parts of it use different languages.
 
-**Ask for explanations, not solutions.** "Why does this loop never end?" teaches. "Write me a loop that does X" doesn't. A good trick: tell it "don't give me the code, give me a hint."
+There's no bad language. There are languages that fit a job and languages that don't. For machine learning and data science that means Python: the libraries are there, and it's quick to try ideas in. You wouldn't write a neural network pipeline in C, and you wouldn't write an operating system in Python.
 
-**Give the bug twenty minutes.** Read the error from the bottom up, print the values, shrink the problem. Most of the time you'll find it. When you don't, ask the AI to explain the error, not to fix it.
+Ignore anyone who tells you their favorite language is the best one. Best for what?
 
-**Type it, don't paste it.** If you do take code from an AI, type it out by hand. You'll notice the parts you don't understand, because your fingers will stop.
+## The loop
+
+Learning to program is a loop with two steps:
+
+1. **Learn some syntax.**
+2. **Build something with it.**
+
+Then back to step 1. There's no secret beyond that.
+
+### Learning syntax
+
+Syntax is the rules of a language: how you write a loop, a function, a class. Every language has its own, so even someone who knows five languages has to learn the rules of a sixth. What they have is speed. If you know Python, JavaScript comes easier, because both are scripting languages. If you know what a pointer is from C++, Rust's smart pointers make sense sooner.
+
+Use a free site with exercises, like W3Schools or Codecademy, or just play with the language in your editor. You're ready to move on when you can declare functions, create objects, join strings and use the basic data structures without looking at a tutorial.
+
+Learning a language is also learning:
+
+- **what it's for** (TypeScript for web apps, Rust for engines and operating systems)
+- **why it's built the way it is** (one runs on an engine that interprets it, the other compiles down to the machine's own instructions)
+- **what that costs** (what's fast, what's slow, and when it matters)
+
+If you commit to a language, look under the hood too: how function calls use the stack, why global variables cause trouble, how memory gets handed out and taken back. It's optional, and it will quietly make you better, because you'll notice when you're writing something wasteful. It's why computer science courses teach theory before building.
+
+### Building projects
+
+Don't know what to build? This is a great thing to ask an AI:
+
+```
+For Python, give me 3 project ideas at each level: beginner,
+intermediate and advanced. For each one, list the features
+to build and the concepts I'll learn.
+```
+
+You'll get nine projects, each with its features and what it teaches: a to-do list that saves to a file, a number guessing game, and upwards from there. Build all nine, start to finish.
+
+And here's the rule that matters: **build them without AI help.** The industry does lean on AI to write code now, and companies want more output than ever. That's exactly why you need the habit of thinking for yourself first. An AI is only as good as the person steering it.
+
+When you get stuck, these have an answer for almost everything:
+
+- **W3Schools**: syntax with exercises
+- **GeeksforGeeks**: an explanation of nearly every concept
+- **Stack Overflow**: someone already asked your question, and got a blunt answer
+- **Codecademy**: guided, step by step
+
+## If you do use AI while learning
+
+I teach programming, and I see the same thing every time: a student with an AI open finishes the exercise and still can't write the next one alone. The code got done; the learning didn't. A few rules keep that from happening.
+
+**Try first, then ask.** A broken attempt shows you exactly what you don't understand, and that makes your question good.
+
+**Ask for explanations, not solutions.** "Why does this loop never end?" teaches. "Write me a loop that does X" doesn't. Try telling it: "don't give me the code, give me a hint."
+
+**Give the bug twenty minutes.** Read the error from the bottom up, print the values, shrink the problem. Most of the time you'll find it.
 
 **The line-by-line test.** Before keeping any code, explain every line out loud. If there's a line you can't explain, you're not done.
 
-## When to use it freely
+## Things to remember
 
-None of this means avoiding AI. It's the best tutor many of us will ever have: patient, available at 3 a.m., happy to explain a concept five different ways or quiz you on it.
-
-And once you can read and debug what it gives you, use it for everything. At that point it's a power tool in the hands of someone who knows what they're building. The point of learning first is to get there, not to stay away from it.
+- **Impostor syndrome is normal.** Everyone feels it. Learning the next thing is what quiets it, for a while.
+- **It's your path.** Don't measure yourself against other people's.
+- **Ask the small questions.** An AI is a tutor that's awake at 3 a.m. and never gets tired of "why?".
+- **Don't slide into copy and paste.** The moment you're pasting code you don't understand, you've stopped learning.
+- **Find people.** A community of others who are learning pulls you up with it.
 
 ## The short version
 

@@ -30,6 +30,41 @@ function LockIcon({ open }: { open: boolean }) {
   );
 }
 
+// The wax seal on the envelope. It's drawn twice, each copy cut to one side of a jagged
+// crack, so when the riddle is solved the two halves can fall apart.
+const CRACK = "32,-2 29,10 35,19 28,29 34,38 29,48 33,56 31,66";
+function WaxSeal() {
+  const wax = (
+    <>
+      <path d="M32 3c5 0 7 3 12 4s9 1 11 6 1 8 3 12 5 8 3 13-6 6-8 10-2 9-7 11-8 0-13 1-9 4-14 2-6-6-10-9-8-5-9-10 2-8 2-13-3-9 0-13 8-4 12-7 5-7 10-7c3 0 5-1 8 0z" />
+      <circle className="seal-ring" cx="32" cy="32" r="19.5" />
+      <text className="seal-letter" x="32" y="43" textAnchor="middle">
+        K
+      </text>
+    </>
+  );
+  return (
+    <svg className="seal" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <clipPath id="seal-left">
+          <polygon points={`-4,-4 ${CRACK} -4,68`} />
+        </clipPath>
+        <clipPath id="seal-right">
+          <polygon points={`68,-4 ${CRACK} 68,68`} />
+        </clipPath>
+      </defs>
+      <g className="seal-half seal-half-left" clipPath="url(#seal-left)">
+        {wax}
+      </g>
+      <g className="seal-half seal-half-right" clipPath="url(#seal-right)">
+        {wax}
+      </g>
+    </svg>
+  );
+}
+
+const BREAK_MS = 950; // how long the seal takes to fall off
+
 export function JournalPage() {
   const t = useT();
   const { lang } = useLang();
@@ -37,6 +72,7 @@ export function JournalPage() {
   const [answer, setAnswer] = useState("");
   const [busy, setBusy] = useState(false);
   const [wrong, setWrong] = useState(false);
+  const [breaking, setBreaking] = useState(false);
 
   const hasRiddle = Boolean(riddle.en || riddle.es) && sealed.locks.length > 0;
   const latest = sealed.entries[0]?.date;
@@ -75,8 +111,14 @@ export function JournalPage() {
           lang: secret.lang ?? null,
         });
       }
+      // the seal breaks first, then the letters come out (at once with reduced motion)
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setBreaking(true);
+        await new Promise((done) => setTimeout(done, BREAK_MS));
+      }
       opened = list;
       setEntries(list);
+      setBreaking(false);
       setAnswer("");
     } catch {
       setWrong(true);
@@ -98,7 +140,7 @@ export function JournalPage() {
       </header>
 
       {!entries && (
-        <section className="panel locked riddle" aria-labelledby="riddle-title">
+        <section className="panel riddle" aria-labelledby="riddle-title">
           <h2 id="riddle-title" className="panel-title">
             {t(j.riddle)}
             <LockIcon open={false} />
@@ -108,7 +150,14 @@ export function JournalPage() {
             <p className="empty">{t(j.soon)}</p>
           ) : (
             <>
-              <blockquote className="riddle-text">{t(riddle)}</blockquote>
+              {/* a sealed envelope: the riddle is written on it, and the seal breaks when it's solved */}
+              <div className={`envelope ${breaking ? "is-opening" : ""}`}>
+                <svg className="envelope-flap" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <polyline points="0,0 50,100 100,0" />
+                </svg>
+                <WaxSeal />
+                <blockquote className="riddle-text">{t(riddle)}</blockquote>
+              </div>
               <form className="answer" onSubmit={submit} noValidate>
                 <label htmlFor="journal-answer">{t(j.answer)}</label>
                 <div className="answer-row">
@@ -127,7 +176,7 @@ export function JournalPage() {
                     aria-describedby="answer-hint answer-status"
                     aria-invalid={wrong || undefined}
                   />
-                  <button type="submit" disabled={busy || !answer.trim()}>
+                  <button type="submit" disabled={busy || breaking || !answer.trim()}>
                     {busy ? t(j.opening) : t(j.open)}
                   </button>
                 </div>
@@ -162,9 +211,10 @@ export function JournalPage() {
             </button>
           </div>
           {shown!.map((entry) => (
-            <article key={entry.group} className="panel entry" lang={entry.lang ?? undefined}>
-              <p className="readout entry-date">{formatDate(entry.date, lang)}</p>
-              {entry.title && <h2 className="panel-title">{entry.title}</h2>}
+            <article key={entry.group} className="letter" lang={entry.lang ?? undefined}>
+              <span className="tape letter-tape" aria-hidden="true" />
+              <p className="letter-date">{formatDate(entry.date, lang)}</p>
+              {entry.title && <h2 className="letter-title">{entry.title}</h2>}
               {entry.body.split(/\n\s*\n/).map((para, i) => (
                 <p key={i}>{para}</p>
               ))}

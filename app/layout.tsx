@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Archivo, Jacquard_24, VT323 } from "next/font/google";
+import { Archivo, Caveat, Jacquard_24, VT323 } from "next/font/google";
 import { config } from "@/content/site";
 import { pages, person, siteName, verification } from "@/content/seo";
 import { SITE } from "@/lib/seo";
@@ -16,6 +16,8 @@ import "./globals.css";
 const archivo = Archivo({ subsets: ["latin", "latin-ext"], axes: ["wdth"], display: "swap", variable: "--font-archivo" });
 const jacquard = Jacquard_24({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-jacquard" });
 const vt323 = VT323({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-vt323" });
+// Caveat is the handwriting of the journal's letters.
+const caveat = Caveat({ subsets: ["latin", "latin-ext"], display: "swap", variable: "--font-caveat" });
 
 // Defaults for every page; each page sets its own title, description, canonical address
 // and language links through lib/seo.tsx.
@@ -47,7 +49,7 @@ export const viewport: Viewport = { themeColor: "#131312", colorScheme: "dark" }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${archivo.variable} ${jacquard.variable} ${vt323.variable}`}>
+    <html lang="en" className={`${archivo.variable} ${jacquard.variable} ${vt323.variable} ${caveat.variable}`}>
       <body>
         <LangProvider>
           <Shell>{children}</Shell>

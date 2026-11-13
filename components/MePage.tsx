@@ -6,7 +6,7 @@ import { useT } from "@/lib/i18n";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 // the screen of the Steam Deck model, drawn dark (millimetres, the CAD file's units)
-const DECK_SCREEN: [number, number, number, number, number, number][] = [[-88, -49.4, -1, 88, 50.6, 1]];
+const DECK_SCREEN: [number, number, number, number, number, number][] = [[-87, -53.5, -1.5, 87, 53.5, 0.5]];
 
 function Panel({
   title,

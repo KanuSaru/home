@@ -127,6 +127,27 @@ function noteImage(note, lily) {
   );
 }
 
+// A page with its own preview image: [file name, small label, English title, Spanish title]
+const PAGES = [["learn", "Free route", "Learn machine learning", "Aprende machine learning"]];
+
+function pageImage([, label, title, second], lily) {
+  return frame(
+    h(
+      "div",
+      { style: { display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%", width: 720 } },
+      h("div", { style: { fontFamily: "Jacquard", fontSize: 96, lineHeight: 1, color: C.bone } }, "Kanu"),
+      h(
+        "div",
+        { style: { display: "flex", flexDirection: "column" } },
+        h("div", { style: { fontFamily: "VT323", fontSize: 34, color: C.ash } }, label),
+        h("div", { style: { fontFamily: "Archivo", fontWeight: 800, fontSize: 64, lineHeight: 1.05, color: C.bone, marginTop: 10 } }, title),
+        h("div", { style: { fontFamily: "Archivo", fontWeight: 700, fontSize: 34, lineHeight: 1.15, color: C.ash, marginTop: 14 } }, second),
+      ),
+    ),
+    h("img", { src: lily.src, width: lily.w * 0.7, height: lily.h * 0.7, style: { opacity: 0.85 } }),
+  );
+}
+
 async function main() {
   ({ createElement: h } = await import("react"));
   // next has no "exports" map, so plain Node needs the file name with .js
@@ -142,14 +163,14 @@ async function main() {
   };
 
   // every letter that appears, so each font only carries what it needs
-  const titles = all.flatMap((n) => [n.en?.title, n.es?.title]).filter(Boolean).join(" ");
+  const titles = [...all.flatMap((n) => [n.en?.title, n.es?.title]), ...PAGES.flatMap((p) => [p[2], p[3]])].filter(Boolean).join(" ");
   const fonts = [
     { name: "Jacquard", data: await googleFont("Jacquard 24", null, "Kanu"), weight: 400 },
     { name: "Archivo", data: await googleFont("Archivo", 700, `Erick Donado ${titles}`), weight: 700 },
     { name: "Archivo", data: await googleFont("Archivo", 800, titles || "a"), weight: 800 },
     {
       name: "VT323",
-      data: await googleFont("VT323", null, `${SITE} Notes · ${all.map((n) => dateLabel((n.en ?? n.es).date)).join(" ")}`),
+      data: await googleFont("VT323", null, `${SITE} Notes · ${all.map((n) => dateLabel((n.en ?? n.es).date)).join(" ")} ${PAGES.map((p) => p[1]).join(" ")}`),
       weight: 400,
     },
   ];
@@ -163,7 +184,8 @@ async function main() {
   fs.rmSync(OUT, { recursive: true, force: true });
   await write(path.join(OUT, "site.png"), siteImage(lily));
   for (const n of all) await write(path.join(OUT, "notes", `${n.slug}.png`), noteImage(n, lily));
-  console.log(`og: wrote ${1 + all.length} preview image(s) to public/og/`);
+  for (const p of PAGES) await write(path.join(OUT, `${p[0]}.png`), pageImage(p, lily));
+  console.log(`og: wrote ${1 + all.length + PAGES.length} preview image(s) to public/og/`);
 }
 
 main().catch((err) => {

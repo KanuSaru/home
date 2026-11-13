@@ -54,7 +54,8 @@ export function pageMeta(page: SeoPage, lang: Lang): Metadata {
       url,
       locale: locale[lang],
       alternateLocale: locale[lang === "en" ? "es" : "en"],
-      images: ogImage("og/site.png", siteName),
+      // a page's own image if scripts/og.mjs drew one (og/learn.png), or the site's
+      images: ogImage(`og/${page}.png`, title) ?? ogImage("og/site.png", siteName),
     },
     ...(page === "journal" ? { robots: { index: false, follow: false } } : {}),
   };

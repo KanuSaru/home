@@ -35,7 +35,7 @@ export const music = {
   // e.g. { title: "Night bus", file: "night-bus.mp3" }
   tracks: [] as { title: string; file: string }[],
   // Songs you like: the share link of a public playlist on Apple Music, Spotify or YouTube.
-  playlist: "",
+  playlist: "https://open.spotify.com/playlist/798f6LNrRS7Z9fJfSpMWgO",
 };
 
 // The line under the Kanu wordmark
@@ -240,12 +240,12 @@ export const projects: Project[] = [
     },
   },
   {
-    name: "Valle Sombrío",
+    name: "Frostvale SQL",
     kind: { en: "Game", es: "Juego" },
     year: "2026",
     text: {
-      en: "A Halloween SQL challenge with a live leaderboard.",
-      es: "Un reto de SQL de Halloween con tabla de posiciones en vivo.",
+      en: "A yearly Christmas SQL competition with a live leaderboard.",
+      es: "Una competencia anual de SQL de Navidad con tabla de posiciones en vivo.",
     },
   },
   {

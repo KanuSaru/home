@@ -135,6 +135,9 @@ To show another STL somewhere, convert it first: `npx dither-model thing.stl -o 
 
 ## The journal
 
+The page shows a sealed envelope with the riddle written on it. When a visitor solves
+it, the wax seal breaks and the entries appear as handwritten letters (the Caveat font).
+
 Entries are sealed on your computer and only the sealed file is published.
 
 1. Write your riddle in `content/journal.ts`, in English and Spanish.
