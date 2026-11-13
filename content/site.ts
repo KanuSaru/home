@@ -35,7 +35,7 @@ export const music = {
   // e.g. { title: "Night bus", file: "night-bus.mp3" }
   tracks: [] as { title: string; file: string }[],
   // Songs you like: the share link of a public playlist on Apple Music, Spotify or YouTube.
-  playlist: "https://open.spotify.com/playlist/798f6LNrRS7Z9fJfSpMWgO",
+  playlist: "",
 };
 
 // The line under the Kanu wordmark
@@ -94,6 +94,12 @@ export const widgets = {
     title: { en: "Music", es: "Música" },
     // the player's own words (tabs, buttons…) come from dither-player in both languages
     favesText: { en: "Songs I keep coming back to.", es: "Canciones a las que siempre vuelvo." },
+    // without tracks of my own, the widget lists what I've played most this month (Last.fm)
+    topText: { en: "What I've played most this month.", es: "Lo que más he escuchado este mes." },
+    topEmpty: { en: "Nothing played yet this month.", es: "Todavía nada este mes." },
+    plays: { en: "{n} plays", es: "{n} veces" },
+    playlist: { en: "My playlist on Spotify", es: "Mi playlist en Spotify" },
+    playlistOther: { en: "My playlist", es: "Mi playlist" },
   },
   updates: {
     title: { en: "Updates", es: "Cambios" },

@@ -23,7 +23,7 @@ function Panel({ title, children, example }: { title: string; children: React.Re
 }
 
 /** Poll a JSON endpoint; returns undefined while loading, null on failure. */
-function usePoll<T>(url: string | null, everyMs: number) {
+export function usePoll<T>(url: string | null, everyMs: number) {
   const [data, setData] = useState<T | null | undefined>(undefined);
   useEffect(() => {
     if (!url) return;

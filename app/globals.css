@@ -2442,3 +2442,38 @@ main {
 .learn .empty.wide {
   grid-column: 1 / -1;
 }
+
+/* the songs I've played most this month, when there are no tracks of my own */
+.top-songs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.top-songs li {
+  display: grid;
+  grid-template-columns: 1.1rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.top-n {
+  font-family: var(--data);
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--ash);
+}
+
+.top-text {
+  display: grid;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+.top-text a {
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}

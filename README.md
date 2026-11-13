@@ -98,8 +98,10 @@ A line starting with `::` places a live figure. These exist (see `components/Not
 
 ## Music player
 
-The **Music** widget in the sidebar has two tabs, and it keeps playing while visitors
-move between pages.
+While `music.tracks` is empty, the **Music** widget lists the five songs you've played
+most this month (from Last.fm, the same account as "Now playing") with a link to
+`music.playlist`. Once you add tracks of your own it becomes the player below: two
+tabs, and it keeps playing while visitors move between pages.
 
 - **Mine**: your own tracks. Put the files (mp3 or m4a) in `public/music/` and list
   them in `music.tracks` at the top of `content/site.ts`, in the order they should play:

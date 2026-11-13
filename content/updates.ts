@@ -10,8 +10,8 @@ export const updates: Update[] = [
   {
     date: "2026-11-10",
     text: {
-      en: "The journal is now a sealed envelope: solve the riddle, the wax seal breaks, and the entries read as handwritten letters. Also: a playlist in the music player, and longer versions of the two notes for Learn ML.",
-      es: "El diario ahora es un sobre sellado: resuelve el acertijo, el sello de cera se rompe y las entradas se leen como cartas escritas a mano. Además: una playlist en el reproductor de música y versiones más completas de las dos notas de Aprende ML.",
+      en: "The journal is now a sealed envelope: solve the riddle, the wax seal breaks, and the entries read as handwritten letters. Also: the songs I've played most this month in the Music widget, and longer versions of the two notes for Learn ML.",
+      es: "El diario ahora es un sobre sellado: resuelve el acertijo, el sello de cera se rompe y las entradas se leen como cartas escritas a mano. Además: las canciones que más he escuchado este mes en el widget de Música y versiones más completas de las dos notas de Aprende ML.",
     },
   },
   {
