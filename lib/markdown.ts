@@ -3,9 +3,14 @@
 //   ## and ### headings, paragraphs, - and 1. lists, > quotes, ``` code blocks,
 //   **bold**, *italic*, `code`, [links](https://…), ![images](src) and --- rules.
 //
+// Maths is written as LaTeX and typeset with KaTeX while the site builds:
+//   $x_i$ inside a sentence, and $$ … $$ on its own line(s) for a centered formula.
+//
 // A line that starts with :: is a live figure instead of text, for example
 //   ::moon date=2026-11-17 relief=0 caption="First quarter, without relief"
 // It becomes { type: "widget", name: "moon", props: { date, relief, caption } }.
+
+import katex from "katex";
 
 export type Block = { type: "html"; html: string } | { type: "widget"; name: string; props: Record<string, string> };
 
@@ -16,10 +21,29 @@ const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 // paths that start with / get the site's base path (/home on GitHub Pages, nothing on a custom domain)
 const withBase = (url: string) => (url.startsWith("/") ? (process.env.NEXT_PUBLIC_BASE_PATH ?? "") + url : url);
 
+// "html" is for the site (needs KaTeX's stylesheet); "mathml" is plain markup for feed readers
+export type MathOutput = "html" | "mathml";
+let mathOutput: MathOutput = "html";
+
+function tex(source: string, display: boolean): string {
+  try {
+    return katex.renderToString(source, {
+      displayMode: display,
+      output: mathOutput === "mathml" ? "mathml" : "htmlAndMathml",
+      throwOnError: false,
+      strict: "ignore",
+    });
+  } catch {
+    return `<code>${esc(source)}</code>`;
+  }
+}
+
 function inline(text: string): string {
-  // pull code spans out first so nothing inside them is formatted
+  // pull code spans and maths out first so nothing inside them is formatted
   const codes: string[] = [];
+  const maths: string[] = [];
   let s = text.replace(/`([^`]+)`/g, (_, c) => `\u0000${codes.push(esc(c)) - 1}\u0000`);
+  s = s.replace(/\$([^$\n]+?)\$/g, (_, m) => `\u0001${maths.push(tex(m, false)) - 1}\u0001`);
   s = esc(s);
   s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) => `<img src="${withBase(src)}" alt="${alt}" loading="lazy">`);
   s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label, href) => {
@@ -28,6 +52,7 @@ function inline(text: string): string {
   });
   s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   s = s.replace(/(^|[^*\w])\*([^*\s][^*]*?)\*(?!\w)/g, "$1<em>$2</em>");
+  s = s.replace(/\u0001(\d+)\u0001/g, (_, i) => maths[Number(i)]);
   return s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${codes[Number(i)]}</code>`);
 }
 
@@ -46,7 +71,8 @@ function slugify(s: string) {
     .replace(/^-|-$/g, "");
 }
 
-export function parseMarkdown(source: string): Parsed {
+export function parseMarkdown(source: string, opts: { math?: MathOutput } = {}): Parsed {
+  mathOutput = opts.math ?? "html";
   const meta: Record<string, string> = {};
   let text = source.replace(/\r\n?/g, "\n");
   const fm = text.match(/^---\n([\s\S]*?)\n---\n/);
@@ -81,6 +107,19 @@ export function parseMarkdown(source: string): Parsed {
       flush();
       blocks.push({ type: "widget", name: w[1], props: parseProps(w[2]) });
       i++;
+      continue;
+    }
+
+    // a formula on its own: $$ … $$, on one line or several
+    if (line.trim().startsWith("$$")) {
+      let body = line.trim().slice(2);
+      i++;
+      if (body.endsWith("$$")) body = body.slice(0, -2);
+      else {
+        while (i < lines.length && !lines[i].includes("$$")) body += "\n" + lines[i++];
+        if (i < lines.length) body += "\n" + lines[i++].replace("$$", "");
+      }
+      html += `<div class="note-math">${tex(body.trim(), true)}</div>`;
       continue;
     }
 
@@ -137,7 +176,7 @@ export function parseMarkdown(source: string): Parsed {
 
     // paragraph: runs until a blank line or another kind of block
     const body: string[] = [];
-    while (i < lines.length && lines[i].trim() && !/^(::\w|```|#{1,3}\s|>|[-*]\s|\d+\.\s|-{3,}\s*$)/.test(lines[i])) {
+    while (i < lines.length && lines[i].trim() && !/^(::\w|```|\$\$|#{1,3}\s|>|[-*]\s|\d+\.\s|-{3,}\s*$)/.test(lines[i])) {
       body.push(lines[i++].trim());
     }
     if (!body.length) body.push(lines[i++].trim()); // never stall on a line no rule took

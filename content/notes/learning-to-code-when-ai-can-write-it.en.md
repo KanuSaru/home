@@ -36,6 +36,8 @@ Learning to program is a loop with two steps:
 
 Then back to step 1. There's no secret beyond that.
 
+::loop caption="The whole method. Every pass around the loop, the projects get a little harder."
+
 ### Learning syntax
 
 Syntax is the rules of a language: how you write a loop, a function, a class. Every language has its own, so even someone who knows five languages has to learn the rules of a sixth. What they have is speed. If you know Python, JavaScript comes easier, because both are scripting languages. If you know what a pointer is from C++, Rust's smart pointers make sense sooner.
@@ -60,7 +62,11 @@ intermediate and advanced. For each one, list the features
 to build and the concepts I'll learn.
 ```
 
-You'll get nine projects, each with its features and what it teaches: a to-do list that saves to a file, a number guessing game, and upwards from there. Build all nine, start to finish.
+You'll get nine projects, each with its features and what it teaches. The start of the answer looks something like this:
+
+::projects caption="The answer names the project, what to build and what you'll learn from it. That last line is what makes it a study plan."
+
+Build all nine, start to finish.
 
 And here's the rule that matters: **build them without AI help.** The industry does lean on AI to write code now, and companies want more output than ever. That's exactly why you need the habit of thinking for yourself first. An AI is only as good as the person steering it.
 

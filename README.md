@@ -90,11 +90,17 @@ Every build also writes the RSS feeds (`/feed.xml` in English, `/feed.es.xml` in
 Spanish) and the link preview images in `public/og/`, so there's nothing to update by
 hand. To look at them before publishing, run `npm run feeds` or `npm run og`.
 
+Maths is written as LaTeX and typeset by KaTeX when the site builds: `$x_i$` inside a
+sentence, and `$$ … $$` on its own line for a centered formula.
+
 A line starting with `::` places a live figure. These exist (see `components/NoteFigures.tsx`):
 
 - `::moon date=2026-11-17 relief=0 surface=flat info=1 size=large caption="…"`
 - `::moons dates="2026-11-13,2026-11-24" labels="Nov 13|Nov 24" caption="…"`
 - `::ramp labels="a|b|c" caption="…"` and `::bayer caption="…"`
+- Diagrams for the Learn ML notes (`components/LearnFigures.tsx`): `::loop`, `::projects`,
+  `::karaoke`, `::bell`, `::houses`, `::trend`, `::pca`, `::compare`, `::curves`, `::descent`
+  and `::landscape`, each with an optional `caption="…"`. Their labels follow the page's language.
 
 ## Music player
 

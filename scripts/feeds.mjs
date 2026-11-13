@@ -44,7 +44,7 @@ function readNotes() {
     const m = file.match(/^(.+)\.(en|es)\.md$/);
     if (!m) continue;
     const note = bySlug.get(m[1]) ?? { slug: m[1], versions: {} };
-    note.versions[m[2]] = parseMarkdown(fs.readFileSync(path.join(NOTES, file), "utf8"));
+    note.versions[m[2]] = parseMarkdown(fs.readFileSync(path.join(NOTES, file), "utf8"), { math: "mathml" });
     bySlug.set(m[1], note);
   }
   return [...bySlug.values()]

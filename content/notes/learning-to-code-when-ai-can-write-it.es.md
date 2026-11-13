@@ -36,6 +36,8 @@ Aprender a programar es un ciclo de dos pasos:
 
 Y vuelve al paso 1. No hay más secreto.
 
+::loop caption="Todo el método. En cada vuelta del ciclo, los proyectos se ponen un poco más difíciles."
+
 ### Aprender sintaxis
 
 La sintaxis son las reglas de un lenguaje: cómo se escribe un ciclo, una función, una clase. Cada lenguaje tiene las suyas, así que incluso quien sabe cinco lenguajes tiene que aprender las reglas del sexto. Lo que tiene es velocidad. Si sabes Python, JavaScript te cuesta menos, porque los dos son lenguajes de scripting. Si ya sabes qué es un puntero por C++, los punteros inteligentes de Rust se entienden antes.
@@ -60,7 +62,11 @@ intermedio y avanzado. Para cada una, lista las funciones que debo
 construir y los conceptos que voy a aprender.
 ```
 
-Te va a dar nueve proyectos, cada uno con sus funciones y lo que enseña: una lista de tareas que se guarda en un archivo, un juego de adivinar el número, y de ahí hacia arriba. Construye los nueve, de principio a fin.
+Te va a dar nueve proyectos, cada uno con sus funciones y lo que enseña. El comienzo de la respuesta se ve más o menos así:
+
+::projects caption="La respuesta nombra el proyecto, qué construir y qué vas a aprender con él. Esa última línea es la que lo convierte en un plan de estudio."
+
+Construye los nueve, de principio a fin.
 
 Y aquí va la regla que importa: **constrúyelos sin ayuda de la IA.** Es cierto que la industria ahora se apoya en la IA para escribir código, y que las empresas quieren más producción que nunca. Justo por eso necesitas primero el hábito de pensar por tu cuenta. Una IA es tan buena como quien la dirige.
 

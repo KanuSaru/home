@@ -2477,3 +2477,257 @@ main {
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
+
+/* ---------- Formulas and diagrams in notes ---------- */
+
+/* a formula on its own line, typeset by KaTeX; long ones scroll sideways instead of spilling */
+.note-math {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.6rem 0;
+  font-size: 1.15em;
+  color: var(--bone);
+}
+
+.note-math .katex-display {
+  margin: 0;
+}
+
+.note-text .katex {
+  font-size: 1.1em;
+}
+
+.note-diagram .diagram {
+  width: 100%;
+  max-width: 34rem;
+  color: var(--bone);
+}
+
+.note-diagram.is-wide .diagram {
+  max-width: 44rem;
+}
+
+.note-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.dg-line {
+  fill: none;
+  stroke: var(--bone);
+  stroke-width: 1.5;
+}
+
+.dg-thin {
+  stroke-width: 1;
+}
+
+.dg-thick {
+  stroke-width: 2.5;
+}
+
+.dg-dash {
+  stroke-dasharray: 4 4;
+}
+
+.dg-grid {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.dg-line.dg-ash {
+  stroke: var(--ash);
+}
+
+.dg-line.dg-blue {
+  stroke: var(--blue);
+}
+
+.dg-box {
+  fill: var(--ground);
+  stroke: var(--bone);
+  stroke-width: 1.5;
+}
+
+.dg-box-solid {
+  fill: var(--bone);
+}
+
+.dg-solid,
+.dg-fill {
+  fill: var(--bone);
+}
+
+.dg-solid.dg-ash,
+.dg-fill-ash {
+  fill: var(--ash);
+}
+
+.dg-solid.dg-blue,
+.dg-fill-blue {
+  fill: var(--blue);
+}
+
+.dg-solid.dg-faint {
+  fill: var(--rule);
+}
+
+.dg-quad {
+  fill: var(--panel);
+  stroke: var(--ash);
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+}
+
+.dg-t,
+.dg-m {
+  font-family: var(--data);
+  font-size: 19px;
+  fill: var(--bone);
+}
+
+.dg-m {
+  font-size: 16px;
+  fill: var(--ash);
+}
+
+/* on phones the drawings shrink, so their labels grow to stay readable */
+@media (max-width: 34rem) {
+  .dg-t:not(.dg-fixed) {
+    font-size: 24px;
+  }
+
+  .dg-m {
+    font-size: 22px;
+  }
+}
+
+.dg-t.dg-on {
+  fill: var(--ground);
+}
+
+.dg-t.dg-blue-t {
+  fill: var(--blue);
+}
+
+/* a table inside a figure: rows and columns with thin rules */
+.dg-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.dg-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--data);
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.dg-table th,
+.dg-table td {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--rule);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.dg-table thead th {
+  color: var(--ash);
+  font-weight: 400;
+}
+
+.dg-table tbody th {
+  text-align: left;
+  font-weight: 400;
+  color: var(--ash);
+}
+
+.dg-table thead td {
+  border: none;
+}
+
+/* PCA next to ICA */
+.dg-compare {
+  display: grid;
+  width: 100%;
+  gap: 0;
+  border: 1px solid var(--rule);
+}
+
+.dg-compare > div {
+  padding: 0.8rem 1rem;
+}
+
+.dg-compare > div + div {
+  border-top: 1px solid var(--rule);
+}
+
+@media (min-width: 34rem) {
+  .dg-compare {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dg-compare > div + div {
+    border-top: none;
+    border-left: 1px solid var(--rule);
+  }
+}
+
+.dg-compare-name {
+  font-family: var(--data);
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.dg-compare ul {
+  display: grid;
+  gap: 0.35rem;
+  padding-left: 1.1rem;
+  list-style: square;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+/* what an AI answers, shown like a readout */
+.dg-answer {
+  width: 100%;
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem 1rem;
+  background: var(--ground);
+  border: 1px solid var(--rule);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.dg-answer-level {
+  font-family: var(--data);
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--blue);
+}
+
+.dg-answer-item {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.dg-answer-name {
+  font-weight: 750;
+}
+
+.dg-answer-item span {
+  font-family: var(--data);
+  font-size: 1.1rem;
+  color: var(--ash);
+  margin-right: 0.3rem;
+}
+
+.dg-answer-more {
+  color: var(--ash);
+}

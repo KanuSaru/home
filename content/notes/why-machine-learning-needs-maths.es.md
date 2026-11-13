@@ -7,9 +7,7 @@ summary: Una fórmula que asusta casi siempre son unos pocos pasos simples escri
 
 Muéstrale esto a alguien que acaba de aprender Pitágoras y va a querer cerrar el libro:
 
-```
-D(x, y) = ( Σ |xᵢ − yᵢ|ᵖ ) ^ (1/p)
-```
+$$D(x, y) = \left( \sum_{i=1}^{n} |x_i - y_i|^p \right)^{\frac{1}{p}}$$
 
 Es la distancia de Minkowski. Ahora di lo mismo en pasos:
 
@@ -26,7 +24,11 @@ Ese es el punto de esta nota. La notación matemática es compresión. Cuando la
 
 No creo en la "gente de matemáticas". Algunos aprenden más rápido, pero lo que separa a las personas es la práctica, y el hecho de que las matemáticas se apilan: cada idea se apoya en las anteriores.
 
-Toma una integral como `∫ (1/x³) · ln x dx`. Para resolverla necesitas fracciones, reglas de exponentes, reescribir una expresión en una forma equivalente, saber qué es una función, qué es el logaritmo natural, qué es una derivada, e integración por partes. Si una de esas está floja, toda la pregunta se siente imposible, y es fácil concluir que simplemente eres malo para esto. No lo eres. Te falta un escalón de abajo.
+Toma esta integral:
+
+$$\int \frac{1}{x^3} \, \ln x \; dx$$
+
+Para resolverla necesitas fracciones, reglas de exponentes, reescribir una expresión en una forma equivalente, saber qué es una función, qué es el logaritmo natural, qué es una derivada, e integración por partes. Si una de esas está floja, toda la pregunta se siente imposible, y es fácil concluir que simplemente eres malo para esto. No lo eres. Te falta un escalón de abajo.
 
 Qué tan profundo llegas depende de a dónde vas. En investigación vas a pasar más tiempo con matemáticas que con código. Para construir y desplegar modelos, no vas a resolver integrales triples en el trabajo; necesitas entender qué están haciendo las herramientas.
 
@@ -54,27 +56,29 @@ Los modelos de lenguaje también son estadística. ChatGPT, Claude y Gemini son,
 
 A veces lo que mediste son varias cosas mezcladas. Imagina a tres amigos cantando al tiempo en un karaoke, con tres micrófonos en el salón. Cada micrófono graba las tres voces, a distinto volumen. Cada grabación es un enredo.
 
+::karaoke caption="Entran tres voces mezcladas. ICA averigua qué parte del enredo es de cada quien."
+
 El **análisis de componentes independientes** (ICA) toma esas grabaciones enredadas y te devuelve cada voz por separado. Nadie le dice quién cantaba dónde, y por eso también se le llama separación ciega de fuentes.
 
 El truco es estadístico. Cuando mezclas muchas cosas independientes, el resultado tiende a la campana de Gauss, la forma más corriente que pueden tomar los datos. Una sola voz es menos corriente: tiene picos y tramos planos propios. ICA busca las direcciones de los datos que menos se parecen a una campana, y esas resultan ser las voces originales.
+
+::bell caption="La campana de Gauss: la mayoría de valores se amontona cerca del promedio. Una mezcla de muchas cosas se ve así; una sola voz, no."
 
 ## Álgebra lineal: la forma de los datos
 
 Un modelo solo entiende números, y los números necesitan estructura. Una casa con 3 habitaciones, 2 baños, 110 metros cuadrados y un precio de 250.000 se vuelve una lista:
 
-```
-[3, 2, 110, 250000]
-```
+$$\text{casa} = \begin{bmatrix} 3 \\ 2 \\ 110 \\ 250000 \end{bmatrix}$$
 
 Eso es un **vector**. Apila muchas casas y tienes una tabla, con una fila por casa y una columna por cada cosa que mediste. Eso es una **matriz**. Así que desde el primer paso, tus datos son álgebra lineal.
 
+::houses caption="Tres casas como una matriz: cada fila es una casa, cada columna es algo que medimos."
+
 El corazón de una red neuronal es una línea:
 
-```
-z = (x₁·w₁ + x₂·w₂ + … + xₙ·wₙ) + b
-```
+$$z = \left( \sum_{i=1}^{n} x_i \times w_i \right) + b$$
 
-`x` son los atributos de la casa. `w` son los **pesos**, números que dicen cuánto importa cada atributo. `b` es el **sesgo**, un número más que se suma al final. Haz eso para muchos atributos y muchas casas a la vez y es una multiplicación de matrices. Una red neuronal es una cadena larga de ellas.
+Léela por partes. Cada $x_i$ es uno de los atributos de la casa. Cada $w_i$ es un **peso**, un número que dice cuánto importa ese atributo. $b$ es el **sesgo**, un número más que se suma al final. El $\sum$ solo significa: haz la multiplicación para cada atributo y suma los resultados. Haz eso para muchos atributos y muchas casas a la vez y es una multiplicación de matrices. Una red neuronal es una cadena larga de ellas.
 
 Multiplicar por una matriz transforma los datos: los estira, los aplasta, los gira. Un modelo sigue transformando los datos hasta llegar a algo útil, como una clase, un precio o el siguiente token de una frase.
 
@@ -82,9 +86,13 @@ Multiplicar por una matriz transforma los datos: los estira, los aplasta, los gi
 
 Las tablas reales suelen decir lo mismo dos veces. La estatura y el peso son un buen ejemplo: la gente más alta suele pesar más, así que las dos columnas se mueven casi juntas. ¿Para qué guardar dos columnas si una sola dirección, "persona más grande", explica casi todo?
 
+::trend caption="Estatura y peso en dos grupos. Las dos líneas dicen lo mismo: cuando una sube, la otra también."
+
 Eso es el **análisis de componentes principales** (PCA). Encuentra las direcciones en las que los datos más se dispersan y te deja describir todo usando esas direcciones. La primera dirección lleva la mayor parte de la información. La segunda lleva el sobrante que la primera no pudo explicar, y así sucesivamente.
 
-¿Cómo las encuentra? Con una idea que suena peor de lo que es: la **descomposición en valores propios**. Sabes que 12 se descompone en 2 × 2 × 3, sus factores primos. Una matriz también se puede descomponer en sus bloques:
+::pca caption="Los datos ya apuntan en una dirección; PCA solo la encuentra. PC1 va a lo largo de la nube, PC2 la cruza."
+
+¿Cómo las encuentra? Con una idea que suena peor de lo que es: la **descomposición en valores propios**. Sabes que $12 = 2 \times 2 \times 3$, sus factores primos. Una matriz también se puede descomponer en sus bloques:
 
 - **Vectores propios** (eigenvectores): las direcciones centrales que trae la matriz
 - **Valores propios** (eigenvalores): qué tan fuerte es cada una de esas direcciones
@@ -95,8 +103,7 @@ PCA arma una tabla de cómo se mueve junta cada pareja de columnas (la matriz de
 
 PCA e ICA se confunden fácil, y hacen trabajos distintos:
 
-- **PCA** despeja. Dos cuerdas del mismo color, una al lado de la otra: te quedas con una. Le importa la dispersión.
-- **ICA** desmezcla. Tres cuerdas de colores distintos enredadas: las separa. Le importa la independencia.
+::compare
 
 En la práctica, PCA suele correr primero, como limpieza antes de ICA.
 
@@ -108,7 +115,11 @@ Primero hay que medir cuánto se equivocó. Esa es la **función de pérdida**: 
 
 Ahora imagina la pérdida como un paisaje. Cada posible ajuste de los pesos es un lugar, y su altura es qué tan equivocado está el modelo ahí. Entrenar es caminar cuesta abajo.
 
-En una línea recta la pendiente es la misma en todas partes. En una curva cambia en cada punto, y el cálculo es la matemática de ese tipo de cambio continuo. La **derivada** es la pendiente donde estás parado. Te dice hacia dónde queda abajo.
+En una recta como $y = mx + b$ la pendiente es la misma en todas partes: es $m$. En una curva como $y = ax^2 + bx + c$ cambia en cada punto, y el cálculo es la matemática de ese tipo de cambio continuo.
+
+::curves
+
+ La **derivada** es la pendiente donde estás parado. Te dice hacia dónde queda abajo.
 
 Así que entrenar es un ciclo:
 
@@ -118,6 +129,14 @@ Así que entrenar es un ciclo:
 
 Eso es el **descenso de gradiente**: descender, usando el gradiente.
 
+::descent caption="Cada cuadro es un paso. Entre más empinada la pendiente, más grande el paso, así que los pasos se achican al acercarse al fondo."
+
+Escrito como fórmula, un paso es:
+
+$$w \leftarrow w - \eta \cdot \frac{\partial L}{\partial w}$$
+
+$L$ es la pérdida, $\frac{\partial L}{\partial w}$ es la pendiente de la pérdida para el peso $w$, y $\eta$ (la tasa de aprendizaje) es qué tan grande es el paso. El código dice lo mismo:
+
 ```python
 w = 0.0
 for paso in range(100):
@@ -126,6 +145,10 @@ for paso in range(100):
 print(w)                         # termina muy cerca de 3
 ```
 
+Un modelo real no tiene un peso; tiene millones, así que el paisaje no es una curva sino una superficie con muchas más dimensiones de las que podemos dibujar. En tres se ve así:
+
+::landscape caption="Con más de un peso, la curva se vuelve una superficie. Bajar puede terminar en un valle poco profundo y nunca encontrar el más profundo; por eso importan el punto de partida y el tamaño de los pasos."
+
 Las entradas no las podemos cambiar. Los pesos y el sesgo son los únicos números que tenemos permiso de mover, así que eso es lo que ajusta el ciclo.
 
 Aquí aparecen dos nombres juntos, y hacen trabajos distintos:
@@ -133,7 +156,11 @@ Aquí aparecen dos nombres juntos, y hacen trabajos distintos:
 - La **retropropagación** (backpropagation) averigua cuánta culpa tuvo cada peso en el error.
 - El **descenso de gradiente** usa eso para mover cada peso a un valor mejor.
 
-La retropropagación se apoya en la regla de la cadena. Si la salida depende de un valor a través de varias capas, la pendiente del total es el producto de las pendientes de cada capa. Eso es lo que permite que aprenda una red con millones de pesos.
+La retropropagación se apoya en la regla de la cadena. Si la salida depende de un valor a través de varias capas, la pendiente del total es el producto de las pendientes de cada capa:
+
+$$\frac{dL}{dx} = \frac{dL}{dz} \cdot \frac{dz}{dy} \cdot \frac{dy}{dx}$$
+
+ Eso es lo que permite que aprenda una red con millones de pesos.
 
 ## Empieza desde abajo
 

@@ -9,6 +9,8 @@ import { Shell } from "@/components/Shell";
 import { Analytics } from "@/components/Analytics";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { ogImage } from "@/lib/og";
+// KaTeX typesets the formulas in the notes; its stylesheet brings the maths fonts
+import "katex/dist/katex.min.css";
 import "./globals.css";
 
 // Archivo carries the text (its width axis makes the heavy, wide headings),

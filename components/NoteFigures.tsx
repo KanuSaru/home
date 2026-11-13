@@ -5,10 +5,12 @@
 //   ::moons  a row of moons  dates="a,b,c" labels="x|y|z" caption
 //   ::ramp   a gray ramp, then thresholded, then dithered    labels="a|b|c" caption
 //   ::bayer  the 4×4 threshold grid                           caption
+// plus the diagrams in LearnFigures.tsx (::loop, ::pca, ::descent…).
 
 import { useEffect, useRef } from "react";
 import { DitherMoon } from "dither-moon/react";
 import { useLang } from "@/lib/i18n";
+import { LearnFigure } from "@/components/LearnFigures";
 
 // a plain white ball: no map, so only the lighting shows
 const FLAT = { width: 1, height: 1, albedo: [255] };
@@ -142,5 +144,6 @@ export function NoteFigure({ name, props }: { name: string; props: Record<string
   if (name === "moons") return <MoonRow p={props} />;
   if (name === "ramp") return <Ramp p={props} />;
   if (name === "bayer") return <Bayer p={props} />;
-  return null;
+  // the diagrams of the Learn ML notes live in their own file
+  return LearnFigure({ name, props }) ?? null;
 }

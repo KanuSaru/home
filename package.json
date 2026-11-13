@@ -17,6 +17,7 @@
     "dither-model": "^1.0.1",
     "dither-moon": "^1.2.0",
     "dither-player": "^1.0.0",
+    "katex": "^0.16.11",
     "next": "^15.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
