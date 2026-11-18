@@ -10,7 +10,7 @@ import { DiscordStatus, LocalTime, Mood, NowPlaying, Visitors, Weather } from "@
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { UpdatesWidget } from "@/components/Updates";
 
-const EMAIL = "erickfabiandonado@gmail.com";
+const EMAIL = "hello@erickdonado.com";
 
 function LangSwitch({ short = false, hidden = false }: { short?: boolean; hidden?: boolean }) {
   const { lang, setLang } = useLang();
