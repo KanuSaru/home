@@ -3,6 +3,7 @@ title: Aprender a programar cuando la IA puede hacerlo por ti
 date: 2026-11-02
 tags: programación, aprendizaje, ia
 summary: La IA no está reemplazando a los programadores, pero sí cambia cómo conviene aprender. Elige un lenguaje con un motivo, alterna entre sintaxis y proyectos, construye primero sin IA, y úsala como tutor y no como quien te hace la tarea.
+description: Cómo aprender a programar ahora que la IA escribe código: elige un lenguaje con un motivo, construye primero sin IA y luego úsala como tutor.
 ---
 
 La IA no va a reemplazar a los ingenieros de software de un día para otro. Es una herramienta, y muy buena: le quita las partes repetitivas del trabajo, el código de relleno y la limpieza, a gente que ya sabe lo que hace.

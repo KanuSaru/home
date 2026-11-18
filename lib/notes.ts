@@ -10,6 +10,7 @@
 //   date: 2026-10-31
 //   tags: graphics, astronomy
 //   summary: One or two sentences for the list of notes.
+//   description: Optional. What search results show, up to 160 characters (default: the summary).
 //   ---
 
 import fs from "node:fs";
@@ -19,6 +20,8 @@ import { parseMarkdown, type Block } from "./markdown";
 export type NoteVersion = {
   title: string;
   summary: string;
+  /** for search results: the front matter's description, or else the summary */
+  description: string;
   tags: string[];
   blocks: Block[];
   /** about how long it takes to read */
@@ -48,7 +51,7 @@ export function getNotes(dir = DIR): Note[] {
     const { meta, blocks } = parseMarkdown(fs.readFileSync(path.join(dir, file), "utf8"));
     const note = bySlug.get(slug) ?? { slug, date: "", versions: {} };
     const tags = (meta.tags || "").split(",").map((t) => t.trim()).filter(Boolean);
-    note.versions[lang] = { title: meta.title || slug, summary: meta.summary || "", tags, blocks, ...measure(blocks) };
+    note.versions[lang] = { title: meta.title || slug, summary: meta.summary || "", description: meta.description || meta.summary || "", tags, blocks, ...measure(blocks) };
     // the date can be written in either file; the English one wins if they differ
     if (meta.date && (!note.date || lang === "en")) note.date = meta.date;
     bySlug.set(slug, note);
@@ -86,7 +89,7 @@ export function summarize(notes: Note[]): NoteSummary[] {
   return notes.map((n) => ({
     ...n,
     versions: Object.fromEntries(
-      Object.entries(n.versions).map(([l, v]) => [l, { title: v!.title, summary: v!.summary, tags: v!.tags, minutes: v!.minutes }]),
+      Object.entries(n.versions).map(([l, v]) => [l, { title: v!.title, summary: v!.summary, description: v!.description, tags: v!.tags, minutes: v!.minutes }]),
     ) as NoteSummary["versions"],
   }));
 }

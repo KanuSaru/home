@@ -3,6 +3,7 @@ title: Why machine learning needs maths
 date: 2026-11-02
 tags: machine learning, maths, learning
 summary: A scary formula is usually a few simple steps written very compactly. Here's why the maths is worth learning, what statistics, linear algebra and calculus each do in machine learning, and the ideas behind PCA and gradient descent without the jargon.
+description: What statistics, linear algebra and calculus each do in machine learning, and the ideas behind PCA and gradient descent, without the jargon.
 ---
 
 Show this to someone who has just learned Pythagoras and they'll want to close the book:

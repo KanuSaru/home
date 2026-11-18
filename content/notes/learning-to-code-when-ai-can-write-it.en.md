@@ -3,6 +3,7 @@ title: Learning to code when AI can write it for you
 date: 2026-11-02
 tags: programming, learning, ai
 summary: AI isn't replacing programmers, but it does change how you should learn. Pick a language for a reason, loop between syntax and projects, build without AI first, and use it as a tutor instead of a ghostwriter.
+description: How to learn programming now that AI can write code: pick a language for a reason, build without AI first, then use it as a tutor, not a ghostwriter.
 ---
 
 AI is not replacing software engineers overnight. It's a tool, and a very good one: it takes the repetitive parts of the job, the boilerplate and the clean-up, off people who already know what they're doing.

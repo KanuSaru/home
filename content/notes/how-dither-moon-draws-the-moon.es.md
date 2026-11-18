@@ -3,6 +3,7 @@ title: Cómo dither-moon dibuja la Luna
 date: 2026-10-31
 tags: gráficos, astronomía, javascript
 summary: La luna de mi página de inicio no es una imagen. Se calcula a partir de dónde están el Sol y la Luna en este momento, se envuelve con el mapa de la NASA y se dibuja píxel a píxel, encendido o apagado. Aquí explico cómo, paso a paso.
+description: Cómo se dibuja la luna de mi página: calculada según dónde están el Sol y la Luna ahora, con el mapa de la NASA y dibujada en píxeles de 1 bit.
 ---
 
 La luna de mi página de inicio no es una imagen. Varias veces por segundo, un pequeño programa calcula dónde están el Sol y la Luna en este momento, ilumina una esfera de acuerdo con eso, la envuelve con el mapa de la Luna de la NASA y decide, para cada píxel, si va encendido o apagado. Lo empaqueté como [dither-moon](https://github.com/KanuSaru/dither-moon) para que cualquiera pueda ponerlo en su propia página.

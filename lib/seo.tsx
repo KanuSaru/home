@@ -146,7 +146,10 @@ export function publicationsGraph(lang: Lang) {
 type NoteLike = {
   slug: string;
   date: string;
-  versions: { en?: { title: string; summary: string; tags: string[] }; es?: { title: string; summary: string; tags: string[] } };
+  versions: {
+    en?: { title: string; summary: string; description?: string; tags: string[] };
+    es?: { title: string; summary: string; description?: string; tags: string[] };
+  };
 };
 
 const notePath = (slug: string, lang: Lang) => `${lang === "es" ? "/es" : ""}/notes/${slug}/`;
@@ -162,7 +165,7 @@ export function noteMeta(note: NoteLike, lang: Lang): Metadata {
   const both = !!(note.versions.en && note.versions.es);
   return {
     title: v.title,
-    description: v.summary,
+    description: v.description || v.summary,
     alternates: {
       canonical: abs(notePath(note.slug, shown)),
       ...(both ? { languages: languages(notePath(note.slug, "en"), notePath(note.slug, "es")) } : {}),
@@ -172,7 +175,7 @@ export function noteMeta(note: NoteLike, lang: Lang): Metadata {
       type: "article",
       siteName,
       title: v.title,
-      description: v.summary,
+      description: v.description || v.summary,
       url: abs(notePath(note.slug, shown)),
       locale: locale[shown],
       publishedTime: note.date,

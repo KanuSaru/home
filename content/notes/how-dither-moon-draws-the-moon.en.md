@@ -3,6 +3,7 @@ title: How dither-moon draws the Moon
 date: 2026-10-31
 tags: graphics, astronomy, javascript
 summary: The moon on my home page isn't a picture. It's worked out from where the Sun and the Moon are right now, wrapped in NASA's map, and drawn one on-or-off pixel at a time. Here's how, step by step.
+description: How the moon on my home page is drawn: worked out from where the Sun and Moon are right now, wrapped in NASA's map, and dithered to 1-bit pixels.
 ---
 
 The moon on my home page isn't an image. A few times a second, a small program works out where the Sun and the Moon are right now, lights a ball to match, wraps NASA's map of the Moon around it, and then decides for every pixel whether it's on or off. I packaged it as [dither-moon](https://github.com/KanuSaru/dither-moon) so anyone can put it on their own page.

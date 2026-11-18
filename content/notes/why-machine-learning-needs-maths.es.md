@@ -3,6 +3,7 @@ title: Por qué el machine learning necesita matemáticas
 date: 2026-11-02
 tags: machine learning, matemáticas, aprendizaje
 summary: Una fórmula que asusta casi siempre son unos pocos pasos simples escritos de forma muy compacta. Aquí va por qué vale la pena aprender las matemáticas, qué hacen la estadística, el álgebra lineal y el cálculo en machine learning, y las ideas detrás de PCA y el descenso de gradiente sin la jerga.
+description: Qué hacen la estadística, el álgebra lineal y el cálculo en machine learning, y las ideas detrás de PCA y el descenso de gradiente, sin jerga.
 ---
 
 Muéstrale esto a alguien que acaba de aprender Pitágoras y va a querer cerrar el libro:

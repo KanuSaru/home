@@ -13,8 +13,8 @@ export const pages: Record<SeoPage, { title: L; description: L }> = {
   home: {
     title: { en: siteName, es: siteName },
     description: {
-      en: "Personal site of Erick Donado (Kanu), a Systems Engineering student at Universidad Simón Bolívar in Barranquilla, Colombia, who researches machine learning for medical imaging.",
-      es: "Sitio personal de Erick Donado (Kanu), estudiante de Ingeniería de Sistemas en la Universidad Simón Bolívar de Barranquilla, Colombia, que investiga machine learning aplicado a imágenes médicas.",
+      en: "Erick Donado (Kanu), a Systems Engineering student at Universidad Simón Bolívar in Barranquilla, Colombia, researching machine learning for medical imaging.",
+      es: "Erick Donado (Kanu), estudiante de Ingeniería de Sistemas en la Universidad Simón Bolívar de Barranquilla, investiga machine learning en imágenes médicas.",
     },
   },
   me: {
@@ -27,8 +27,8 @@ export const pages: Record<SeoPage, { title: L; description: L }> = {
   work: {
     title: { en: "Work", es: "Trabajo" },
     description: {
-      en: "Erick Donado's research on breast cancer segmentation in ultrasound and bias in language models, his publications, talks, teaching and projects, with research and industry CVs.",
-      es: "La investigación de Erick Donado en segmentación de cáncer de mama en ultrasonido y sesgos en modelos de lenguaje, sus publicaciones, ponencias, docencia y proyectos, con hojas de vida de investigación e industria.",
+      en: "Erick Donado's research on breast cancer segmentation and bias in language models: publications, talks, teaching, projects and CVs.",
+      es: "La investigación de Erick Donado en segmentación de cáncer de mama y sesgos en modelos de lenguaje: publicaciones, ponencias, docencia, proyectos y CV.",
     },
   },
   notes: {
@@ -42,7 +42,7 @@ export const pages: Record<SeoPage, { title: L; description: L }> = {
     title: { en: "Learn ML", es: "Aprende ML" },
     description: {
       en: "A free, self-taught route into machine learning: maths, Python, data science, deep learning and LLMs, in order, with checklists that remember your progress.",
-      es: "Una ruta gratis y autodidacta hacia el machine learning: matemáticas, Python, ciencia de datos, deep learning y LLMs, en orden, con listas que recuerdan tu progreso.",
+      es: "Una ruta gratis y autodidacta hacia el machine learning: matemáticas, Python, ciencia de datos, deep learning y LLMs, en orden y guardando tu progreso.",
     },
   },
   guestbook: {
@@ -61,7 +61,7 @@ export const pages: Record<SeoPage, { title: L; description: L }> = {
   },
   journal: {
     title: { en: "Journal", es: "Diario" },
-    description: { en: "A locked journal.", es: "Un diario con llave." },
+    description: { en: "A journal locked behind a riddle. Solve it to read the entries.", es: "Un diario cerrado con un acertijo. Resuélvelo para leer las entradas." },
   },
 };
 
