@@ -12,7 +12,7 @@ let h; // React.createElement, loaded in main() so a missing package is only a w
 const ROOT = process.cwd();
 const OUT = path.join(ROOT, "public", "og");
 const NOTES = path.join(ROOT, "content", "notes");
-const SITE = (process.env.SITE_URL || "https://kanusaru.github.io/home").replace(/^https?:\/\//, "").replace(/\/$/, "");
+const SITE = (process.env.SITE_URL || "https://erickdonado.com").replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 const C = { ground: "#0d0d0c", panel: "#131312", rule: "#2b2a26", bone: "#e7e2d6", ash: "#918c81", blue: "#7390ff" };
 const W = 1200;

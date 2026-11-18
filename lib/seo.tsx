@@ -7,8 +7,8 @@ import { pages, person, publications, siteName, type SeoPage } from "@/content/s
 import { ogImage } from "@/lib/og";
 import type { Lang } from "@/lib/i18n";
 
-/** The site's public address, with the base path: https://kanusaru.github.io/home */
-export const SITE = (process.env.SITE_URL || "https://kanusaru.github.io/home").replace(/\/$/, "");
+/** The site's public address, with the base path, if any: https://erickdonado.com */
+export const SITE = (process.env.SITE_URL || "https://erickdonado.com").replace(/\/$/, "");
 
 /** A full address for a path on the site: abs("/es/work/"). */
 export const abs = (path: string) => `${SITE}${path}`;

@@ -9,7 +9,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const NOTES = path.join(ROOT, "content", "notes");
-const SITE = (process.env.SITE_URL || "https://kanusaru.github.io/home").replace(/\/$/, "");
+const SITE = (process.env.SITE_URL || "https://erickdonado.com").replace(/\/$/, "");
 const ORIGIN = new URL(SITE).origin;
 
 // the note reader uses this to put the base path on links like /notes/picture.png

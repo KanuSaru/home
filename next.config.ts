@@ -3,14 +3,14 @@ import type { NextConfig } from "next";
 // Static export: `next build` writes a plain HTML site to /out,
 // which GitHub Pages (or any static host) can serve.
 //
-// The site is served from kanusaru.github.io/home, so pages and files live
-// under /home. The deploy workflow sets BASE_PATH from GitHub's own settings;
-// with a custom domain it becomes empty on its own. Locally it's empty, so
-// `npm run dev` works at http://localhost:3000.
+// The site is served from erickdonado.com, at the root. (Before that it lived at
+// kanusaru.github.io/home, under /home.) The deploy workflow sets BASE_PATH from
+// GitHub's own settings, so it is empty on the custom domain and /home without one.
+// Locally it's empty too, so `npm run dev` works at http://localhost:3000.
 const basePath = process.env.BASE_PATH ?? "";
 // The site's public address, for things people copy elsewhere (like the 88×31 button
 // code). The deploy workflow sets SITE_URL; with a custom domain it follows on its own.
-const siteUrl = (process.env.SITE_URL || "https://kanusaru.github.io/home").replace(/\/$/, "");
+const siteUrl = (process.env.SITE_URL || "https://erickdonado.com").replace(/\/$/, "");
 
 const nextConfig: NextConfig = {
   output: "export",

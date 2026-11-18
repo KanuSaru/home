@@ -124,9 +124,13 @@ Only upload music you made or have the rights to share.
 
 - **Updates log**: add an entry at the top of `content/updates.ts`. The sidebar shows the
   latest three, and `/updates/` shows them all.
-- **Guestbook**: `/guestbook/`. Messages are kept by a small Cloudflare Worker in the
-  `guestbook/` folder; set it up once with `guestbook/README.md`, then fill in
-  `config.guestbook` in `content/site.ts`. Until then the page says it opens soon.
+- **Guestbook**: `/guestbook/`. Messages are kept by a small Cloudflare Worker from
+  [leave-a-mark](https://github.com/KanuSaru/leave-a-mark), which also alerts you on Discord
+  or by email when someone signs. Its address and Turnstile's site key are in
+  `config.guestbook` in `content/site.ts`. You approve messages at the worker's `/admin`.
+- **Link check**: on the 1st of every month GitHub checks every link on the site with
+  [still-there](https://github.com/KanuSaru/still-there) and opens an issue if one has died
+  (`.github/workflows/links.yml`). To run it now: Actions → Check links → Run workflow.
 - **Mood**: comes from imood.com/users/kanu (`config.imood`). Change your mood on imood.
 - **Your 88×31 button**: `public/button.gif` (animated; `button.png` is a still copy). The Guestbook page shows it with the code
   others can copy to link to you.
@@ -185,13 +189,15 @@ phrase is much harder to guess. Don't seal anything you couldn't live with being
 ## Publish
 
 The site lives in the repo `KanuSaru/home` and is published by GitHub Pages at
-**https://kanusaru.github.io/home**. Every push to `main` runs
+**https://erickdonado.com** (a domain registered at Cloudflare). The old addresses under
+`kanusaru.github.io/home/` forward there on their own. Every push to `main` runs
 `.github/workflows/deploy.yml`, which builds the site and publishes it.
 
 - GitHub Pages needs the repo to be **public** on a free account (private repos
   need GitHub Pro). Only `content/journal.sealed.json` of the journal is ever
   pushed; the plain-text `journal/` folder is ignored by git.
 - One-time setup: Settings › Pages › Source: **GitHub Actions**.
-- The `/home` part of the address is handled for you: the workflow asks GitHub
-  where the site lives. When you add a custom domain (Settings › Pages › Custom
-  domain), the next deploy serves it from the root with no code changes.
+- The address is handled for you: the workflow asks GitHub where the site lives
+  (Settings › Pages › Custom domain), so the build matches it with no code changes.
+- The domain's DNS lives at Cloudflare and must stay **DNS only** (grey cloud), so
+  GitHub can keep its HTTPS certificate up to date.

@@ -148,6 +148,15 @@ export const work = {
     title: { en: "Teaching", es: "Docencia" },
     lines: [
       {
+        when: "2026",
+        title: { en: "Learn ML, a free route into machine learning", es: "Aprende ML, una ruta gratuita hacia el machine learning" },
+        detail: {
+          en: "A self-study map on this site, in English and Spanish: five phases, 73 free resources in three priority levels, self-checks and progress you can back up. Adapted from an open course.",
+          es: "Un mapa de estudio autodidacta en este sitio, en inglés y español: cinco fases, 73 recursos gratuitos en tres niveles de prioridad, autoevaluaciones y un progreso que puedes respaldar. Adaptado de un curso abierto.",
+        },
+        href: "https://erickdonado.com/learn/",
+      },
+      {
         when: "2024–26",
         title: { en: "Private classes, Chico Vence Academy", es: "Clases particulares, Academia Chico Vence" },
         detail: {

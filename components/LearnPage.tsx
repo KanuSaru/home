@@ -17,6 +17,49 @@ type Done = Record<string, true>;
 const LEVEL_CLASS = { 1: "is-essential", 2: "is-reinforce", 3: "is-deeper" } as const;
 
 const ALL = phases.flatMap((p) => p.modules.flatMap((m) => m.res.map((r, i) => ({ id: resId(p, m, i), r, m, p }))));
+// ---- the progress code: every module's ticks as a small number, packed into one line of text.
+// "KL1." + base64 of "maths.stats=3~check.maths=5~…" (each number is a set of bits, one per item)
+const CODE_PREFIX = "KL1.";
+const GROUPS: { key: string; size: number }[] = [
+  ...phases.flatMap((p) => p.modules.map((m) => ({ key: `${p.id}.${m.id}`, size: m.res.length }))),
+  ...phases.map((p) => ({ key: `check.${p.id}`, size: p.check.length })),
+];
+
+function toCode(done: Done) {
+  const parts: string[] = [];
+  for (const g of GROUPS) {
+    let mask = 0;
+    for (let i = 0; i < g.size; i++) if (done[`${g.key}.${i}`]) mask |= 1 << i;
+    if (mask) parts.push(`${g.key}=${mask.toString(36)}`);
+  }
+  if (!parts.length) return "";
+  return CODE_PREFIX + btoa(parts.join("~")).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+/** The ticks a code holds, or null if it isn't one. Unknown modules are skipped, so old codes still load. */
+function fromCode(code: string): Done | null {
+  const text = code.trim();
+  if (!text.startsWith(CODE_PREFIX)) return null;
+  let plain: string;
+  try {
+    plain = atob(text.slice(CODE_PREFIX.length).replace(/-/g, "+").replace(/_/g, "/"));
+  } catch {
+    return null;
+  }
+  const out: Done = {};
+  for (const part of plain.split("~")) {
+    const [key, value] = part.split("=");
+    const g = GROUPS.find((x) => x.key === key);
+    const mask = parseInt(value ?? "", 36);
+    if (!g || !Number.isFinite(mask)) continue;
+    for (let i = 0; i < g.size; i++) if (mask & (1 << i)) out[`${g.key}.${i}`] = true;
+  }
+  return Object.keys(out).length ? out : null;
+}
+
+// every term the modules define, with where it comes from
+const TERMS = phases.flatMap((p) => p.modules.flatMap((m) => (m.terms ?? []).map((x) => ({ ...x, p, m }))));
+
 const ESSENTIAL = ALL.filter((x) => x.r.level === 1);
 const EXTRA = ALL.filter((x) => x.r.level !== 1);
 
@@ -192,6 +235,132 @@ function ModuleBlock({
         })}
       </ul>
     </article>
+  );
+}
+
+function Backup({ done, onLoad }: { done: Done; onLoad: (next: Done) => void }) {
+  const t = useT();
+  const b = learn.backup;
+  const [copied, setCopied] = useState(false);
+  const [pasted, setPasted] = useState("");
+  const [status, setStatus] = useState("");
+  const code = toCode(done);
+
+  const copy = () => {
+    navigator.clipboard?.writeText(code).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    });
+  };
+  const load = (e: React.FormEvent) => {
+    e.preventDefault();
+    const got = fromCode(pasted);
+    if (!got) return setStatus(t(b.bad));
+    // added to what's already here, so loading never loses a tick
+    const next = { ...done, ...got };
+    onLoad(next);
+    setPasted("");
+    setStatus(t(b.loaded, { n: Object.keys(next).length }));
+  };
+
+  return (
+    <details className="backup">
+      <summary>{t(b.title)}</summary>
+      <p className="small muted">{t(b.text)}</p>
+      {code ? (
+        <div className="backup-row">
+          <label htmlFor="learn-code">{t(b.yours)}</label>
+          <input id="learn-code" readOnly value={code} onFocus={(e) => e.currentTarget.select()} />
+          <button type="button" onClick={copy}>
+            {copied ? t(b.copied) : t(b.copy)}
+          </button>
+        </div>
+      ) : (
+        <p className="small muted">{t(b.empty)}</p>
+      )}
+      <form className="backup-row" onSubmit={load}>
+        <label htmlFor="learn-paste">{t(b.paste)}</label>
+        <input
+          id="learn-paste"
+          value={pasted}
+          onChange={(e) => {
+            setPasted(e.target.value);
+            setStatus("");
+          }}
+          autoComplete="off"
+          spellCheck={false}
+          placeholder={CODE_PREFIX + "…"}
+        />
+        <button type="submit" disabled={!pasted.trim()}>
+          {t(b.load)}
+        </button>
+      </form>
+      <p className="small" role="status">
+        {status}
+      </p>
+    </details>
+  );
+}
+
+function Glossary({ go }: { go: (target: string) => void }) {
+  const t = useT();
+  const { lang } = useLang();
+  const g = learn.glossary;
+  const [shown, setShown] = useState(false);
+  const [filter, setFilter] = useState("");
+  const f = filter.trim().toLowerCase();
+  const terms = useMemo(
+    () =>
+      [...TERMS]
+        .sort((a, b) => a.term[lang].localeCompare(b.term[lang], lang))
+        .filter((x) => !f || `${x.term[lang]} ${x.term.en} ${x.def[lang]}`.toLowerCase().includes(f)),
+    [lang, f],
+  );
+  return (
+    <section id="glossary" className={`panel wide learn-glossary ${shown ? "is-open" : "is-folded"}`}>
+      <header className="phase-head">
+        <span className="phase-n" aria-hidden="true">
+          Aa
+        </span>
+        <div className="phase-text">
+          <h2 className="panel-title">{t(g.title)}</h2>
+          <p className="chips">
+            <span className="tag">{t(g.count, { n: TERMS.length })}</span>
+            <span className="small muted">{t(g.lede)}</span>
+          </p>
+        </div>
+        <button type="button" className="phase-toggle" aria-expanded={shown} aria-controls="glossary-body" onClick={() => setShown((v) => !v)}>
+          <span aria-hidden="true">{shown ? "–" : "+"}</span>
+          {t(shown ? learn.fold.close : learn.fold.open)}
+          <span className="sr-only">: {t(g.title)}</span>
+        </button>
+      </header>
+      <div id="glossary-body" className="phase-body" hidden={!shown}>
+        <div className="learn-tools">
+          <input type="search" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder={t(g.filter)} aria-label={t(g.filter)} />
+        </div>
+        {terms.length === 0 ? (
+          <p className="empty">{t(g.none)}</p>
+        ) : (
+          <dl className="glossary">
+            {terms.map((x) => (
+              <div key={`${x.p.id}.${x.m.id}.${x.term.en}`}>
+                <dt>{t(x.term)}</dt>
+                <dd>
+                  {t(x.def)}{" "}
+                  <span className="small muted">
+                    {t(g.from)}{" "}
+                    <a href={`#${x.p.id}-${x.m.id}`} onClick={() => go(`${x.p.id}-${x.m.id}`)}>
+                      {t(x.m.title)}
+                    </a>
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -443,6 +612,7 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
               {armed ? t(learn.progress.confirm) : t(learn.progress.reset)}
             </button>
           </div>
+          <Backup done={done} onLoad={save} />
         </section>
 
         {phases.map((p) => {
@@ -539,6 +709,8 @@ export function LearnPage({ reads = [] }: { reads?: NoteSummary[] }) {
         })}
 
         {!anyShown && <p className="empty wide">{t(learn.progress.none)}</p>}
+
+        {!q && <Glossary go={go} />}
 
         <p className="small muted wide learn-reviewed">
           {t(learn.reviewed.label, { d: formatNoteDate(learn.reviewed.date, lang) })} {t(learn.reviewed.report)}{" "}

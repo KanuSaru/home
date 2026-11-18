@@ -19,7 +19,7 @@ export function Analytics() {
       first.current = false;
       return;
     }
-    // the full address (with /home), the same way GoatCounter records the first page
+    // the full address (with the base path, if any), the same way GoatCounter records the first page
     window.goatcounter?.count({ path: location.pathname });
   }, [path]);
   return null;

@@ -9,8 +9,6 @@ import { Shell } from "@/components/Shell";
 import { Analytics } from "@/components/Analytics";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { ogImage } from "@/lib/og";
-// KaTeX typesets the formulas in the notes; its stylesheet brings the maths fonts
-import "katex/dist/katex.min.css";
 import "./globals.css";
 
 // Archivo carries the text (its width axis makes the heavy, wide headings),
@@ -25,7 +23,7 @@ const caveat = Caveat({ subsets: ["latin", "latin-ext"], display: "swap", variab
 // and language links through lib/seo.tsx.
 export const metadata: Metadata = {
   // SITE_URL comes from the deploy workflow, so it follows a custom domain on its own
-  metadataBase: new URL(process.env.SITE_URL || "https://kanusaru.github.io/home"),
+  metadataBase: new URL(process.env.SITE_URL || "https://erickdonado.com"),
   title: { default: siteName, template: `%s, ${person.name}` },
   description: pages.home.description.en,
   applicationName: siteName,

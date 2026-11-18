@@ -2887,3 +2887,164 @@ main {
 .levels dd {
   margin: 0;
 }
+
+/* ---------- Notes: reading time and the list of sections ---------- */
+
+.note-minutes {
+  font-family: var(--data);
+  font-size: 1.05rem;
+  color: var(--ash);
+}
+
+.note-toc {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 44rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+}
+
+.note-toc ul {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  padding-left: 1.1rem;
+  list-style: square;
+  color: var(--ash);
+}
+
+.note-toc a {
+  font-weight: 600;
+}
+
+.note-text h2 {
+  scroll-margin-top: 1rem;
+}
+
+/* ---------- 404 ---------- */
+
+.lost {
+  justify-items: start;
+}
+
+.lost-code {
+  font-family: var(--display);
+  font-size: clamp(6rem, 22vw, 11rem);
+  line-height: 0.8;
+  color: var(--ash);
+}
+
+/* ---------- Learn ML: progress code and glossary ---------- */
+
+.backup {
+  border-top: 1px dashed var(--rule);
+  padding-top: 0.6rem;
+}
+
+.backup summary {
+  cursor: pointer;
+  font-weight: 700;
+  width: fit-content;
+  text-decoration: underline;
+  text-decoration-color: var(--blue);
+  text-underline-offset: 0.2em;
+}
+
+.backup summary:hover {
+  color: var(--blue);
+}
+
+.backup > * + * {
+  margin-top: 0.6rem;
+}
+
+.backup-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.3rem 0.5rem;
+  max-width: 40rem;
+}
+
+.backup-row label {
+  grid-column: 1 / -1;
+  font-weight: 650;
+  font-size: 0.9375rem;
+}
+
+.backup-row input {
+  min-width: 0;
+  font-family: var(--data);
+  font-size: 1.15rem;
+  line-height: 1.2;
+  padding: 0.35rem 0.55rem;
+  color: var(--bone);
+  background: var(--ground);
+  border: 1px solid var(--ash);
+  border-radius: 0;
+}
+
+.backup-row input:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 0;
+}
+
+.backup-row button {
+  font: inherit;
+  font-weight: 700;
+  padding: 0.35rem 0.9rem;
+  color: var(--ground);
+  background: var(--bone);
+  border: 1px solid var(--bone);
+  cursor: pointer;
+}
+
+.backup-row button:hover:not(:disabled) {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.backup-row button:disabled {
+  cursor: default;
+  color: var(--ash);
+  background: transparent;
+  border-color: var(--rule);
+}
+
+.learn-glossary {
+  scroll-margin-top: 1rem;
+}
+
+.learn-glossary .phase-n {
+  font-size: clamp(2.5rem, 6vw, 3.25rem);
+}
+
+.glossary {
+  display: grid;
+  margin: 0;
+}
+
+.glossary > div {
+  display: grid;
+  gap: 0.15rem 1rem;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.glossary > div:first-child {
+  border-top: 0;
+}
+
+@media (min-width: 46rem) {
+  .glossary > div {
+    grid-template-columns: 14rem minmax(0, 1fr);
+  }
+}
+
+.glossary dt {
+  font-weight: 750;
+}
+
+.glossary dd {
+  margin: 0;
+}

@@ -97,6 +97,30 @@ export const learn = {
     note: { en: "Estimates, not deadlines. Go at your own pace.", es: "Son estimados, no plazos. Ve a tu ritmo." },
     perDay: { en: "at 1 h a day", es: "a 1 h diaria" },
   },
+  // progress lives in one browser; a code carries it to another, or keeps it safe
+  backup: {
+    title: { en: "Back up or move my progress", es: "Guardar o mover mi progreso" },
+    text: {
+      en: "Your progress is saved only in this browser. Copy this code and keep it somewhere safe. Paste it here on another device, or after clearing your browser, to get everything back.",
+      es: "Tu progreso se guarda solo en este navegador. Copia este código y guárdalo en un lugar seguro. Pégalo aquí en otro dispositivo, o después de limpiar tu navegador, para recuperar todo.",
+    },
+    yours: { en: "Your code", es: "Tu código" },
+    copy: { en: "Copy", es: "Copiar" },
+    copied: { en: "Copied", es: "Copiado" },
+    paste: { en: "Paste a code", es: "Pega un código" },
+    load: { en: "Load", es: "Cargar" },
+    loaded: { en: "Loaded. {n} ticks are now on this device.", es: "Cargado. Ahora hay {n} marcas en este dispositivo." },
+    bad: { en: "That doesn't look like a progress code.", es: "Eso no parece un código de progreso." },
+    empty: { en: "Nothing ticked yet, so there's nothing to save.", es: "Aún no has marcado nada, así que no hay qué guardar." },
+  },
+  glossary: {
+    title: { en: "Glossary", es: "Glosario" },
+    lede: { en: "Every term the route defines, in one place.", es: "Todos los términos que define la ruta, en un solo lugar." },
+    count: { en: "{n} terms", es: "{n} términos" },
+    filter: { en: "Filter terms", es: "Filtrar términos" },
+    from: { en: "from", es: "de" },
+    none: { en: "No term matches that.", es: "Ningún término coincide." },
+  },
   // each phase ends with a short self-check before moving on
   check: {
     title: { en: "Check yourself before moving on", es: "Compruébalo antes de seguir" },

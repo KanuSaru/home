@@ -1,3 +1,5 @@
+// KaTeX typesets the formulas in notes; its stylesheet (and the maths fonts) load only here
+import "katex/dist/katex.min.css";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NotePage } from "@/components/NotesPage";

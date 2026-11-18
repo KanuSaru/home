@@ -94,6 +94,7 @@ export function NotePage({ note }: { note: Note }) {
         <h1>{v.title}</h1>
         <p className="note-meta">
           <time dateTime={note.date}>{formatNoteDate(note.date, lang)}</time>
+          <span className="note-minutes">{t(notesText.minutes, { n: v.minutes })}</span>
           {v.tags.map((tag) => (
             <span key={tag} className="tag">
               {tag}
@@ -102,6 +103,18 @@ export function NotePage({ note }: { note: Note }) {
         </p>
         {other && <p className="note-notice">{t(notesText.onlyNotice)}</p>}
       </header>
+      {v.toc.length >= 3 && (
+        <nav className="note-toc" aria-label={t(notesText.toc)}>
+          <p className="widget-title">{t(notesText.toc)}</p>
+          <ul>
+            {v.toc.map((h) => (
+              <li key={h.id}>
+                <a href={`#${h.id}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
       <div className="note-body">
         {v.blocks.map((b, i) =>
           b.type === "html" ? (

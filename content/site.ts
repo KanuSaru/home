@@ -19,7 +19,7 @@ export const config = {
   imood: "kanu", // imood.com/users/kanu; set your mood there
   // Your Ko-fi username (ko-fi.com/<username>). Empty hides the Ko-fi links.
   kofi: "kanusaru",
-  // The guestbook's Cloudflare Worker (see guestbook/README.md). Empty until it's set up.
+  // The guestbook's Cloudflare Worker (github.com/KanuSaru/leave-a-mark). Empty until it's set up.
   guestbook: {
     api: "https://kanu-guestbook.kanu-guestbook.workers.dev",
     turnstileSiteKey: "0x4AAAAAAFwO-6HKz0TEHupx", // Turnstile's site key (public)
@@ -460,6 +460,16 @@ export const journalText = {
   lockAgain: { en: "Seal it again", es: "Volver a sellar" },
 };
 
+// the 404 page
+export const notFoundText = {
+  title: { en: "This page wandered off", es: "Esta página se fue a vagar" },
+  text: {
+    en: "There's nothing at this address. It may have moved, or the link may have a typo.",
+    es: "No hay nada en esta dirección. Puede que se haya movido, o que el enlace tenga un error.",
+  },
+  home: { en: "Back to the start", es: "Volver al inicio" },
+};
+
 export const notesText = {
   title: { en: "Notes", es: "Notas" },
   lede: {
@@ -472,6 +482,8 @@ export const notesText = {
   onlyTag: { en: "in Spanish", es: "en inglés" },
   onlyNotice: { en: "This note is only in Spanish.", es: "Esta nota solo está en inglés." },
   latest: { en: "Latest", es: "Lo más reciente" },
+  minutes: { en: "{n} min read", es: "{n} min de lectura" },
+  toc: { en: "In this note", es: "En esta nota" },
   rss: { en: "RSS feed", es: "Feed RSS" },
   rssHint: {
     en: "Paste it into a feed reader to get new notes as they come out.",

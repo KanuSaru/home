@@ -23,8 +23,9 @@ jobs:
         with:
           node-version: 26
           cache: npm
-      # Asks GitHub where the site lives: "/home" on kanusaru.github.io/home,
-      # nothing once a custom domain is set. No edits needed when that changes.
+      # Asks GitHub where the site lives: nothing on erickdonado.com (the custom
+      # domain), "/home" if it were ever served from kanusaru.github.io/home again.
+      # No edits needed when that changes.
       - id: pages
         uses: actions/configure-pages@v5
       - run: npm ci

@@ -1,14 +1,14 @@
 "use client";
 
 // The Guestbook page: a form to sign it, the approved messages, and my 88×31 button.
-// Messages are kept by the Cloudflare Worker in guestbook/ (set up per its README).
+// Messages are kept by a Cloudflare Worker from github.com/KanuSaru/leave-a-mark.
 
 import { useEffect, useRef, useState } from "react";
 import { config, guestbookText as g, ui } from "@/content/site";
 import { useLang, useT } from "@/lib/i18n";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kanusaru.github.io/home";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://erickdonado.com";
 const DEMO = process.env.NEXT_PUBLIC_DEMO === "1";
 const API = config.guestbook.api.replace(/\/$/, "");
 const SITE_KEY = config.guestbook.turnstileSiteKey;

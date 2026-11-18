@@ -8,6 +8,13 @@ export type Update = { date: string; text: L };
 
 export const updates: Update[] = [
   {
+    date: "2026-11-13",
+    text: {
+      en: "Learn ML got easier to follow: time estimates, essentials marked apart from extras, a self-check at the end of each phase, a glossary, and a code to back up your progress. Notes now show their reading time and sections.",
+      es: "Aprende ML es más fácil de seguir: tiempos estimados, lo esencial separado de lo extra, una autoevaluación al final de cada fase, un glosario y un código para respaldar tu progreso. Las notas ahora muestran su tiempo de lectura y sus secciones.",
+    },
+  },
+  {
     date: "2026-11-10",
     text: {
       en: "The journal is now a sealed envelope: solve the riddle, the wax seal breaks, and the entries read as handwritten letters. Also: the songs I've played most this month in the Music widget, and longer versions of the two notes for Learn ML.",
