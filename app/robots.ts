@@ -9,8 +9,10 @@ export const dynamic = "force-static";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    // everyone is welcome, AI crawlers included, except in the locked journal
-    rules: { userAgent: "*", allow: "/", disallow: ["/journal/", "/es/journal/"] },
+    // everyone is welcome, AI crawlers included. The locked journal isn't blocked here on
+    // purpose: its pages say "noindex" themselves, and crawlers can only read that if
+    // they're allowed in. (Blocked, they could still list the bare address.)
+    rules: { userAgent: "*", allow: "/" },
     sitemap: abs("/sitemap.xml"),
   };
 }
