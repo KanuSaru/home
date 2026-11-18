@@ -28,11 +28,17 @@ jobs:
       # No edits needed when that changes.
       - id: pages
         uses: actions/configure-pages@v5
+      # GitHub can report the address as http:// even with HTTPS enforced; the site is
+      # only ever served over https, so every address it writes (sitemap, canonical
+      # links, previews) uses https.
+      - name: Site address
+        env:
+          BASE_URL: ${{ steps.pages.outputs.base_url }}
+        run: echo "SITE_URL=${BASE_URL/#http:/https:}" >> "$GITHUB_ENV"
       - run: npm ci
       - run: npm run build
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
-          SITE_URL: ${{ steps.pages.outputs.base_url }}
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
