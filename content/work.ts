@@ -246,6 +246,24 @@ export const work = {
       },
       {
         when: "2026",
+        title: { en: "leave-a-mark", es: "leave-a-mark" },
+        detail: {
+          en: "Open-source guestbook for personal sites: a serverless backend on Cloudflare Workers and D1 with anti-bot checks, an admin page to approve messages, and Discord and email alerts. A custom element and a React component. On npm. It's the guestbook on this site.",
+          es: "Libro de visitas de código abierto para sitios personales: un backend serverless en Cloudflare Workers y D1 con verificación anti-bots, una página para aprobar mensajes y alertas por Discord y correo. Un elemento web y un componente de React. En npm. Es el libro de visitas de este sitio.",
+        },
+        href: "https://github.com/KanuSaru/leave-a-mark",
+      },
+      {
+        when: "2026",
+        title: { en: "still-breathing", es: "still-breathing" },
+        detail: {
+          en: "Open-source link checker for built sites and Markdown: finds dead links, says where each one is, and opens a GitHub issue once a month. A CLI with no dependencies. On npm. It checks this site every month.",
+          es: "Verificador de enlaces de código abierto para sitios y Markdown: encuentra enlaces caídos, dice dónde está cada uno y abre un issue en GitHub una vez al mes. Un CLI sin dependencias. En npm. Revisa este sitio cada mes.",
+        },
+        href: "https://github.com/KanuSaru/still-breathing",
+      },
+      {
+        when: "2026",
         title: { en: "Living Dex Planner", es: "Living Dex Planner" },
         detail: {
           en: "Plans the fastest way to complete a Pokémon living dex across game generations, with PokéAPI.",

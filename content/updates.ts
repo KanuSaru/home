@@ -8,6 +8,13 @@ export type Update = { date: string; text: L };
 
 export const updates: Update[] = [
   {
+    date: "2026-11-18",
+    text: {
+      en: "My home has its own address now: erickdonado.com. Old links still work and take you here. Two new tools are on the Work page as well: leave-a-mark, the guestbook behind this site, and still-breathing, which checks every link here once a month.",
+      es: "Mi hogar ya tiene su propia dirección: erickdonado.com. Los enlaces viejos siguen funcionando y te traen aquí. También hay dos herramientas nuevas en la página de Trabajo: leave-a-mark, el libro de visitas de este sitio, y still-breathing, que revisa cada enlace de aquí una vez al mes.",
+    },
+  },
+  {
     date: "2026-11-13",
     text: {
       en: "Learn ML got easier to follow: time estimates, essentials marked apart from extras, a self-check at the end of each phase, a glossary, and a code to back up your progress. Notes now show their reading time and sections.",
