@@ -188,13 +188,14 @@ export function NowPlaying() {
       : null;
   const live = usePoll<LastFm>(url, 60_000);
 
-  let track: { name: string; artist: string; cover?: string; now: boolean; when?: number } | null = null;
+  let track: { name: string; artist: string; album?: string; cover?: string; now: boolean; when?: number } | null = null;
   if (DEMO) track = { name: "Loving", artist: "Loving", now: true };
   else if (live?.recenttracks?.track?.[0]) {
     const tr = live.recenttracks.track[0];
     track = {
       name: tr.name,
       artist: tr.artist["#text"],
+      album: tr.album?.["#text"] || "",
       cover: tr.image?.find((i) => i.size === "large")?.["#text"] || undefined,
       now: tr["@attr"]?.nowplaying === "true",
       when: tr.date ? Number(tr.date.uts) : undefined,
@@ -209,7 +210,9 @@ export function NowPlaying() {
       {track && (
         <div className="track">
           <div className="cover" aria-hidden="true">
-            {track.cover ? <img src={track.cover} alt="" /> : <span className="cover-blank" />}
+            {/* hidden from screen readers (the title and artist are read right after), but
+                described anyway: search engines count an image without words as a mistake */}
+            {track.cover ? <img src={track.cover} alt={`${track.album || track.name}, ${track.artist}`} /> : <span className="cover-blank" />}
           </div>
           <div className="track-text">
             <p className="track-name">{track.name}</p>
