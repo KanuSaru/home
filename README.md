@@ -129,7 +129,7 @@ Only upload music you made or have the rights to share.
   or by email when someone signs. Its address and Turnstile's site key are in
   `config.guestbook` in `content/site.ts`. You approve messages at the worker's `/admin`.
 - **Link check**: on the 1st of every month GitHub checks every link on the site with
-  [still-there](https://github.com/KanuSaru/still-there) and opens an issue if one has died
+  [still-breathing](https://github.com/KanuSaru/still-breathing) and opens an issue if one has died
   (`.github/workflows/links.yml`). To run it now: Actions → Check links → Run workflow.
 - **Mood**: comes from imood.com/users/kanu (`config.imood`). Change your mood on imood.
 - **Your 88×31 button**: `public/button.gif` (animated; `button.png` is a still copy). The Guestbook page shows it with the code

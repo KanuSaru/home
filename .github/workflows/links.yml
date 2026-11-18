@@ -1,4 +1,4 @@
-# Checks every link on the site once a month with still-there, and opens an issue
+# Checks every link on the site once a month with still-breathing, and opens an issue
 # (labelled "dead-links") when one has died. It can also be run by hand: on GitHub,
 # Actions → Check links → Run workflow.
 #
@@ -30,7 +30,7 @@ jobs:
       - name: Check the links
         id: check
         run: |
-          npx --yes still-there@1 out --markdown > report.md && echo "dead=false" >> "$GITHUB_OUTPUT" || echo "dead=true" >> "$GITHUB_OUTPUT"
+          npx --yes still-breathing@1 out --markdown > report.md && echo "dead=false" >> "$GITHUB_OUTPUT" || echo "dead=true" >> "$GITHUB_OUTPUT"
           cat report.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Open or update the issue
