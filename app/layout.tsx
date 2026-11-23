@@ -8,6 +8,7 @@ import { LangProvider } from "@/lib/i18n";
 import { Shell } from "@/components/Shell";
 import { Analytics } from "@/components/Analytics";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { ScrollRail } from "@/components/ScrollRail";
 import { ogImage } from "@/lib/og";
 import "./globals.css";
 
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Shell>{children}</Shell>
         </LangProvider>
         <SmoothScroll />
+        <ScrollRail />
         {config.goatcounter && <Analytics />}
         {config.goatcounter && (
           <Script

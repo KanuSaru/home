@@ -3098,3 +3098,88 @@ main {
 .glossary dd {
   margin: 0;
 }
+
+/* ---------- Scrollbar for mouse users (components/ScrollRail.tsx) ---------- */
+
+/* a strip along the right edge; the bar inside it shows only while the pointer is over it.
+   --rail-radius: 0 for a rectangle, 999px for a rounded bar */
+.scroll-rail {
+  --rail-radius: 0;
+  position: fixed;
+  z-index: 95;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  cursor: default;
+}
+
+.scroll-rail.is-off {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.scroll-rail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-left: 1px solid var(--rule);
+  background: var(--panel);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* the part you grab is as wide as the whole strip, so the very edge of the screen
+   grabs the bar too; what you see is the thinner bar drawn inside it */
+.scroll-rail-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.scroll-rail-thumb::before {
+  content: "";
+  position: absolute;
+  inset: 2px 3px 2px 4px;
+  border-radius: var(--rail-radius);
+  background: var(--ash);
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.scroll-rail.is-shown::before {
+  opacity: 0.85;
+}
+
+.scroll-rail.is-shown .scroll-rail-thumb::before {
+  opacity: 1;
+}
+
+.scroll-rail-thumb:hover::before,
+.scroll-rail.is-dragging .scroll-rail-thumb::before {
+  background: var(--bone);
+}
+
+.scroll-rail.is-dragging .scroll-rail-thumb {
+  cursor: grabbing;
+}
+
+/* with a mouse, the floating language switch and back-to-top button step away from the strip */
+@media (hover: hover) and (pointer: fine) {
+  .float-lang,
+  .to-top {
+    right: max(32px, env(safe-area-inset-right, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-rail::before,
+  .scroll-rail-thumb::before {
+    transition: none;
+  }
+}
