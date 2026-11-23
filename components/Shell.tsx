@@ -37,11 +37,21 @@ function LangSwitch({ short = false, hidden = false }: { short?: boolean; hidden
           hrefLang={o.l}
           lang={o.l}
           aria-current={lang === o.l ? "true" : undefined}
-          aria-label={short ? o.label : undefined}
+          aria-label={o.label}
           onClick={go(o.l)}
           {...off}
         >
-          {short ? o.l.toUpperCase() : o.long}
+          {short ? (
+            o.l.toUpperCase()
+          ) : (
+            <>
+              {/* the narrowest phones show EN / ES so the header stays on one row */}
+              <span className="lang-long">{o.long}</span>
+              <span className="lang-short" aria-hidden="true">
+                {o.l.toUpperCase()}
+              </span>
+            </>
+          )}
         </Link>
       ))}
     </div>

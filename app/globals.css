@@ -220,10 +220,60 @@ main:focus-visible {
   text-align: right;
 }
 
+/* On phones the name and the language switch stay beside the wordmark, and the line
+   under "Kanu" moves below both, across the whole width */
 @media (max-width: 40rem) {
-  .mast-side {
-    justify-items: start;
-    text-align: left;
+  .masthead {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "mark side"
+      "epigraph epigraph";
+    align-items: end;
+    gap: 0.75rem 1rem;
+  }
+
+  /* ".masthead" in front: .mast-main is declared again further down this file,
+     and that later rule would otherwise win and undo this */
+  .masthead .mast-main {
+    display: contents;
+  }
+
+  .masthead .wordmark {
+    grid-area: mark;
+  }
+
+  .masthead .epigraph {
+    grid-area: epigraph;
+  }
+
+  .masthead .mast-side {
+    grid-area: side;
+    justify-items: end;
+    text-align: right;
+  }
+
+  .masthead .realname {
+    white-space: nowrap;
+  }
+}
+
+.lang-short {
+  display: none;
+}
+
+/* the narrowest phones: a slightly smaller wordmark and EN / ES, so it all fits in one row */
+@media (max-width: 23rem) {
+  .masthead .wordmark {
+    font-size: 4.25rem;
+  }
+
+  .lang-long {
+    display: none;
+  }
+
+  .lang-short {
+    display: inline;
   }
 }
 
