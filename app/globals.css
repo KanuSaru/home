@@ -3183,3 +3183,11 @@ main {
     transition: none;
   }
 }
+
+/* the full name under a page title (Work), in the data face */
+.page-fullname {
+  font-family: var(--data);
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--ash);
+}

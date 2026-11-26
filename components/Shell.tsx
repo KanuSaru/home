@@ -9,6 +9,7 @@ import { PageLink, useCurrentPage, type PageId } from "@/lib/route";
 import { DiscordStatus, LocalTime, Mood, NowPlaying, Visitors, Weather } from "@/components/Widgets";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { UpdatesWidget } from "@/components/Updates";
+import { person } from "@/content/seo";
 
 const EMAIL = "hello@erickdonado.com";
 
@@ -222,7 +223,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
             </a>
           )}
         </div>
-        <p>{t(ui.madeIn)}, 2026</p>
+        <p>
+          {person.fullName} · {t(ui.madeIn)}, 2026
+        </p>
       </footer>
       <FloatingControls mastLang={mastLang} />
     </div>

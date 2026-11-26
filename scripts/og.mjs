@@ -102,6 +102,32 @@ function siteImage(lily) {
   );
 }
 
+/**
+ * A square image for Google's result thumbnail (the home page names it as its main
+ * image). Google shows it at about 92 pixels, so it's just "Kanu", as big as it fits.
+ * Link previews keep using the wide site.png above.
+ */
+function squareImage() {
+  return h(
+    "div",
+    { style: { width: 1200, height: 1200, display: "flex", padding: 40, backgroundColor: C.ground } },
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flex: 1,
+          border: `1px solid ${C.rule}`,
+          backgroundColor: C.panel,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+      },
+      h("div", { style: { fontFamily: "Jacquard", fontSize: 420, lineHeight: 0.9, color: C.bone } }, "Kanu"),
+    ),
+  );
+}
+
 function noteImage(note, lily) {
   const main = note.en ?? note.es;
   const second = note.en && note.es && note.es.title !== note.en.title ? note.es.title : null;
@@ -175,17 +201,18 @@ async function main() {
     },
   ];
 
-  const write = async (file, element) => {
-    const img = new ImageResponse(element, { width: W, height: H, fonts });
+  const write = async (file, element, size = { width: W, height: H }) => {
+    const img = new ImageResponse(element, { ...size, fonts });
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, Buffer.from(await img.arrayBuffer()));
   };
 
   fs.rmSync(OUT, { recursive: true, force: true });
   await write(path.join(OUT, "site.png"), siteImage(lily));
+  await write(path.join(OUT, "square.png"), squareImage(), { width: 1200, height: 1200 });
   for (const n of all) await write(path.join(OUT, "notes", `${n.slug}.png`), noteImage(n, lily));
   for (const p of PAGES) await write(path.join(OUT, `${p[0]}.png`), pageImage(p, lily));
-  console.log(`og: wrote ${1 + all.length + PAGES.length} preview image(s) to public/og/`);
+  console.log(`og: wrote ${2 + all.length + PAGES.length} preview image(s) to public/og/`);
 }
 
 main().catch((err) => {

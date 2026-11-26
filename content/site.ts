@@ -294,8 +294,8 @@ export const me = {
     pronouns: { en: "he/him", es: "él" },
     paras: [
       {
-        en: "Kanu is my nickname. KanuSaru came from words I heard in other languages at some point and thought sounded good.",
-        es: "Kanu es mi apodo. KanuSaru viene de palabras que en algún momento escuché en otros idiomas y pensé que sonaban bien.",
+        en: "Kanu is my nickname. On diplomas, papers and paperwork I'm Erick Fabián Donado Fonseca; here, Kanu is fine. KanuSaru came from words I heard in other languages at some point and thought sounded good.",
+        es: "Kanu es mi apodo. En diplomas, papers y documentos soy Erick Fabián Donado Fonseca; aquí, Kanu está bien. KanuSaru viene de palabras que en algún momento escuché en otros idiomas y pensé que sonaban bien.",
       },
       {
         en: "I live in Barranquilla, but I've never held on to one place, like a nomad. The best time of my life was in Chile, years ago, when I got to explore that beautiful country with my father.",

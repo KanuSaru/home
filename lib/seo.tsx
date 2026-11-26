@@ -111,6 +111,23 @@ export function siteGraph(lang: Lang) {
   };
 }
 
+/**
+ * The home page, with its main image: the square picture from scripts/og.mjs. Google
+ * crops wide images to a square for its result thumbnails; this one needs no cropping.
+ */
+export function homeGraph(lang: Lang) {
+  const square = ogImage("og/square.png", siteName);
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    url: abs(pagePath("home", lang)),
+    name: siteName,
+    inLanguage: lang,
+    about: { "@id": personId },
+    ...(square ? { primaryImageOfPage: { "@type": "ImageObject", url: abs("/og/square.png"), width: 1200, height: 1200 } } : {}),
+  };
+}
+
 /** The Me page is a profile page about me. */
 export function profileGraph(lang: Lang) {
   return {

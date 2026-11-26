@@ -3,6 +3,7 @@
 import { work, type Line } from "@/content/work";
 import { useT } from "@/lib/i18n";
 import { MaskField } from "@/components/MaskField";
+import { person } from "@/content/seo";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -48,6 +49,8 @@ export function WorkPage() {
     <>
       <header className="page-head">
         <h1>{t(work.title)}</h1>
+        {/* the full name, as it appears on my papers, so a search for it finds this page */}
+        <p className="page-fullname">{person.fullName}</p>
         <p>{t(work.lede)}</p>
         {cvs.length > 0 && (
           <p className="cv-links">

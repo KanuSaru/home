@@ -25,6 +25,8 @@ const caveat = Caveat({ subsets: ["latin", "latin-ext"], display: "swap", variab
 export const metadata: Metadata = {
   // SITE_URL comes from the deploy workflow, so it follows a custom domain on its own
   metadataBase: new URL(process.env.SITE_URL || "https://erickdonado.com"),
+  // lets search engines show a big preview image (Google Discover, for example)
+  robots: { "max-image-preview": "large" },
   title: { default: siteName, template: `%s, ${person.name}` },
   description: pages.home.description.en,
   applicationName: siteName,
