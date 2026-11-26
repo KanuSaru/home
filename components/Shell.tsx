@@ -124,10 +124,86 @@ function FloatingControls({ mastLang }: { mastLang: React.RefObject<HTMLDivEleme
   );
 }
 
+/**
+ * On phones and tablets the sidebar (updates, time, weather, music…) becomes a drawer
+ * that slides in from the right. The Menu button sits in the masthead, and a copy
+ * floats at the top right once the masthead scrolls away. While the drawer is open,
+ * the rest of the page can't be scrolled, tabbed into or read by screen readers.
+ */
+function useMenu() {
+  const [open, setOpen] = useState(false);
+  const path = usePathname();
+
+  // moving to another page (or language) closes it
+  useEffect(() => setOpen(false), [path]);
+
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    const behind = [...document.querySelectorAll<HTMLElement>(".masthead, .pages, #main, .foot, .to-top, .menu-float, .skip")];
+    root.classList.add("menu-open");
+    behind.forEach((el) => el.setAttribute("inert", ""));
+    // the close button gets focus, so the keyboard starts inside the drawer
+    document.querySelector<HTMLElement>(".side-close")?.focus();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    // a wide window (a tablet turned sideways) shows the sidebar as a column again
+    const wide = matchMedia("(min-width: 60rem)");
+    const onWide = () => wide.matches && setOpen(false);
+    wide.addEventListener("change", onWide);
+    return () => {
+      root.classList.remove("menu-open");
+      behind.forEach((el) => el.removeAttribute("inert"));
+      window.removeEventListener("keydown", onKey);
+      wide.removeEventListener("change", onWide);
+      // back to whichever Menu button is on screen
+      const inline = document.querySelector<HTMLElement>(".menu-inline");
+      const r = inline?.getBoundingClientRect();
+      const target = r && r.bottom > 0 && r.top < window.innerHeight ? inline : document.querySelector<HTMLElement>(".menu-float");
+      target?.focus({ preventScroll: true });
+    };
+  }, [open]);
+
+  return { open, setOpen };
+}
+
+function MenuButton({ inline, open, onOpen, shown = true }: { inline?: boolean; open: boolean; onOpen: () => void; shown?: boolean }) {
+  const t = useT();
+  return (
+    <button
+      type="button"
+      className={`menu-btn ${inline ? "menu-inline" : "menu-float"} ${shown ? "is-shown" : ""}`}
+      aria-controls="side"
+      aria-expanded={open}
+      aria-hidden={!shown || undefined}
+      tabIndex={shown ? undefined : -1}
+      onClick={onOpen}
+    >
+      {t(ui.menu)}
+    </button>
+  );
+}
+
+/** The floating Menu button shows only while the one in the masthead is off screen. */
+function FloatingMenu({ open, onOpen }: { open: boolean; onOpen: () => void }) {
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = document.querySelector(".menu-inline");
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setShown(!e.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return <MenuButton open={open} onOpen={onOpen} shown={shown} />;
+}
+
 export function Shell({ children }: { children: React.ReactNode }) {
   const t = useT();
   const current = useCurrentPage();
   const mastLang = useRef<HTMLDivElement>(null);
+  const menu = useMenu();
+  const openMenu = () => menu.setOpen(true);
+  const closeMenu = () => menu.setOpen(false);
 
   const skip = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -153,6 +229,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <LangSwitch />
           </div>
         </div>
+        <MenuButton inline open={menu.open} onOpen={openMenu} />
       </header>
 
       <div className="layout">
@@ -184,7 +261,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
           {children}
         </main>
 
-        <aside className="side">
+        <aside id="side" className={`side ${menu.open ? "is-open" : ""}`}>
+          {/* only on phones and tablets, at the top of the drawer */}
+          <div className="side-head">
+            <LangSwitch />
+            <button type="button" className="side-close" onClick={closeMenu}>
+              {t(ui.close)} <span aria-hidden="true">✕</span>
+            </button>
+          </div>
           <UpdatesWidget />
           <LocalTime />
           <Weather />
@@ -228,6 +312,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </p>
       </footer>
       <FloatingControls mastLang={mastLang} />
+      <FloatingMenu open={menu.open} onOpen={openMenu} />
+      <div className={`side-backdrop ${menu.open ? "is-open" : ""}`} onClick={closeMenu} aria-hidden="true" />
     </div>
   );
 }

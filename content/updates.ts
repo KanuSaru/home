@@ -8,6 +8,13 @@ export type Update = { date: string; text: L };
 
 export const updates: Update[] = [
   {
+    date: "2026-11-26",
+    text: {
+      en: "A friend's scroll wheel died and he couldn't get around the site, so now there's a scrollbar: on a computer, move the mouse to the right edge and it appears. On phones, a Menu button opens the sidebar from the right, and my name and the language switch stay beside \u201cKanu\u201d. Oh, and the site finally has its own icon.",
+      es: "A un amigo se le dañó la rueda del mouse y no podía moverse por el sitio, así que ahora hay barra de desplazamiento: en computador, lleva el mouse al borde derecho y aparece. En celular, un botón de Menú abre la barra lateral desde la derecha, y mi nombre y el cambio de idioma se quedan al lado de \u201cKanu\u201d. Ah, y el sitio por fin tiene su propio ícono.",
+    },
+  },
+  {
     date: "2026-11-18",
     text: {
       en: "My home has its own address now: erickdonado.com. Old links still work and take you here. Two new tools are on the Work page as well: leave-a-mark, the guestbook behind this site, and still-breathing, which checks every link here once a month.",

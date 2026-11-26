@@ -48,6 +48,8 @@ export const ui = {
   skip: { en: "Skip to content", es: "Ir al contenido" },
   language: { en: "Language", es: "Idioma" },
   toTop: { en: "Back to top", es: "Volver arriba" },
+  menu: { en: "Menu", es: "Menú" },
+  close: { en: "Close", es: "Cerrar" },
   pages: { en: "Pages", es: "Páginas" },
   soon: { en: "soon", es: "pronto" },
   locked: { en: "locked", es: "con llave" },

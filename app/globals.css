@@ -220,15 +220,15 @@ main:focus-visible {
   text-align: right;
 }
 
-/* On phones the name and the language switch stay beside the wordmark, and the line
-   under "Kanu" moves below both, across the whole width */
-@media (max-width: 40rem) {
+/* On phones and tablets the name and the language switch stay beside the wordmark;
+   the line under "Kanu" moves below both, with the Menu button at its right */
+@media (max-width: 59.99rem) {
   .masthead {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-areas:
-      "mark side"
-      "epigraph epigraph";
+      "mark side side"
+      "epigraph epigraph menu";
     align-items: end;
     gap: 0.75rem 1rem;
   }
@@ -245,6 +245,13 @@ main:focus-visible {
 
   .masthead .epigraph {
     grid-area: epigraph;
+    min-width: 0;
+  }
+
+  .masthead .menu-inline {
+    grid-area: menu;
+    justify-self: end;
+    align-self: start;
   }
 
   .masthead .mast-side {
@@ -3190,4 +3197,142 @@ main {
   font-size: 1.25rem;
   line-height: 1.2;
   color: var(--ash);
+}
+
+/* ---------- Phone and tablet menu: the sidebar as a drawer (Shell.tsx) ---------- */
+
+.menu-btn,
+.side-close {
+  font-family: var(--data);
+  font-size: 1.125rem;
+  line-height: 1;
+  padding: 0.3rem 0.6rem;
+  color: var(--bone);
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.menu-btn:hover,
+.side-close:hover {
+  border-color: var(--ash);
+}
+
+.menu-btn[aria-expanded="true"] {
+  color: var(--ground);
+  background: var(--bone);
+  border-color: var(--bone);
+}
+
+.menu-float {
+  position: fixed;
+  z-index: 100;
+  top: max(16px, env(safe-area-inset-top, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s linear 0.2s;
+}
+
+.menu-float.is-shown {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s;
+}
+
+.side-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.side-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 115;
+  background: rgba(13, 13, 12, 0.72);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    visibility 0s linear 0.25s;
+}
+
+@media (max-width: 59.99rem) {
+  /* the floating EN / ES gives its corner to the Menu button; the drawer has its own */
+  .float-lang {
+    display: none;
+  }
+
+  .side {
+    position: fixed;
+    z-index: 120;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(88vw, 22rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-top: max(16px, env(safe-area-inset-top, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    padding-left: 16px;
+    background: var(--ground);
+    border-left: 1px solid var(--rule);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition:
+      transform 0.25s ease,
+      visibility 0s linear 0.25s;
+  }
+
+  .side.is-open {
+    transform: none;
+    visibility: visible;
+    transition:
+      transform 0.25s ease,
+      visibility 0s;
+  }
+
+  .side-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.25s ease,
+      visibility 0s;
+  }
+
+  /* the page behind stays put while the drawer is open */
+  html.menu-open {
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 60rem) {
+  .menu-btn,
+  .side-head,
+  .side-backdrop {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side,
+  .side.is-open,
+  .side-backdrop,
+  .menu-float {
+    transition: none;
+  }
 }
