@@ -157,7 +157,7 @@ export const work = {
         href: "https://erickdonado.com/learn/",
       },
       {
-        when: "2024–26",
+        when: { en: "2024–now", es: "2024–hoy" },
         title: { en: "Private classes, Chico Vence Academy", es: "Clases particulares, Academia Chico Vence" },
         detail: {
           en: "Math, geometry, statistics, physics, English and programming, from elementary school students to university.",
@@ -197,7 +197,7 @@ export const work = {
     title: { en: "Leadership and community", es: "Liderazgo y comunidad" },
     lines: [
       {
-        when: "2024–26",
+        when: "2024–25",
         title: { en: "President, IEEE Computational Intelligence Society student chapter", es: "Presidente, capítulo estudiantil IEEE Computational Intelligence Society" },
         detail: { en: "Universidad Simón Bolívar", es: "Universidad Simón Bolívar" },
       },
@@ -301,7 +301,15 @@ export const work = {
           es: "Universidad Internacional de La Rioja (UNIR), España. Calificación 9,9/10.",
         },
       },
-      { when: "2025", title: { en: "NASA Space Apps Challenge", es: "NASA Space Apps Challenge" } },
+      { when: "2026", title: { en: "NASA Space Apps Challenge, participant", es: "NASA Space Apps Challenge, participante" } },
+      {
+        when: "2025",
+        title: { en: "NASA Space Apps Challenge, Global Nominee", es: "NASA Space Apps Challenge, nominado global" },
+        detail: {
+          en: "Challenge “A World Away: Hunting for Exoplanets with AI”.",
+          es: "Reto “A World Away: Hunting for Exoplanets with AI”.",
+        },
+      },
       { when: "2025", title: { en: "GDG Barranquilla “Build with AI” hackathon (48 h)", es: "Hackatón “Build with AI” de GDG Barranquilla (48 h)" } },
       { when: "2025", title: { en: "IEEE certification in web design and development", es: "Certificación IEEE en diseño y desarrollo web" } },
       { when: "2025", title: { en: "COIL “Data and SDGs” with Universidad de Cádiz, Spain", es: "COIL “Datos y ODS” con la Universidad de Cádiz, España" } },
@@ -317,8 +325,8 @@ export const work = {
     notes: [
       { en: "GPA 4.05 / 5.00", es: "Promedio 4.05 / 5.00" },
       {
-        en: "Honor roll, Undergraduate Research Excellence (Elite), 2025-2 and 2026-1",
-        es: "Cuadro de honor, Excelencia Investigativa en Pregrado (Élite), 2025-2 y 2026-1",
+        en: "Honor roll, Undergraduate Research Excellence (Elite), 2025-2, 2026-1 and 2026-2",
+        es: "Cuadro de honor, Excelencia Investigativa en Pregrado (Élite), 2025-2, 2026-1 y 2026-2",
       },
       { en: "English C1", es: "Inglés C1" },
     ] as L[],
