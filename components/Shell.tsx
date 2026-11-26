@@ -179,7 +179,11 @@ function MenuButton({ inline, open, onOpen, shown = true }: { inline?: boolean; 
       tabIndex={shown ? undefined : -1}
       onClick={onOpen}
     >
-      {t(ui.menu)}
+      {/* three pixel bars, the usual sign for a menu */}
+      <svg viewBox="0 0 7 6" aria-hidden="true" shapeRendering="crispEdges">
+        <path d="M0 0h7v1H0zM0 2.5h7v1H0zM0 5h7v1H0z" fill="currentColor" />
+      </svg>
+      <span>{t(ui.menu)}</span>
     </button>
   );
 }

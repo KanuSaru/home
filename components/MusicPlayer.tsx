@@ -12,7 +12,7 @@
 import { DitherPlayer } from "dither-player/react";
 import { config, music, ui, widgets as w } from "@/content/site";
 import { useLang, useT } from "@/lib/i18n";
-import { usePoll } from "@/components/Widgets";
+import { useRemembered } from "@/components/Widgets";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -36,7 +36,7 @@ function TopSongs() {
     !DEMO && user && apiKey
       ? `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${encodeURIComponent(user)}&api_key=${apiKey}&format=json&period=1month&limit=5`
       : null;
-  const live = usePoll<TopTracks>(url, 30 * 60_000);
+  const { data: live } = useRemembered<TopTracks>(url, 30 * 60_000, "lastfm-top");
   const songs: Top[] | null = DEMO
     ? SAMPLE
     : live

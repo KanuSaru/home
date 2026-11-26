@@ -24,16 +24,46 @@ function Panel({ title, children, example }: { title: string; children: React.Re
 
 /** Poll a JSON endpoint; returns undefined while loading, null on failure. */
 export function usePoll<T>(url: string | null, everyMs: number) {
+  return useRemembered<T>(url, everyMs).data;
+}
+
+/**
+ * Like usePoll, but with a memory: the last good answer is kept in the visitor's browser
+ * under `remember`, shown right away on the next visit, and kept on screen whenever the
+ * service fails (Last.fm has bad moments). `stale` says the data on screen is that saved
+ * copy, not a fresh answer. An answer with an "error" field counts as a failure, since
+ * Last.fm reports some failures that way.
+ */
+export function useRemembered<T>(url: string | null, everyMs: number, remember?: string) {
   const [data, setData] = useState<T | null | undefined>(undefined);
+  const [stale, setStale] = useState(false);
   useEffect(() => {
     if (!url) return;
     let alive = true;
+    const key = remember ? `remembered:${remember}` : null;
+    if (key) {
+      try {
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          setData((prev) => (prev === undefined ? (JSON.parse(saved) as T) : prev));
+          setStale(true);
+        }
+      } catch {}
+    }
     const load = async () => {
       try {
         const res = await fetch(url);
         if (!res.ok) throw new Error(String(res.status));
         const json = (await res.json()) as T;
-        if (alive) setData(json);
+        if (json && typeof json === "object" && "error" in json) throw new Error("error in answer");
+        if (!alive) return;
+        setData(json);
+        setStale(false);
+        if (key) {
+          try {
+            localStorage.setItem(key, JSON.stringify(json));
+          } catch {}
+        }
       } catch {
         if (alive) setData((prev) => (prev === undefined ? null : prev));
       }
@@ -44,8 +74,8 @@ export function usePoll<T>(url: string | null, everyMs: number) {
       alive = false;
       window.clearInterval(id);
     };
-  }, [url, everyMs]);
-  return data;
+  }, [url, everyMs, remember]);
+  return { data, stale };
 }
 
 // ---------------------------------------------------------------- time
@@ -186,7 +216,7 @@ export function NowPlaying() {
     !DEMO && user && apiKey
       ? `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${encodeURIComponent(user)}&api_key=${apiKey}&format=json&limit=1`
       : null;
-  const live = usePoll<LastFm>(url, 60_000);
+  const { data: live, stale } = useRemembered<LastFm>(url, 60_000, "lastfm-recent");
 
   let track: { name: string; artist: string; album?: string; cover?: string; now: boolean; when?: number } | null = null;
   if (DEMO) track = { name: "Loving", artist: "Loving", now: true };
@@ -197,7 +227,8 @@ export function NowPlaying() {
       artist: tr.artist["#text"],
       album: tr.album?.["#text"] || "",
       cover: tr.image?.find((i) => i.size === "large")?.["#text"] || undefined,
-      now: tr["@attr"]?.nowplaying === "true",
+      // a saved copy can't vouch for "listening now": it only says what played last
+      now: !stale && tr["@attr"]?.nowplaying === "true",
       when: tr.date ? Number(tr.date.uts) : undefined,
     };
   }

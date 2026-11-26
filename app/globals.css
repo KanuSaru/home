@@ -3214,9 +3214,23 @@ main {
   cursor: pointer;
 }
 
-.menu-btn:hover,
 .side-close:hover {
   border-color: var(--ash);
+}
+
+/* the Menu button: bigger, with a white frame, so it reads as a button at a glance */
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1.375rem;
+  padding: 0.4rem 0.7rem;
+  border: 2px solid var(--bone);
+}
+
+.menu-btn svg {
+  width: 16px;
+  height: 14px;
 }
 
 .menu-btn[aria-expanded="true"] {
