@@ -1,77 +1,86 @@
-# Kanu — personal site
+# Kanu
 
-Erick Donado's personal site, built with Next.js (App Router) and exported as
-static HTML. English first, with a Spanish switch.
+The personal site of Erick Donado (Kanu): **[erickdonado.com](https://erickdonado.com)**.
+Research, notes, a free route into machine learning, a guestbook, a locked journal, and
+pictures drawn in 1-bit pixels by the browser. In English, and in Spanish under `/es/`.
+
+It's a [Next.js](https://nextjs.org) site exported as plain static files and published
+by GitHub Pages. There's no server of its own.
+
+## How it works
+
+- **Pages** are built ahead of time: `next build` writes every page as an HTML file to
+  `out/`, and GitHub Pages serves that folder. Each page exists twice, `/work/` in English
+  and `/es/work/` in Spanish; the language switch moves between them and remembers the
+  visitor's choice.
+- **Live widgets** (what I'm listening to, Discord status, weather, visitors, mood) are
+  filled in by the visitor's browser from public APIs: Last.fm, Lanyard, Open-Meteo,
+  GoatCounter and imood. None of them needs a secret.
+- **The guestbook** is the only part with a server: a small Cloudflare Worker with a D1
+  database, from [leave-a-mark](https://github.com/KanuSaru/leave-a-mark). It lives in
+  its own repo, with its own settings and secrets.
+- **Pictures** (the moon, the lily, the Steam Deck, the music visualizer) are drawn by
+  code into on-or-off pixels with a 4×4 Bayer grid. No image files.
+
+The build runs four steps (`npm run build`):
+
+1. `scripts/feeds.mjs` writes the RSS feeds, with maths as MathML.
+2. `scripts/og.mjs` draws the link preview images into `public/og/`: one per page and
+   note, plus a square one for Google's result thumbnail. It needs internet for the fonts;
+   without it, the site builds anyway, just without them.
+3. `next build` writes the pages.
+4. `scripts/html-lang.mjs` marks every page under `out/es/` as Spanish (`lang="es"`).
 
 ## Run it
 
 ```bash
 npm install
 npm run dev      # http://localhost:3000
-npm run build    # writes the static site to out/
+npm run build    # the whole site, in out/
 ```
 
-The deploy workflow uses the same Node version as your computer (26), so if it
-builds for you, it builds there.
+Node 26, the same version the deploy uses, so if it builds on your computer it builds there.
 
-## Edit the content
+## Change things
 
-All text lives in `content/site.ts`, in English and Spanish (`{ en, es }`).
-Pages: `/` (home hub), `/me/`, `/work/`, `/notes/`, `/learn/`, `/guestbook/`,
-`/updates/` and `/journal/`. Each one also exists in Spanish under `/es/`
-(`/es/work/`…); the language switch moves between the two. A new page needs a file in
-both `app/<page>/` and `app/es/<page>/`.
-The Work page's text is in `content/work.ts`. The CV buttons download the PDFs in
-`public/cv/`; to update a CV, replace the file with one of the same name (or change
-the name in `work.cv`).
+Almost all the text lives in `content/`, always as `{ en, es }` pairs, so changing the
+words never means touching a component.
 
-## Connect the live widgets
+### Every page
 
-Fill these in at the top of `content/site.ts`. Until then each widget says
-"Not connected yet".
+- **Masthead, pages list, footer:** `components/Shell.tsx`. The line under "Kanu" is
+  `epigraph` in `content/site.ts`.
+- **Updates log:** add an entry at the top of `content/updates.ts`. The sidebar shows the
+  latest three; `/updates/` shows them all.
+- **A new page** needs a file in both `app/<page>/` and `app/es/<page>/`, and an entry in
+  `nav` in `content/site.ts`.
+- **Styles and colors:** `app/globals.css`, with the color tokens at the top.
 
-| Widget | Status |
-| --- | --- |
-| Now playing | Username set. Needs `lastfm.apiKey`: create one at last.fm/api/account/create and paste the API key (never the shared secret) |
-| On Discord | Connected through Lanyard |
-| Visitors | Code set (`kanu`). In GoatCounter settings, turn on "Allow adding visitor counts on your website" or the number won't load |
-| Weather | nothing; uses Open-Meteo |
-| Local time, moon | nothing; computed in the browser |
+### Home
 
-The Last.fm key is a public read-only key, the kind these widgets normally ship
-with; don't put any private key in this file.
+The texts are `home` in `content/site.ts`; the page is `components/HomePage.tsx`. The
+taped photo is `public/avatar.jpg` (set as `avatar` in `config`), shown in grayscale. The
+lily is `components/LilyScene.tsx`; the moon is the `dither-moon` package.
 
-## Your photo
+### Me
 
-Put the image in `public/` (for example `public/avatar.jpg`) and set
-`avatar: "avatar.jpg"` in `config` at the top of `content/site.ts`. It shows in
-grayscale inside the taped frame. Until then the frame is empty.
+The texts are `me` in `content/site.ts`. The **Daily driver** panel shows the Steam Deck,
+drawn by the `dither-model` package from `public/models/steam-deck.json`. That file is
+Valve's official CAD, simplified, under Valve's license (CC BY-NC-SA 4.0, see
+`public/models/README.md`): keep the credit line under the panel. To show another STL:
+`npx dither-model thing.stl -o public/models/thing.json`.
 
-## Search engines and AI assistants
+### Work
 
-What they read about the site lives in `content/seo.ts`: each page's title and
-description (not shown on the page), the facts about you that go into the structured
-data, and your profiles elsewhere. `lib/seo.tsx` turns it into metadata. Each build
-also writes `sitemap.xml`, `robots.txt` and `llms.txt`.
+The texts and projects are in `content/work.ts`. The CV buttons download the PDFs in
+`public/cv/`: to update a CV, replace the file with one of the same name. My publications
+also go into the structured data from `publications` in `content/seo.ts`.
 
-Once the site is live (ideally on its own domain):
+### Notes
 
-1. Add it to [Google Search Console](https://search.google.com/search-console) and
-   [Bing Webmaster Tools](https://www.bing.com/webmasters). If they ask for an HTML
-   tag, paste its `content` value into `verification` in `content/seo.ts`.
-2. Submit `sitemap.xml` in both.
-3. Check the structured data with Google's Rich Results Test.
-
-## Ideas for later
-
-- A stats panel, like a game profile's level and badges (Wakfu hours, books read, chess rating…).
-
-## Notes
-
-Each note is a Markdown file in `content/notes/`, named after its address plus the
-language: `my-note.en.md` and/or `my-note.es.md`. Write one or both; with both,
-the language switch picks the version. It's published at `/notes/my-note/`, and the
-three newest show on the home page. Start the file like this:
+Each note is a Markdown file in `content/notes/`, named after its address plus its
+language: `my-note.en.md`, `my-note.es.md`, or both. It's published at `/notes/my-note/`,
+and the three newest show on the home page. Start the file like this:
 
 ```
 ---
@@ -79,125 +88,142 @@ title: My note
 date: 2026-11-15
 tags: machine learning, c
 summary: One or two sentences for the list of notes.
+description: Optional, up to 160 characters, for search results (default: the summary).
 ---
 ```
 
 Then write normally: `##` headings, paragraphs, `-` lists, `**bold**`, `*italic*`,
-`` `code` ``, code blocks with three backticks, `[links](https://…)` and images
-(put them in `public/notes/` and write `![what it shows](/notes/picture.png)`).
+`` `code` ``, code blocks with three backticks, `[links](https://…)` and images (put them
+in `public/notes/` and write `![what it shows](/notes/picture.png)`).
 
-Every build also writes the RSS feeds (`/feed.xml` in English, `/feed.es.xml` in
-Spanish) and the link preview images in `public/og/`, so there's nothing to update by
-hand. To look at them before publishing, run `npm run feeds` or `npm run og`.
+- **Maths** is LaTeX, typeset by KaTeX at build time: `$x_i$` inside a sentence, `$$ … $$`
+  on its own line for a centered formula.
+- **Live figures** go on a line starting with `::`. The ones in `components/NoteFigures.tsx`:
+  `::moon`, `::moons`, `::ramp` and `::bayer`. The diagrams in `components/LearnFigures.tsx`:
+  `::loop`, `::projects`, `::karaoke`, `::bell`, `::houses`, `::trend`, `::pca`, `::compare`,
+  `::curves`, `::descent` and `::landscape`. Each takes an optional `caption="…"`, and the
+  words inside follow the page's language.
+- Each note gets a reading time and, with three or more sections, a list of them at the top.
 
-Maths is written as LaTeX and typeset by KaTeX when the site builds: `$x_i$` inside a
-sentence, and `$$ … $$` on its own line for a centered formula.
+### Learn ML
 
-A line starting with `::` places a live figure. These exist (see `components/NoteFigures.tsx`):
+The whole route is data in `content/learn.ts`: phases, modules, resources with their
+priority level (1 essential, 2 reinforcement, 3 go deeper), self-checks and the glossary.
+Update `reviewed` there when you go through it again. Visitors' progress stays in their
+own browser, and the progress code lets them carry it to another one. Don't reorder the
+resources inside a module: progress is saved by position.
 
-- `::moon date=2026-11-17 relief=0 surface=flat info=1 size=large caption="…"`
-- `::moons dates="2026-11-13,2026-11-24" labels="Nov 13|Nov 24" caption="…"`
-- `::ramp labels="a|b|c" caption="…"` and `::bayer caption="…"`
-- Diagrams for the Learn ML notes (`components/LearnFigures.tsx`): `::loop`, `::projects`,
-  `::karaoke`, `::bell`, `::houses`, `::trend`, `::pca`, `::compare`, `::curves`, `::descent`
-  and `::landscape`, each with an optional `caption="…"`. Their labels follow the page's language.
+### Journal
 
-## Music player
+The page shows a sealed envelope with the riddle on it. Solving it breaks the wax seal
+and shows the entries as handwritten letters. Entries are sealed on your computer, and
+only the sealed file is published.
 
-While `music.tracks` is empty, the **Music** widget lists the five songs you've played
-most this month (from Last.fm, the same account as "Now playing") with a link to
-`music.playlist`. Once you add tracks of your own it becomes the player below: two
-tabs, and it keeps playing while visitors move between pages.
-
-- **Mine**: your own tracks. Put the files (mp3 or m4a) in `public/music/` and list
-  them in `music.tracks` at the top of `content/site.ts`, in the order they should play:
-  `{ title: "Night bus", file: "night-bus.mp3" }`. Keep each file under 100 MB (GitHub's
-  limit); a 3-minute mp3 at 192 kbps is about 4 MB.
-- **Faves**: songs you like. Paste the share link of a public playlist (Apple Music,
-  Spotify or YouTube) into `music.playlist`. Its player only loads when a visitor opens
-  the tab. Apple Music and Spotify play full songs to their own members and short
-  previews to everyone else; that's their rule, not the site's.
-
-Only upload music you made or have the rights to share.
-
-## Updates, guestbook, mood and your button
-
-- **Updates log**: add an entry at the top of `content/updates.ts`. The sidebar shows the
-  latest three, and `/updates/` shows them all.
-- **Guestbook**: `/guestbook/`. Messages are kept by a small Cloudflare Worker from
-  [leave-a-mark](https://github.com/KanuSaru/leave-a-mark), which also alerts you on Discord
-  or by email when someone signs. Its address and Turnstile's site key are in
-  `config.guestbook` in `content/site.ts`. You approve messages at the worker's `/admin`.
-- **Link check**: on the 1st of every month GitHub checks every link on the site with
-  [still-breathing](https://github.com/KanuSaru/still-breathing) and opens an issue if one has died
-  (`.github/workflows/links.yml`). To run it now: Actions → Check links → Run workflow.
-- **Mood**: comes from imood.com/users/kanu (`config.imood`). Change your mood on imood.
-- **Your 88×31 button**: `public/button.gif` (animated; `button.png` is a still copy). The Guestbook page shows it with the code
-  others can copy to link to you.
-- **The line under "Kanu"**: `epigraph` in `content/site.ts`.
-
-## The Steam Deck panel
-
-The **Daily driver** panel on the Me page shows a turning 3D Steam Deck, drawn by the
-`dither-model` package from `public/models/steam-deck.json`. That file is Valve's official
-CAD, simplified, and it keeps Valve's license (CC BY-NC-SA 4.0, see `public/models/README.md`):
-keep the credit line under the panel. The text is `me.deck` in `content/site.ts`.
-
-To show another STL somewhere, convert it first: `npx dither-model thing.stl -o public/models/thing.json`.
-
-## The journal
-
-The page shows a sealed envelope with the riddle written on it. When a visitor solves
-it, the wax seal breaks and the entries appear as handwritten letters (the Caveat font).
-
-Entries are sealed on your computer and only the sealed file is published.
-
-1. Write your riddle in `content/journal.ts`, in English and Spanish.
-2. Write an entry as `journal/2026-10-28-anything.md` (date first, then any name).
-   The first line `# Title` is the title; paragraphs are separated by a blank line.
-   To publish an entry in both languages, write a pair with the same name plus the
-   language: `2026-10-31-first-step.es.md` and `2026-10-31-first-step.en.md`. The
-   page shows the version that matches the language switch, and counts the pair as one entry.
-3. Run `npm run journal:seal`. The first time, it asks which answers open the
-   journal (for example `moon | luna`). After that it asks for an answer to unlock.
+1. Write the riddle in `content/journal.ts`, in English and Spanish.
+2. Write an entry as `journal/2026-10-28-anything.md` (date first). The first line,
+   `# Title`, is the title. For both languages, write a pair: `2026-10-31-first-step.es.md`
+   and `2026-10-31-first-step.en.md`.
+3. Run `npm run journal:seal`. The first time it asks which answers open the journal
+   (several, separated by `|`); after that it asks for one of them to unlock.
 4. Commit and publish `content/journal.sealed.json`. The `journal/` folder is in
    `.gitignore`: keep it, back it up privately, and never commit it.
 
-Other commands: `npm run journal:unseal` writes every entry back into `journal/`
-(if you lose the files), and `npm run journal:answers` changes the accepted answers.
+`npm run journal:unseal` writes every entry back into `journal/` if you lose the files;
+`npm run journal:answers` changes the accepted answers.
 
-What visitors can see without the answer: how many entries there are and their
-dates. Titles and text are encrypted (AES-GCM, key derived with PBKDF2). The answer
-isn't stored anywhere, but anyone can copy the sealed file and try guesses offline,
-so a one-word answer can be found with a word list. A longer or less obvious
-phrase is much harder to guess. Don't seal anything you couldn't live with being read.
+Without the answer, visitors can see how many entries there are and their dates. Titles
+and text are encrypted (AES-GCM, with a key derived by PBKDF2), and the answer isn't
+stored anywhere. But anyone can copy the sealed file and keep guessing offline, so a short
+answer can fall to a word list. Don't seal anything you couldn't live with being read.
 
-## Where things are
+### Guestbook
 
-- `components/Shell.tsx`: masthead, language switch, pages, sidebar, footer
-- `components/LilyScene.tsx`: the 3D pixel-art lily on the home page
-- the moon widget is `<DitherMoon />` from the `dither-moon` package (drag it to turn it)
-- `components/TapedPhoto.tsx`: the taped photo next to the wordmark
-- `components/Widgets.tsx`: time, weather, now playing, Discord, visitors
-- `components/MusicPlayer.tsx`: the music widget; the player is the `dither-player` package
-- `components/HomePage.tsx`, `MePage.tsx`, `JournalPage.tsx`: the pages
+Messages are kept by the leave-a-mark Worker. Its address and Turnstile's **site** key
+(public) are in `config.guestbook` in `content/site.ts`. You approve or delete messages at
+the Worker's `/admin`, and get a Discord message and an email when someone signs. The
+Worker's settings and secrets live in the leave-a-mark repo and in Cloudflare, never here.
+The guestbook page also shows the 88×31 button (`public/button.gif`, with a still
+`button.png`) and the code others can copy to link to the site.
+
+### Sidebar widgets
+
+On computers the widgets are a column on the right. On phones and tablets they're in the
+**Menu** drawer, which slides in from the right. The code is in `components/Widgets.tsx`
+and `components/MusicPlayer.tsx`; their settings are in `config` at the top of
+`content/site.ts`:
+
+- **Now playing** and **Music**: Last.fm (`lastfm.user`, `lastfm.apiKey`). The key is a
+  public read-only key from last.fm/api/account/create (the API key, never the shared
+  secret). Both widgets remember Last.fm's last good answer in the visitor's browser and
+  keep showing it while Last.fm is down.
+- **Music**: while `music.tracks` is empty, it lists my five most played songs this month.
+  With tracks (mp3 or m4a in `public/music/`, listed in `music.tracks`, each under 100 MB),
+  it becomes the `dither-player` music player. Only upload music I made or can share.
+- **On Discord**: Lanyard (`discordId`). It only works while I'm in Lanyard's Discord server.
+- **Weather** and **Local time**: Open-Meteo and the browser (`place`).
+- **Mood**: imood (`imood`). Change it on imood.com.
+- **Visitors**: GoatCounter (`goatcounter`). Its settings must allow "visitor counts on
+  your website", or the number won't load.
+
+On computers, the browser's own scrollbar is hidden. A scrollbar appears when the mouse
+reaches the right edge (`components/ScrollRail.tsx`).
+
+## Publishing
+
+Every push to `main` runs `.github/workflows/deploy.yml`: it builds the site, publishes
+`out/` to GitHub Pages, and then tells Bing and the other IndexNow search engines which
+pages exist (`scripts/indexnow.mjs`; the key file in `public/` is public on purpose).
+
+- **The domain**, erickdonado.com, is registered at Cloudflare and set as the custom domain
+  in the repo's Settings › Pages. Its DNS records must stay **DNS only** (grey cloud) so
+  GitHub can keep its HTTPS certificate. Old links under `kanusaru.github.io/home/` forward
+  to the same page on the domain.
+- **The address and base path** come from GitHub during the build, so changing the domain
+  needs no code changes.
+- **The repo must stay public** for GitHub Pages on a free account. Only
+  `content/journal.sealed.json` of the journal is ever pushed.
+- **Links are checked** on the 1st of every month by
+  [still-breathing](https://github.com/KanuSaru/still-breathing)
+  (`.github/workflows/links.yml`), which opens an issue if one has died. To run it now:
+  Actions › Check links › Run workflow.
+
+## Search engines and AI assistants
+
+What they read lives in `content/seo.ts`: each page's title and description (written for
+search results, between 25 and 160 characters), the facts about me for the structured
+data, and my profiles elsewhere. `lib/seo.tsx` turns it into metadata and schema.org data.
+Each build also writes `sitemap.xml`, `robots.txt` and `llms.txt`.
+
+The site is in Google Search Console and Bing Webmaster Tools, both verified through DNS.
+After changing a page's text, request indexing for it in Search Console to have it read
+again sooner. The journal is kept out of search results with `noindex`.
+
+## Map of the code
+
+- `app/`: one folder per page, in English, and again under `app/es/`
+- `content/`: all the text and settings (`site.ts`, `work.ts`, `learn.ts`, `seo.ts`,
+  `updates.ts`, `journal.ts`, `notes/`)
+- `components/Shell.tsx`: masthead, language switch, pages list, sidebar and Menu drawer, footer
+- `components/HomePage.tsx`, `MePage.tsx`, `WorkPage.tsx`, `NotesPage.tsx`, `LearnPage.tsx`,
+  `JournalPage.tsx`, `GuestbookPage.tsx`: the pages
+- `components/LilyScene.tsx` (the lily), `MaskField.tsx` (the segmentation mask on Work),
+  `TapedPhoto.tsx` (the photo by the wordmark)
+- `components/NoteFigures.tsx`, `LearnFigures.tsx`: the figures notes can use
+- `components/Widgets.tsx`, `MusicPlayer.tsx`, `Updates.tsx`: the sidebar
+- `components/SmoothScroll.tsx`, `ScrollRail.tsx`: wheel scrolling and the mouse scrollbar
+- `lib/i18n.tsx`, `lib/route.tsx`: languages and addresses
+- `lib/markdown.ts`, `lib/notes.ts`: reading the notes
 - `lib/seal.mjs`, `scripts/journal.mjs`: sealing and opening the journal
-- `components/NotesPage.tsx`, `NoteFigures.tsx`, `lib/notes.ts`, `lib/markdown.ts`: the notes
-- `components/WorkPage.tsx`: the Work page; `components/MaskField.tsx` draws its segmentation mask
-- `app/globals.css`: all styles and color tokens
+- `lib/seo.tsx`, `lib/og.ts`: metadata and preview images
+- `scripts/`: the build steps, and IndexNow
+- `app/globals.css`: all styles
 
-## Publish
+## Related packages
 
-The site lives in the repo `KanuSaru/home` and is published by GitHub Pages at
-**https://erickdonado.com** (a domain registered at Cloudflare). The old addresses under
-`kanusaru.github.io/home/` forward there on their own. Every push to `main` runs
-`.github/workflows/deploy.yml`, which builds the site and publishes it.
+Parts of this site became their own open-source packages, each with its own repo:
 
-- GitHub Pages needs the repo to be **public** on a free account (private repos
-  need GitHub Pro). Only `content/journal.sealed.json` of the journal is ever
-  pushed; the plain-text `journal/` folder is ignored by git.
-- One-time setup: Settings › Pages › Source: **GitHub Actions**.
-- The address is handled for you: the workflow asks GitHub where the site lives
-  (Settings › Pages › Custom domain), so the build matches it with no code changes.
-- The domain's DNS lives at Cloudflare and must stay **DNS only** (grey cloud), so
-  GitHub can keep its HTTPS certificate up to date.
+- [dither-moon](https://github.com/KanuSaru/dither-moon): the Moon at its real phase, in 1-bit pixels
+- [dither-model](https://github.com/KanuSaru/dither-model): any STL file as turning 1-bit pixel art
+- [dither-player](https://github.com/KanuSaru/dither-player): a music player with a 1-bit visualizer
+- [leave-a-mark](https://github.com/KanuSaru/leave-a-mark): the guestbook, on a Cloudflare Worker
+- [still-breathing](https://github.com/KanuSaru/still-breathing): the monthly link checker
